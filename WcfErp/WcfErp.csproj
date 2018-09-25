@@ -1,0 +1,212 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>
+    </ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{4C5F3233-E820-4ADA-8FE7-94D00CC5D10B}</ProjectGuid>
+    <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>WcfErp</RootNamespace>
+    <AssemblyName>WcfErp</AssemblyName>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <WcfConfigValidationEnabled>True</WcfConfigValidationEnabled>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <UseIISExpress>true</UseIISExpress>
+    <IISExpressSSLPort />
+    <IISExpressAnonymousAuthentication />
+    <IISExpressWindowsAuthentication />
+    <IISExpressUseClassicPipelineMode />
+    <UseGlobalApplicationHostFile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="DnsClient, Version=1.0.7.0, Culture=neutral, PublicKeyToken=4574bb5573c51424, processorArchitecture=MSIL">
+      <HintPath>..\packages\DnsClient.1.0.7\lib\net45\DnsClient.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="MongoDB.Bson, Version=2.7.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\MongoDB.Bson.2.7.0\lib\net45\MongoDB.Bson.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="MongoDB.Driver, Version=2.7.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\MongoDB.Driver.2.7.0\lib\net45\MongoDB.Driver.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="MongoDB.Driver.Core, Version=2.7.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\MongoDB.Driver.Core.2.7.0\lib\net45\MongoDB.Driver.Core.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=11.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.11.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Buffers, Version=4.0.1.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Buffers.4.3.0\lib\netstandard1.1\System.Buffers.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Runtime.InteropServices.RuntimeInformation, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Runtime.InteropServices.RuntimeInformation.4.0.0\lib\net45\System.Runtime.InteropServices.RuntimeInformation.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Web.DynamicData" />
+    <Reference Include="System.Web.Entity" />
+    <Reference Include="System.Web.ApplicationServices" />
+    <Reference Include="System" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.EnterpriseServices" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.ServiceModel" />
+    <Reference Include="System.ServiceModel.Web" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Web.Services" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Xml.Linq" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Service1.svc" />
+    <Content Include="Servicios\Especiales\WcfLogin.svc" />
+    <Content Include="Servicios\Generales\WcfCobrador.svc" />
+    <Content Include="Servicios\Generales\WcfCondicionesDePago.svc" />
+    <Content Include="Servicios\Generales\WcfMoneda.svc" />
+    <Content Include="Servicios\Generales\WcfPaises.svc" />
+    <Content Include="Servicios\Generales\WcfTipoCliente.svc" />
+    <Content Include="Servicios\Generales\WcfVendedor.svc" />
+    <Content Include="Servicios\Generales\WcfZonaCliente.svc" />
+    <Content Include="Servicios\Ventas\WcfClientes.svc" />
+    <Content Include="Web.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="FormatterJsonNET\CustomHeaderMessageInspector.cs" />
+    <Compile Include="FormatterJsonNET\EnableCrossOriginResourceSharingBehavior.cs" />
+    <Compile Include="FormatterJsonNET\NewtonsoftJsonBehavior.cs" />
+    <Compile Include="FormatterJsonNET\NewtonsoftJsonBehaviorExtension.cs" />
+    <Compile Include="FormatterJsonNET\NewtonsoftJsonContentTypeMapper .cs" />
+    <Compile Include="FormatterJsonNET\NewtonsoftJsonDispatchFormatter.cs" />
+    <Compile Include="FormatterJsonNET\RawBodyWriter.cs" />
+    <Compile Include="Modelos\Especiales\Login.cs" />
+    <Compile Include="Modelos\Generales\Cobrador.cs" />
+    <Compile Include="Modelos\Generales\CondicionesDePago.cs" />
+    <Compile Include="Modelos\Generales\Moneda.cs" />
+    <Compile Include="Modelos\Generales\Paises.cs" />
+    <Compile Include="Modelos\Generales\TipoCliente.cs" />
+    <Compile Include="Modelos\Generales\Vendedor.cs" />
+    <Compile Include="Modelos\Generales\ZonaCliente.cs" />
+    <Compile Include="Modelos\ModeloBase.cs" />
+    <Compile Include="Modelos\Ventas\Clientes.cs" />
+    <Compile Include="Service1.svc.cs">
+      <DependentUpon>Service1.svc</DependentUpon>
+    </Compile>
+    <Compile Include="IService1.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Servicios\Especiales\IWcfLogin.cs" />
+    <Compile Include="Servicios\Especiales\WcfLogin.svc.cs">
+      <DependentUpon>WcfLogin.svc</DependentUpon>
+    </Compile>
+    <Compile Include="Servicios\Generales\IWcfCobrador.cs" />
+    <Compile Include="Servicios\Generales\IWcfCondicionesDePago.cs" />
+    <Compile Include="Servicios\Generales\IWcfMoneda.cs" />
+    <Compile Include="Servicios\Generales\IWcfPaises.cs" />
+    <Compile Include="Servicios\Generales\IWcfTipoCliente.cs" />
+    <Compile Include="Servicios\Generales\IWcfVendedor.cs" />
+    <Compile Include="Servicios\Generales\IWcfZonaCliente.cs" />
+    <Compile Include="Servicios\Generales\WcfCobrador.svc.cs">
+      <DependentUpon>WcfCobrador.svc</DependentUpon>
+    </Compile>
+    <Compile Include="Servicios\Generales\WcfCondicionesDePago.svc.cs">
+      <DependentUpon>WcfCondicionesDePago.svc</DependentUpon>
+    </Compile>
+    <Compile Include="Servicios\Generales\WcfMoneda.svc.cs">
+      <DependentUpon>WcfMoneda.svc</DependentUpon>
+    </Compile>
+    <Compile Include="Servicios\Generales\WcfPaises.svc.cs">
+      <DependentUpon>WcfPaises.svc</DependentUpon>
+    </Compile>
+    <Compile Include="Servicios\Generales\WcfTipoCliente.svc.cs">
+      <DependentUpon>WcfTipoCliente.svc</DependentUpon>
+    </Compile>
+    <Compile Include="Servicios\Generales\WcfVendedor.svc.cs">
+      <DependentUpon>WcfVendedor.svc</DependentUpon>
+    </Compile>
+    <Compile Include="Servicios\Generales\WcfZonaCliente.svc.cs">
+      <DependentUpon>WcfZonaCliente.svc</DependentUpon>
+    </Compile>
+    <Compile Include="Servicios\ServiceBase.cs" />
+    <Compile Include="Servicios\ServiciosBase.cs" />
+    <Compile Include="Servicios\Ventas\IWcfClientes.cs" />
+    <Compile Include="Servicios\Ventas\WcfClientes.svc.cs">
+      <DependentUpon>WcfClientes.svc</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="App_Data\" />
+    <Folder Include="Servicios\Administracion\" />
+    <Folder Include="Servicios\Compras\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="packages.config" />
+    <None Include="Web.Debug.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </None>
+    <None Include="Web.Release.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </None>
+  </ItemGroup>
+  <PropertyGroup>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
+    <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+  </PropertyGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" Condition="false" />
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
+        <WebProjectProperties>
+          <UseIIS>True</UseIIS>
+          <AutoAssignPort>True</AutoAssignPort>
+          <DevelopmentServerPort>60493</DevelopmentServerPort>
+          <DevelopmentServerVPath>/</DevelopmentServerVPath>
+          <IISUrl>http://localhost:60493/</IISUrl>
+          <NTLMAuthentication>False</NTLMAuthentication>
+          <UseCustomServer>False</UseCustomServer>
+          <CustomServerUrl>
+          </CustomServerUrl>
+          <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
+        </WebProjectProperties>
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
