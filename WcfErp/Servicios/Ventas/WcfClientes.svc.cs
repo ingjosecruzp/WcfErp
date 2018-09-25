@@ -20,6 +20,8 @@ namespace WcfErp.Servicios.Ventas
         {
             try
             {
+                // hola
+                int aa = 20;
                 MongoClient client = new MongoClient();
                 IMongoDatabase db = client.GetDatabase("PAMC861025DB7");
                 
