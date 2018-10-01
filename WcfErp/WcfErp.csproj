@@ -164,6 +164,7 @@
     <Folder Include="App_Data\" />
     <Folder Include="Servicios\Administracion\" />
     <Folder Include="Servicios\Compras\" />
+    <Folder Include="Servicios\Inventarios\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
