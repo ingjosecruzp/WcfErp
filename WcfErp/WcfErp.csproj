@@ -112,6 +112,7 @@
     <Compile Include="FormatterJsonNET\RawBodyWriter.cs" />
     <Compile Include="Modelos\Generales\GrupoComponente.cs" />
     <Compile Include="Modelos\Generales\SubgrupoComponente.cs" />
+    <Compile Include="Modelos\Generales\TipoComponente.cs" />
     <Compile Include="Modelos\Generales\Unidad.cs" />
     <Compile Include="Modelos\Especiales\Login.cs" />
     <Compile Include="Modelos\Generales\Cobrador.cs" />
@@ -122,6 +123,7 @@
     <Compile Include="Modelos\Generales\Vendedor.cs" />
     <Compile Include="Modelos\Generales\ZonaCliente.cs" />
     <Compile Include="Modelos\Inventarios\Concepto.cs" />
+    <Compile Include="Modelos\Inventarios\TipoConcepto.cs" />
     <Compile Include="Modelos\ModeloBase.cs" />
     <Compile Include="Modelos\Ventas\Clientes.cs" />
     <Compile Include="Service1.svc.cs">
