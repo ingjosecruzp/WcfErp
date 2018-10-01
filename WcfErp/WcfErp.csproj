@@ -97,6 +97,7 @@
     <Content Include="Servicios\Generales\WcfZonaCliente.svc" />
     <Content Include="Servicios\Inventarios\WcfSubgruposComponentes.svc" />
     <Content Include="Servicios\Inventarios\WcfGrupoComponentes.svc" />
+    <Content Include="Servicios\Inventarios\WcfConceptos.svc" />
     <Content Include="Servicios\Inventarios\WcfUnidades.svc" />
     <Content Include="Servicios\Ventas\WcfClientes.svc" />
     <Content Include="Web.config" />
@@ -157,6 +158,14 @@
     <Compile Include="Servicios\Generales\WcfZonaCliente.svc.cs">
       <DependentUpon>WcfZonaCliente.svc</DependentUpon>
     </Compile>
+    <Compile Include="Servicios\Inventarios\IWcfSubgruposComponentes.cs" />
+    <Compile Include="Servicios\Inventarios\WcfSubgruposComponentes.svc.cs">
+      <DependentUpon>WcfSubgruposComponentes.svc</DependentUpon>
+    </Compile>
+    <Compile Include="Servicios\Inventarios\IWcfGrupoComponentes.cs" />
+    <Compile Include="Servicios\Inventarios\WcfGrupoComponentes.svc.cs">
+      <DependentUpon>WcfGrupoComponentes.svc</DependentUpon>
+    </Compile>
     <Compile Include="Servicios\ServiceBase.cs" />
     <Compile Include="Servicios\ServiciosBase.cs" />
     <Compile Include="Servicios\Ventas\IWcfClientes.cs" />
@@ -166,6 +175,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Modelos\Inventarios\" />
     <Folder Include="Servicios\Administracion\" />
     <Folder Include="Servicios\Compras\" />
   </ItemGroup>
