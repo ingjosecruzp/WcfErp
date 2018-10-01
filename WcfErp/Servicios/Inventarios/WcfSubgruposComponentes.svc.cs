@@ -7,8 +7,8 @@ using System.Text;
 
 namespace WcfErp.Servicios.Inventarios
 {
-    // NOTA: puede usar el comando "Rename" del menú "Refactorizar" para cambiar el nombre de clase "WcfSubgruposComponentes" en el código, en svc y en el archivo de configuración a la vez.
-    // NOTA: para iniciar el Cliente de prueba WCF para probar este servicio, seleccione WcfSubgruposComponentes.svc o WcfSubgruposComponentes.svc.cs en el Explorador de soluciones e inicie la depuración.
+    // NOTE: You can use the "Rename" command on the "Refactor" menu to change the class name "WcfSubgruposComponentes" in code, svc and config file together.
+    // NOTE: In order to launch WCF Test Client for testing this service, please select WcfSubgruposComponentes.svc or WcfSubgruposComponentes.svc.cs at the Solution Explorer and start debugging.
     public class WcfSubgruposComponentes : IWcfSubgruposComponentes
     {
         public void DoWork()

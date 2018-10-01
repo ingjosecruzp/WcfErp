@@ -95,9 +95,9 @@
     <Content Include="Servicios\Generales\WcfTipoCliente.svc" />
     <Content Include="Servicios\Generales\WcfVendedor.svc" />
     <Content Include="Servicios\Generales\WcfZonaCliente.svc" />
-    <Content Include="Servicios\Inventarios\WcfSubgruposComponentes.svc" />
-    <Content Include="Servicios\Inventarios\WcfGrupoComponentes.svc" />
     <Content Include="Servicios\Inventarios\WcfConceptos.svc" />
+    <Content Include="Servicios\Inventarios\WcfGruposComponentes.svc" />
+    <Content Include="Servicios\Inventarios\WcfSubgruposComponentes.svc" />
     <Content Include="Servicios\Inventarios\WcfUnidades.svc" />
     <Content Include="Servicios\Ventas\WcfClientes.svc" />
     <Content Include="Web.config" />
@@ -158,13 +158,21 @@
     <Compile Include="Servicios\Generales\WcfZonaCliente.svc.cs">
       <DependentUpon>WcfZonaCliente.svc</DependentUpon>
     </Compile>
+    <Compile Include="Servicios\Inventarios\IWcfConceptos.cs" />
+    <Compile Include="Servicios\Inventarios\IWcfGruposComponentes.cs" />
     <Compile Include="Servicios\Inventarios\IWcfSubgruposComponentes.cs" />
+    <Compile Include="Servicios\Inventarios\IWcfUnidades.cs" />
+    <Compile Include="Servicios\Inventarios\WcfConceptos.svc.cs">
+      <DependentUpon>WcfConceptos.svc</DependentUpon>
+    </Compile>
+    <Compile Include="Servicios\Inventarios\WcfGruposComponentes.svc.cs">
+      <DependentUpon>WcfGruposComponentes.svc</DependentUpon>
+    </Compile>
     <Compile Include="Servicios\Inventarios\WcfSubgruposComponentes.svc.cs">
       <DependentUpon>WcfSubgruposComponentes.svc</DependentUpon>
     </Compile>
-    <Compile Include="Servicios\Inventarios\IWcfGrupoComponentes.cs" />
-    <Compile Include="Servicios\Inventarios\WcfGrupoComponentes.svc.cs">
-      <DependentUpon>WcfGrupoComponentes.svc</DependentUpon>
+    <Compile Include="Servicios\Inventarios\WcfUnidades.svc.cs">
+      <DependentUpon>WcfUnidades.svc</DependentUpon>
     </Compile>
     <Compile Include="Servicios\ServiceBase.cs" />
     <Compile Include="Servicios\ServiciosBase.cs" />

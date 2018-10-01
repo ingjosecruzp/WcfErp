@@ -7,7 +7,7 @@ using System.Text;
 
 namespace WcfErp.Servicios.Inventarios
 {
-    // NOTA: puede usar el comando "Rename" del menú "Refactorizar" para cambiar el nombre de interfaz "IWcfSubgruposComponentes" en el código y en el archivo de configuración a la vez.
+    // NOTE: You can use the "Rename" command on the "Refactor" menu to change the interface name "IWcfSubgruposComponentes" in both code and config file together.
     [ServiceContract]
     public interface IWcfSubgruposComponentes
     {
