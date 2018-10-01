@@ -5,7 +5,8 @@ using System.Web;
 
 namespace WcfErp.Modelos.Generales
 {
-    public class GrupoComponente
+    public class GrupoComponente: ModeloBase
     {
+        public string Nombre { get; set; }
     }
 }
