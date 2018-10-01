@@ -111,6 +111,7 @@
     <Compile Include="FormatterJsonNET\NewtonsoftJsonDispatchFormatter.cs" />
     <Compile Include="FormatterJsonNET\RawBodyWriter.cs" />
     <Compile Include="Modelos\Generales\GrupoComponente.cs" />
+    <Compile Include="Modelos\Generales\SubgrupoComponente.cs" />
     <Compile Include="Modelos\Generales\Unidad.cs" />
     <Compile Include="Modelos\Especiales\Login.cs" />
     <Compile Include="Modelos\Generales\Cobrador.cs" />
