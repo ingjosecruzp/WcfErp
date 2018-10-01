@@ -121,6 +121,7 @@
     <Compile Include="Modelos\Generales\TipoCliente.cs" />
     <Compile Include="Modelos\Generales\Vendedor.cs" />
     <Compile Include="Modelos\Generales\ZonaCliente.cs" />
+    <Compile Include="Modelos\Inventarios\Concepto.cs" />
     <Compile Include="Modelos\ModeloBase.cs" />
     <Compile Include="Modelos\Ventas\Clientes.cs" />
     <Compile Include="Service1.svc.cs">
@@ -185,7 +186,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Modelos\Inventarios\" />
     <Folder Include="Servicios\Administracion\" />
     <Folder Include="Servicios\Compras\" />
   </ItemGroup>
