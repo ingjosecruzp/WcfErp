@@ -12,10 +12,6 @@ namespace WcfErp.Servicios.Generales
     // NOTE: In order to launch WCF Test Client for testing this service, please select WcfVendedor.svc or WcfVendedor.svc.cs at the Solution Explorer and start debugging.
     public class WcfVendedor : ServiceBase<Vendedor>, IWcfVendedor
     {
-        public WcfVendedor()
-        {
-            this.Collection = "Vendedor";
-        }
         public Vendedor add(Vendedor item)
         {
             throw new NotImplementedException();

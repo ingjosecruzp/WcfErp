@@ -16,10 +16,6 @@ namespace WcfErp.Servicios.Ventas
     // NOTE: In order to launch WCF Test Client for testing this service, please select WcfClientes.svc or WcfClientes.svc.cs at the Solution Explorer and start debugging.
     public class WcfClientes :  ServiceBase<Clientes>,IWcfClientes
     {
-        public WcfClientes()
-        {
-            this.Collection = "Clientes";
-        }
         /*public Clientes add(Clientes item)
         {
             try

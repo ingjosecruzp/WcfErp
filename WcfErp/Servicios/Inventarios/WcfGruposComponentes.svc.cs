@@ -13,11 +13,6 @@ namespace WcfErp.Servicios.Inventarios
     public class WcfGruposComponentes : ServiceBase<GrupoComponente>, IWcfGruposComponentes
     {
 
-        public WcfGruposComponentes()
-        {
-            this.Collection = "GruposComponentes"; //hace referencia hacia la colleccion de mongo
-        }
-
         public List<GrupoComponente> all()
         {
             throw new NotImplementedException();

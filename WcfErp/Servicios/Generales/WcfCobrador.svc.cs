@@ -12,10 +12,6 @@ namespace WcfErp.Servicios.Generales
     // NOTE: In order to launch WCF Test Client for testing this service, please select WcfCobrador.svc or WcfCobrador.svc.cs at the Solution Explorer and start debugging.
     public class WcfCobrador : ServiceBase<Cobrador>, IWcfCobrador
     {
-        public WcfCobrador()
-        {
-            this.Collection = "Cobrador";
-        }
         public Cobrador add(Cobrador item)
         {
             throw new NotImplementedException();

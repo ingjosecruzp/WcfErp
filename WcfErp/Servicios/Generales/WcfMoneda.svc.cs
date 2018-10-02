@@ -12,10 +12,6 @@ namespace WcfErp.Servicios.Generales
     // NOTE: In order to launch WCF Test Client for testing this service, please select WcfMoneda.svc or WcfMoneda.svc.cs at the Solution Explorer and start debugging.
     public class WcfMoneda : ServiceBase<Moneda>, IWcfMoneda
     {
-        public WcfMoneda()
-        {
-            this.Collection = "Moneda";
-        }
         public Moneda add(Moneda item)
         {
             throw new NotImplementedException();

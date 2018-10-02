@@ -12,10 +12,6 @@ namespace WcfErp.Servicios.Generales
     // NOTE: In order to launch WCF Test Client for testing this service, please select WcfTipoCliente.svc or WcfTipoCliente.svc.cs at the Solution Explorer and start debugging.
     public class WcfTipoCliente : ServiceBase<TipoCliente>, IWcfTipoCliente
     {
-        public WcfTipoCliente()
-        {
-            this.Collection = "TipoCliente";
-        }
         public TipoCliente add(TipoCliente item)
         {
             throw new NotImplementedException();
