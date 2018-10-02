@@ -16,12 +16,14 @@ namespace WcfErp.Servicios.Ventas
     // NOTE: In order to launch WCF Test Client for testing this service, please select WcfClientes.svc or WcfClientes.svc.cs at the Solution Explorer and start debugging.
     public class WcfClientes :  ServiceBase<Clientes>,IWcfClientes
     {
-        public Clientes add(Clientes item)
+        public WcfClientes()
+        {
+            this.Collection = "Clientes";
+        }
+        /*public Clientes add(Clientes item)
         {
             try
             {
-                // hola
-                int aa = 20;
                 MongoClient client = new MongoClient();
                 IMongoDatabase db = client.GetDatabase("PAMC861025DB7");
                 
@@ -30,14 +32,14 @@ namespace WcfErp.Servicios.Ventas
 
                 CollectionClientes.InsertOne(item);
 
-                return null;
+                return item;
             }
             catch (Exception ex)
             {
 
                 return null;
             }
-        }
+        }*/
 
         public List<Clientes> all()
         {
@@ -93,10 +95,6 @@ namespace WcfErp.Servicios.Ventas
             }
         }
 
-        public List<Clientes> search(string busqueda)
-        {
-            throw new NotImplementedException();
-        }
 
         public Clientes update(Clientes item,string id)
         {

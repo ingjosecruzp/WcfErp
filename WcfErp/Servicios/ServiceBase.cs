@@ -12,6 +12,25 @@ namespace WcfErp.Servicios
     public class ServiceBase<Modelo>
     {
         public virtual string Collection { get; set; }
+        public Modelo add(Modelo item)
+        {
+            try
+            {
+                MongoClient client = new MongoClient();
+                IMongoDatabase db = client.GetDatabase("PAMC861025DB7");
+
+                IMongoCollection<Modelo> CollectionClientes = db.GetCollection<Modelo>(this.Collection);
+
+                CollectionClientes.InsertOne(item);
+
+                return item;
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+        }
+
         public List<Modelo> search(string busqueda)
         {
             try
@@ -29,10 +48,10 @@ namespace WcfErp.Servicios
             }
             catch (Exception ex)
             {
-
                 throw;
             }
         }
+
         //Metodo para dar respuesta las peticiones OPTION CORS
         public void GetOptions()
         {
