@@ -12,9 +12,10 @@ namespace WcfErp.Servicios.Inventarios
     // NOTE: In order to launch WCF Test Client for testing this service, please select WcfGruposComponentes.svc or WcfGruposComponentes.svc.cs at the Solution Explorer and start debugging.
     public class WcfGruposComponentes : ServiceBase<GrupoComponente>, IWcfGruposComponentes
     {
-        public GrupoComponente add(GrupoComponente item)
+
+        public WcfGruposComponentes()
         {
-            throw new NotImplementedException();
+            this.Collection = "GruposComponentes"; //hace referencia hacia la colleccion de mongo
         }
 
         public List<GrupoComponente> all()
