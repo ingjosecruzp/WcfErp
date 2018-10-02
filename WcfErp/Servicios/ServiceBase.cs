@@ -12,6 +12,7 @@ namespace WcfErp.Servicios
     public class ServiceBase<Modelo>
     {
         public virtual string Collection { get; set; }
+
         public virtual Modelo add(Modelo item)
         {
             try
