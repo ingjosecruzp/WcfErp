@@ -16,7 +16,6 @@ namespace WcfErp.Servicios.Generales
         {
             this.Collection = "ZonaCliente";
         }
-
         public List<ZonaCliente> all()
         {
             throw new NotImplementedException();

@@ -12,7 +12,7 @@ namespace WcfErp.Servicios
     public class ServiceBase<Modelo>
     {
         public virtual string Collection { get; set; }
-        public Modelo add(Modelo item)
+        public virtual Modelo add(Modelo item)
         {
             try
             {
@@ -31,7 +31,7 @@ namespace WcfErp.Servicios
             }
         }
 
-        public List<Modelo> search(string busqueda)
+        public virtual List<Modelo> search(string busqueda)
         {
             try
             {
