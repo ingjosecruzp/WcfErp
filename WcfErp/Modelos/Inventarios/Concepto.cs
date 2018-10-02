@@ -12,7 +12,7 @@ namespace WcfErp.Modelos.Inventarios
         public string Nombre{ get; set; }
         public string Naturaleza { get; set; }
 
-        public TipoConcepto TipoConcepto { get; set; }
+        public TipoComponente TipoConcepto { get; set; }
         public string Predefinido { get; set; }
 
         public string CostoAutomatico { get; set; }
