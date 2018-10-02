@@ -12,10 +12,6 @@ namespace WcfErp.Servicios.Generales
     // NOTE: In order to launch WCF Test Client for testing this service, please select WcfZonaCliente.svc or WcfZonaCliente.svc.cs at the Solution Explorer and start debugging.
     public class WcfZonaCliente : ServiceBase<ZonaCliente>, IWcfZonaCliente
     {
-        public WcfZonaCliente()
-        {
-            this.Collection = "ZonaCliente";
-        }
         public List<ZonaCliente> all()
         {
             throw new NotImplementedException();

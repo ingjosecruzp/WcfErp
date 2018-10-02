@@ -11,7 +11,6 @@ namespace WcfErp.Servicios
 {
     public class ServiceBase<Modelo>
     {
-        public virtual string Collection { get; set; }
         public virtual Modelo add(Modelo item)
         {
             try
@@ -19,7 +18,7 @@ namespace WcfErp.Servicios
                 MongoClient client = new MongoClient();
                 IMongoDatabase db = client.GetDatabase("PAMC861025DB7");
 
-                IMongoCollection<Modelo> CollectionClientes = db.GetCollection<Modelo>(this.Collection);
+                IMongoCollection<Modelo> CollectionClientes = db.GetCollection<Modelo>(typeof(Modelo).Name);
 
                 CollectionClientes.InsertOne(item);
 
@@ -38,7 +37,7 @@ namespace WcfErp.Servicios
                 MongoClient client = new MongoClient();
                 IMongoDatabase db = client.GetDatabase("PAMC861025DB7");
 
-                IMongoCollection<Modelo> Collection = db.GetCollection<Modelo>(this.Collection);
+                IMongoCollection<Modelo> Collection = db.GetCollection<Modelo>(typeof(Modelo).Name);
 
                 var filter = Builders<Modelo>.Filter.Regex("Nombre", new BsonRegularExpression(busqueda, "i"));
 
