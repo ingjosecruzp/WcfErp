@@ -29,7 +29,25 @@ namespace WcfErp.Servicios
                 throw;
             }
         }
+        public virtual List<Modelo> all()
+        {
+            try
+            {
+                MongoClient client = new MongoClient();
+                IMongoDatabase db = client.GetDatabase("PAMC861025DB7");
 
+                IMongoCollection<Modelo> CollectionClientes = db.GetCollection<Modelo>(typeof(Modelo).Name);
+
+                List<Modelo> Lista = CollectionClientes.AsQueryable().ToList();
+
+                return Lista;
+            }
+            catch (Exception ex)
+            {
+
+                return null;
+            }
+        }
         public virtual List<Modelo> search(string busqueda)
         {
             try
@@ -47,7 +65,7 @@ namespace WcfErp.Servicios
             }
             catch (Exception ex)
             {
-                throw;
+                return null;
             }
         }
 

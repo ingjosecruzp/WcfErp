@@ -37,7 +37,7 @@ namespace WcfErp.Servicios.Ventas
             }
         }*/
 
-        public List<Clientes> all()
+        /*public  List<Clientes> all()
         {
             try
             {
@@ -59,7 +59,7 @@ namespace WcfErp.Servicios.Ventas
 
                 return null;
             }
-        }
+        }*/
 
         public Clientes delete(string id)
         {
