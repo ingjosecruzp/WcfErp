@@ -12,7 +12,6 @@ namespace WcfErp.Servicios.Inventarios
     [ServiceContract]
     public interface IWcfSubgruposComponentes : ServiciosBase<SubgrupoComponente>
     {
-        [OperationContract]
-        void DoWork();
+      
     }
 }
