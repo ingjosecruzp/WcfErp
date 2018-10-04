@@ -13,11 +13,7 @@ namespace WcfErp.Servicios.Inventarios
     public class WcfGruposComponentes : ServiceBase<GrupoComponente>, IWcfGruposComponentes
     {
 
-        public List<GrupoComponente> all()
-        {
-            throw new NotImplementedException();
-        }
-
+    
         public GrupoComponente delete(string id)
         {
             throw new NotImplementedException();
