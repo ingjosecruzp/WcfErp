@@ -17,10 +17,10 @@ namespace WcfErp.Servicios
             {
                 MongoClient client = new MongoClient();
                 IMongoDatabase db = client.GetDatabase("PAMC861025DB7");
-
+                
                 IMongoCollection<Modelo> CollectionClientes = db.GetCollection<Modelo>(typeof(Modelo).Name);
 
-                CollectionClientes.InsertOne(item);
+                CollectionClientes.InsertOne(item,);
 
                 return item;
             }

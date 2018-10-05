@@ -123,7 +123,7 @@
     <Compile Include="Modelos\Generales\Vendedor.cs" />
     <Compile Include="Modelos\Generales\ZonaCliente.cs" />
     <Compile Include="Modelos\Inventarios\Concepto.cs" />
-    <Compile Include="Modelos\Inventarios\TipoComponente.cs" />
+    <Compile Include="Modelos\Inventarios\TipoConcepto.cs" />
     <Compile Include="Modelos\ModeloBase.cs" />
     <Compile Include="Modelos\Ventas\Clientes.cs" />
     <Compile Include="Service1.svc.cs">

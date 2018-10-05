@@ -12,16 +12,6 @@ namespace WcfErp.Servicios.Inventarios
     // NOTE: In order to launch WCF Test Client for testing this service, please select WcfConceptos.svc or WcfConceptos.svc.cs at the Solution Explorer and start debugging.
     public class WcfConceptos : ServiceBase<Concepto>,IWcfConceptos
     {
-        public Concepto add(Concepto item)
-        {
-            throw new NotImplementedException();
-        }
-
-        public List<Concepto> all()
-        {
-            throw new NotImplementedException();
-        }
-
         public Concepto delete(string id)
         {
             throw new NotImplementedException();

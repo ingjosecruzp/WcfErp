@@ -5,7 +5,7 @@ using System.Web;
 
 namespace WcfErp.Modelos.Inventarios
 {
-    public class TipoComponente
+    public class TipoConcepto : ModeloBase
     {
         public string Nombre { get; set; }
     }
