@@ -20,7 +20,7 @@ namespace WcfErp.Servicios
                 
                 IMongoCollection<Modelo> CollectionClientes = db.GetCollection<Modelo>(typeof(Modelo).Name);
 
-                CollectionClientes.InsertOne(item,);
+                CollectionClientes.InsertOne(item);
 
                 return item;
             }
