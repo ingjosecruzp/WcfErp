@@ -12,10 +12,6 @@ namespace WcfErp.Servicios.Inventarios
     // NOTE: In order to launch WCF Test Client for testing this service, please select WcfSubgruposComponentes.svc or WcfSubgruposComponentes.svc.cs at the Solution Explorer and start debugging.
     public class WcfSubgruposComponentes : ServiceBase<SubgrupoComponente>, IWcfSubgruposComponentes
     {
-        public List<SubgrupoComponente> all()
-        {
-            throw new NotImplementedException();
-        }
 
         public SubgrupoComponente delete(string id)
         {
