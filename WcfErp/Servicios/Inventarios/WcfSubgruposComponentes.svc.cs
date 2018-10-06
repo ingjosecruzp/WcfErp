@@ -23,10 +23,7 @@ namespace WcfErp.Servicios.Inventarios
             throw new NotImplementedException();
         }
 
-        public SubgrupoComponente get(string id)
-        {
-            throw new NotImplementedException();
-        }
+        
 
         public SubgrupoComponente update(SubgrupoComponente item, string id)
         {
