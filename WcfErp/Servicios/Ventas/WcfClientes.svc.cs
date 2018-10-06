@@ -66,7 +66,7 @@ namespace WcfErp.Servicios.Ventas
             throw new NotImplementedException();
         }
 
-        public Clientes get(string id)
+        /*public Clientes get(string id)
         {
             try
             {
@@ -89,8 +89,7 @@ namespace WcfErp.Servicios.Ventas
 
                 return null;
             }
-        }
-
+        }*/
 
         public Clientes update(Clientes item,string id)
         {

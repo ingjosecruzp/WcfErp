@@ -9,7 +9,7 @@ using WcfErp.Modelos.Generales;
 
 namespace WcfErp.Servicios
 {
-    public class ServiceBase<Modelo>
+    public class ServiceBase<Modelo> where Modelo : ModeloBase
     {
         public virtual Modelo add(Modelo item)
         {
@@ -68,7 +68,30 @@ namespace WcfErp.Servicios
                 return null;
             }
         }
+        public Modelo get(string id)
+        {
+            try
+            {
+                //ObjectId ClienteId = ObjectId.Parse(id);
 
+                MongoClient client = new MongoClient();
+                IMongoDatabase db = client.GetDatabase("PAMC861025DB7");
+
+                IMongoCollection<Modelo> Collection = db.GetCollection<Modelo>(typeof(Modelo).Name);
+                
+                //var filter = Builders<Clientes>.Filter.Eq(x => x.name, "system")
+
+                Modelo item = Collection.Find<Modelo>(d => d._id == id).FirstOrDefault();
+
+                return item;
+
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
         //Metodo para dar respuesta las peticiones OPTION CORS
         public void GetOptions()
         {
