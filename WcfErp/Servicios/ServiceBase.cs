@@ -68,7 +68,7 @@ namespace WcfErp.Servicios
                 return null;
             }
         }
-        public Modelo get(string id)
+        public virtual Modelo get(string id)
         {
             try
             {
