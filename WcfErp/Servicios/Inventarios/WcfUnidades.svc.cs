@@ -15,8 +15,6 @@ namespace WcfErp.Servicios.Inventarios
 
      
 
-   
-
         public Unidad delete(string id)
         {
             throw new NotImplementedException();
@@ -26,10 +24,6 @@ namespace WcfErp.Servicios.Inventarios
         {
         }
 
-        public Unidad get(string id)
-        {
-            throw new NotImplementedException();
-        }
 
 
         public Unidad update(Unidad item, string id)
