@@ -11,6 +11,6 @@ namespace WcfErp.Modelos.Generales
     {
         public string Nombre { get; set; }
 
-        public string Abreviacion { get; set; }
+        public string Abreviatura { get; set; }
     }
 }
