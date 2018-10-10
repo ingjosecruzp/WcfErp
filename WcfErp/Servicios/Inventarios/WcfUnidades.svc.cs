@@ -20,15 +20,5 @@ namespace WcfErp.Servicios.Inventarios
             throw new NotImplementedException();
         }
 
-        public void DoWork()
-        {
-        }
-
-
-
-        public Unidad update(Unidad item, string id)
-        {
-            throw new NotImplementedException();
-        }
     }
 }

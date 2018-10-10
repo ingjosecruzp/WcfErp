@@ -17,11 +17,6 @@ namespace WcfErp.Servicios.Inventarios
             throw new NotImplementedException();
         }
 
-        
-
-        public TipoComponente update(TipoComponente item, string id)
-        {
-            throw new NotImplementedException();
-        }
+  
     }
 }

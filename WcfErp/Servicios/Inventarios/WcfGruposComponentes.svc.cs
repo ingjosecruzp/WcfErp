@@ -19,10 +19,5 @@ namespace WcfErp.Servicios.Inventarios
             throw new NotImplementedException();
         }
 
-
-        public GrupoComponente update(GrupoComponente item, string id)
-        {
-            throw new NotImplementedException();
-        }
     }
 }
