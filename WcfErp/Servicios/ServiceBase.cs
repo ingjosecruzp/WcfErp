@@ -26,7 +26,7 @@ namespace WcfErp.Servicios
             }
             catch (Exception ex)
             {
-                throw;
+                return null;
             }
         }
         public virtual List<Modelo> all()
@@ -89,8 +89,34 @@ namespace WcfErp.Servicios
             catch (Exception)
             {
 
-                throw;
+                return null;
             }
+        }
+        public virtual Modelo update(Modelo item, string id)
+        {
+            try
+            {
+                //ObjectId ClienteId = ObjectId.Parse(id);
+
+                //item._id = ClienteId;
+
+                MongoClient client = new MongoClient();
+                IMongoDatabase db = client.GetDatabase("PAMC861025DB7");
+
+                IMongoCollection<Modelo> CollectionClientes = db.GetCollection<Modelo>(typeof(Modelo).Name);
+
+                var filter = Builders<Modelo>.Filter.Eq(s => s._id, id);
+
+                var result = CollectionClientes.ReplaceOne(filter, item);
+
+                return item;
+            }
+            catch (Exception ex)
+            {
+
+                return null;
+            }
+
         }
         //Metodo para dar respuesta las peticiones OPTION CORS
         public void GetOptions()
