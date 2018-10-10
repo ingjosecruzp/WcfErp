@@ -29,6 +29,8 @@ namespace WcfErp.Modelos.Ventas
 
         public Vendedor Vendedor { get; set; }
 
+        public Cobrador Cobrador { get; set; }
+
         public double LimiteCredito { get; set; }
 
     }
