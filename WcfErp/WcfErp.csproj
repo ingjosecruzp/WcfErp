@@ -101,6 +101,7 @@
     <Content Include="Servicios\Inventarios\WcfGruposComponentes.svc" />
     <Content Include="Servicios\Inventarios\WcfSubgruposComponentes.svc" />
     <Content Include="Servicios\Inventarios\WcfTipoComponente.svc" />
+    <Content Include="Servicios\Inventarios\WcfTipoConceptos.svc" />
     <Content Include="Servicios\Inventarios\WcfUnidades.svc" />
     <Content Include="Servicios\Ventas\WcfClientes.svc" />
     <Content Include="Web.config" />
@@ -180,6 +181,7 @@
     <Compile Include="Servicios\Inventarios\IWcfGruposComponentes.cs" />
     <Compile Include="Servicios\Inventarios\IWcfSubgruposComponentes.cs" />
     <Compile Include="Servicios\Inventarios\IWcfTipoComponente.cs" />
+    <Compile Include="Servicios\Inventarios\IWcfTipoConceptos.cs" />
     <Compile Include="Servicios\Inventarios\IWcfUnidades.cs" />
     <Compile Include="Servicios\Inventarios\WcfConceptos.svc.cs">
       <DependentUpon>WcfConceptos.svc</DependentUpon>
@@ -192,6 +194,9 @@
     </Compile>
     <Compile Include="Servicios\Inventarios\WcfTipoComponente.svc.cs">
       <DependentUpon>WcfTipoComponente.svc</DependentUpon>
+    </Compile>
+    <Compile Include="Servicios\Inventarios\WcfTipoConceptos.svc.cs">
+      <DependentUpon>WcfTipoConceptos.svc</DependentUpon>
     </Compile>
     <Compile Include="Servicios\Inventarios\WcfUnidades.svc.cs">
       <DependentUpon>WcfUnidades.svc</DependentUpon>

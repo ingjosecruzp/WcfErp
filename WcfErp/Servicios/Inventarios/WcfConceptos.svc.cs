@@ -17,14 +17,6 @@ namespace WcfErp.Servicios.Inventarios
             throw new NotImplementedException();
         }
 
-        public Concepto get(string id)
-        {
-            throw new NotImplementedException();
-        }
 
-        public Concepto update(Concepto item, string id)
-        {
-            throw new NotImplementedException();
-        }
     }
 }
