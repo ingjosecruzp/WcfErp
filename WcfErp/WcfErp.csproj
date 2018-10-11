@@ -87,8 +87,8 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Service1.svc" />
-    <Content Include="Servicios\Administracion\WcfUsuario.svc" />
-    <Content Include="Servicios\Administracion\WcfUsuarioRol.svc" />
+    <Content Include="Servicios\Administracion\WcfUsuarios.svc" />
+    <Content Include="Servicios\Administracion\WcfUsuariosRoles.svc" />
     <Content Include="Servicios\Especiales\WcfLogin.svc" />
     <Content Include="Servicios\Generales\WcfCobrador.svc" />
     <Content Include="Servicios\Generales\WcfCondicionesDePago.svc" />
@@ -104,7 +104,9 @@
     <Content Include="Servicios\Inventarios\WcfTipoConceptos.svc" />
     <Content Include="Servicios\Inventarios\WcfUnidades.svc" />
     <Content Include="Servicios\Ventas\WcfClientes.svc" />
-    <Content Include="Web.config" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="FormatterJsonNET\CustomHeaderMessageInspector.cs" />
@@ -137,13 +139,13 @@
     </Compile>
     <Compile Include="IService1.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Servicios\Administracion\IWcfUsuario.cs" />
-    <Compile Include="Servicios\Administracion\IWcfUsuarioRol.cs" />
-    <Compile Include="Servicios\Administracion\WcfUsuario.svc.cs">
-      <DependentUpon>WcfUsuario.svc</DependentUpon>
+    <Compile Include="Servicios\Administracion\IWcfUsuarios.cs" />
+    <Compile Include="Servicios\Administracion\IWcfUsuariosRoles.cs" />
+    <Compile Include="Servicios\Administracion\WcfUsuarios.svc.cs">
+      <DependentUpon>WcfUsuarios.svc</DependentUpon>
     </Compile>
-    <Compile Include="Servicios\Administracion\WcfUsuarioRol.svc.cs">
-      <DependentUpon>WcfUsuarioRol.svc</DependentUpon>
+    <Compile Include="Servicios\Administracion\WcfUsuariosRoles.svc.cs">
+      <DependentUpon>WcfUsuariosRoles.svc</DependentUpon>
     </Compile>
     <Compile Include="Servicios\Especiales\IWcfLogin.cs" />
     <Compile Include="Servicios\Especiales\WcfLogin.svc.cs">
