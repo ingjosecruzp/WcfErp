@@ -87,6 +87,8 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Service1.svc" />
+    <Content Include="Servicios\Administracion\WcfUsuario.svc" />
+    <Content Include="Servicios\Administracion\WcfUsuarioRol.svc" />
     <Content Include="Servicios\Especiales\WcfLogin.svc" />
     <Content Include="Servicios\Generales\WcfCobrador.svc" />
     <Content Include="Servicios\Generales\WcfCondicionesDePago.svc" />
@@ -111,6 +113,8 @@
     <Compile Include="FormatterJsonNET\NewtonsoftJsonContentTypeMapper .cs" />
     <Compile Include="FormatterJsonNET\NewtonsoftJsonDispatchFormatter.cs" />
     <Compile Include="FormatterJsonNET\RawBodyWriter.cs" />
+    <Compile Include="Modelos\Administracion\UsuarioRol.cs" />
+    <Compile Include="Modelos\Administracion\Usuario.cs" />
     <Compile Include="Modelos\Generales\GrupoComponente.cs" />
     <Compile Include="Modelos\Generales\SubgrupoComponente.cs" />
     <Compile Include="Modelos\Generales\TipoComponente.cs" />
@@ -132,6 +136,14 @@
     </Compile>
     <Compile Include="IService1.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Servicios\Administracion\IWcfUsuario.cs" />
+    <Compile Include="Servicios\Administracion\IWcfUsuarioRol.cs" />
+    <Compile Include="Servicios\Administracion\WcfUsuario.svc.cs">
+      <DependentUpon>WcfUsuario.svc</DependentUpon>
+    </Compile>
+    <Compile Include="Servicios\Administracion\WcfUsuarioRol.svc.cs">
+      <DependentUpon>WcfUsuarioRol.svc</DependentUpon>
+    </Compile>
     <Compile Include="Servicios\Especiales\IWcfLogin.cs" />
     <Compile Include="Servicios\Especiales\WcfLogin.svc.cs">
       <DependentUpon>WcfLogin.svc</DependentUpon>
@@ -193,7 +205,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Servicios\Administracion\" />
     <Folder Include="Servicios\Compras\" />
   </ItemGroup>
   <ItemGroup>
