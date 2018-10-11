@@ -7,9 +7,9 @@ using System.Text;
 
 namespace WcfErp.Servicios.Administracion
 {
-    // NOTA: puede usar el comando "Rename" del menú "Refactorizar" para cambiar el nombre de interfaz "IWcfUsuario" en el código y en el archivo de configuración a la vez.
+    // NOTA: puede usar el comando "Rename" del menú "Refactorizar" para cambiar el nombre de interfaz "IWcfUsuariosRoles" en el código y en el archivo de configuración a la vez.
     [ServiceContract]
-    public interface IWcfUsuario
+    public interface IWcfUsuariosRoles
     {
         [OperationContract]
         void DoWork();
