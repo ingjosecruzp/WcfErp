@@ -92,9 +92,11 @@
     <Content Include="Servicios\Especiales\WcfLogin.svc" />
     <Content Include="Servicios\Generales\WcfCobrador.svc" />
     <Content Include="Servicios\Generales\WcfCondicionesDePago.svc" />
+    <Content Include="Servicios\Generales\WcfDepartamentos.svc" />
     <Content Include="Servicios\Generales\WcfMarcas.svc" />
     <Content Include="Servicios\Generales\WcfMoneda.svc" />
     <Content Include="Servicios\Generales\WcfPaises.svc" />
+    <Content Include="Servicios\Generales\WcfPuestos.svc" />
     <Content Include="Servicios\Generales\WcfTipoCliente.svc" />
     <Content Include="Servicios\Generales\WcfVendedor.svc" />
     <Content Include="Servicios\Generales\WcfZonaCliente.svc" />
@@ -122,8 +124,10 @@
     <Compile Include="Modelos\Administracion\UsuarioRol.cs" />
     <Compile Include="Modelos\Administracion\Usuario.cs" />
     <Compile Include="Modelos\Generales\Almacen.cs" />
+    <Compile Include="Modelos\Generales\Departamento.cs" />
     <Compile Include="Modelos\Generales\Marca.cs" />
     <Compile Include="Modelos\Generales\GrupoComponente.cs" />
+    <Compile Include="Modelos\Generales\Puesto.cs" />
     <Compile Include="Modelos\Generales\SubgrupoComponente.cs" />
     <Compile Include="Modelos\Generales\TipoComponente.cs" />
     <Compile Include="Modelos\Generales\Unidad.cs" />
@@ -159,9 +163,11 @@
     </Compile>
     <Compile Include="Servicios\Generales\IWcfCobrador.cs" />
     <Compile Include="Servicios\Generales\IWcfCondicionesDePago.cs" />
+    <Compile Include="Servicios\Generales\IWcfDepartamentos.cs" />
     <Compile Include="Servicios\Generales\IWcfMarcas.cs" />
     <Compile Include="Servicios\Generales\IWcfMoneda.cs" />
     <Compile Include="Servicios\Generales\IWcfPaises.cs" />
+    <Compile Include="Servicios\Generales\IWcfPuestos.cs" />
     <Compile Include="Servicios\Generales\IWcfTipoCliente.cs" />
     <Compile Include="Servicios\Generales\IWcfVendedor.cs" />
     <Compile Include="Servicios\Generales\IWcfZonaCliente.cs" />
@@ -171,6 +177,9 @@
     <Compile Include="Servicios\Generales\WcfCondicionesDePago.svc.cs">
       <DependentUpon>WcfCondicionesDePago.svc</DependentUpon>
     </Compile>
+    <Compile Include="Servicios\Generales\WcfDepartamentos.svc.cs">
+      <DependentUpon>WcfDepartamentos.svc</DependentUpon>
+    </Compile>
     <Compile Include="Servicios\Generales\WcfMarcas.svc.cs">
       <DependentUpon>WcfMarcas.svc</DependentUpon>
     </Compile>
@@ -179,6 +188,9 @@
     </Compile>
     <Compile Include="Servicios\Generales\WcfPaises.svc.cs">
       <DependentUpon>WcfPaises.svc</DependentUpon>
+    </Compile>
+    <Compile Include="Servicios\Generales\WcfPuestos.svc.cs">
+      <DependentUpon>WcfPuestos.svc</DependentUpon>
     </Compile>
     <Compile Include="Servicios\Generales\WcfTipoCliente.svc.cs">
       <DependentUpon>WcfTipoCliente.svc</DependentUpon>
