@@ -10,7 +10,7 @@ namespace WcfErp.Modelos.Ventas
 {
     public class Clientes : ModeloBase
     {
-        public string Nombre { get; set; }
+        public string Nombre { get; protected  set; }
         public string Rfc { get; set; }
      
         public string RazonSocial { get; set; }
