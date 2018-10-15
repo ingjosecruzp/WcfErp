@@ -1,4 +1,6 @@
-﻿using System;
+﻿using MongoDB.Bson;
+using MongoDB.Driver;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.Serialization;
@@ -18,5 +20,28 @@ namespace WcfErp.Servicios.Inventarios
             throw new NotImplementedException();
         }
 
+        public List<SubgrupoComponente> searchXGrupo(string busqueda, string _id)
+        {
+            try
+            {
+                MongoClient client = new MongoClient();
+                IMongoDatabase db = client.GetDatabase("PAMC861025DB7");
+
+                IMongoCollection<SubgrupoComponente> Collection = db.GetCollection<SubgrupoComponente>(typeof(SubgrupoComponente).Name);
+
+                //var filter = Builders<SubgrupoComponente>.Filter.Regex("Nombre", new BsonRegularExpression(busqueda, "i")) && ;
+                var builder = Builders<SubgrupoComponente>.Filter;
+                var filter = builder.Regex("Nombre", new BsonRegularExpression(busqueda, "i")) &  builder.Eq("GrupoComponente._id", _id);
+
+                List<SubgrupoComponente> Documentos = Collection.Find<SubgrupoComponente>(filter).ToList();
+
+                return Documentos;
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
     }
 }
