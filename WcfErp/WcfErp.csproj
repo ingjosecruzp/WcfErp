@@ -93,6 +93,7 @@
     <Content Include="Servicios\Generales\WcfCobrador.svc" />
     <Content Include="Servicios\Generales\WcfCondicionesDePago.svc" />
     <Content Include="Servicios\Generales\WcfDepartamentos.svc" />
+    <Content Include="Servicios\Generales\WcfGrupoUnidades.svc" />
     <Content Include="Servicios\Generales\WcfMarcas.svc" />
     <Content Include="Servicios\Generales\WcfMoneda.svc" />
     <Content Include="Servicios\Generales\WcfPaises.svc" />
@@ -125,6 +126,8 @@
     <Compile Include="Modelos\Administracion\Usuario.cs" />
     <Compile Include="Modelos\Generales\Almacen.cs" />
     <Compile Include="Modelos\Generales\Departamento.cs" />
+    <Compile Include="Modelos\Generales\GrupoUnidad.cs" />
+    <Compile Include="Modelos\Generales\GrupoUnidadDetalle.cs" />
     <Compile Include="Modelos\Generales\Marca.cs" />
     <Compile Include="Modelos\Generales\GrupoComponente.cs" />
     <Compile Include="Modelos\Generales\Puesto.cs" />
@@ -164,6 +167,7 @@
     <Compile Include="Servicios\Generales\IWcfCobrador.cs" />
     <Compile Include="Servicios\Generales\IWcfCondicionesDePago.cs" />
     <Compile Include="Servicios\Generales\IWcfDepartamentos.cs" />
+    <Compile Include="Servicios\Generales\IWcfGrupoUnidades.cs" />
     <Compile Include="Servicios\Generales\IWcfMarcas.cs" />
     <Compile Include="Servicios\Generales\IWcfMoneda.cs" />
     <Compile Include="Servicios\Generales\IWcfPaises.cs" />
@@ -179,6 +183,9 @@
     </Compile>
     <Compile Include="Servicios\Generales\WcfDepartamentos.svc.cs">
       <DependentUpon>WcfDepartamentos.svc</DependentUpon>
+    </Compile>
+    <Compile Include="Servicios\Generales\WcfGrupoUnidades.svc.cs">
+      <DependentUpon>WcfGrupoUnidades.svc</DependentUpon>
     </Compile>
     <Compile Include="Servicios\Generales\WcfMarcas.svc.cs">
       <DependentUpon>WcfMarcas.svc</DependentUpon>
