@@ -43,5 +43,6 @@ namespace WcfErp.Servicios.Inventarios
                 throw;
             }
         }
+
     }
 }
