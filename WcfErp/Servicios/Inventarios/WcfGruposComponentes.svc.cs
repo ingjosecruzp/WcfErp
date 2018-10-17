@@ -31,7 +31,7 @@ namespace WcfErp.Servicios.Inventarios
 
                 //var filter = Builders<SubgrupoComponente>.Filter.Regex("Nombre", new BsonRegularExpression(busqueda, "i")) && ;
                 var builder = Builders<GrupoComponente>.Filter;
-                var filter = builder.Regex("Nombre", new BsonRegularExpression(busqueda, "i")) & builder.Eq("GrupoComponente._id", _id);
+                var filter = builder.Regex("Nombre", new BsonRegularExpression(busqueda, "i")) & builder.Eq("TipoComponente._id", _id);
 
                 List<GrupoComponente> Documentos = Collection.Find<GrupoComponente>(filter).ToList();
 
