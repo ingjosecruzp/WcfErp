@@ -15,7 +15,7 @@ namespace WcfErp.Servicios
         {
             try
             {
-                MongoClient client = new MongoClient();
+                MongoClient client = new MongoClient("mongodb://18.191.252.222");
                 IMongoDatabase db = client.GetDatabase("PAMC861025DB7");
                 
                 IMongoCollection<Modelo> CollectionClientes = db.GetCollection<Modelo>(typeof(Modelo).Name);
@@ -33,7 +33,7 @@ namespace WcfErp.Servicios
         {
             try
             {
-                MongoClient client = new MongoClient();
+                MongoClient client = new MongoClient("mongodb://18.191.252.222");
                 IMongoDatabase db = client.GetDatabase("PAMC861025DB7");
 
                 IMongoCollection<Modelo> CollectionClientes = db.GetCollection<Modelo>(typeof(Modelo).Name);
@@ -52,7 +52,7 @@ namespace WcfErp.Servicios
         {
             try
             {
-                MongoClient client = new MongoClient();
+                MongoClient client = new MongoClient("mongodb://18.191.252.222");
                 IMongoDatabase db = client.GetDatabase("PAMC861025DB7");
 
                 IMongoCollection<Modelo> Collection = db.GetCollection<Modelo>(typeof(Modelo).Name);
@@ -74,7 +74,7 @@ namespace WcfErp.Servicios
             {
                 //ObjectId ClienteId = ObjectId.Parse(id);
 
-                MongoClient client = new MongoClient();
+                MongoClient client = new MongoClient("mongodb://18.191.252.222");
                 IMongoDatabase db = client.GetDatabase("PAMC861025DB7");
 
                 IMongoCollection<Modelo> Collection = db.GetCollection<Modelo>(typeof(Modelo).Name);
@@ -100,7 +100,7 @@ namespace WcfErp.Servicios
 
                 //item._id = ClienteId;
 
-                MongoClient client = new MongoClient();
+                MongoClient client = new MongoClient("mongodb://18.191.252.222");
                 IMongoDatabase db = client.GetDatabase("PAMC861025DB7");
 
                 IMongoCollection<Modelo> CollectionClientes = db.GetCollection<Modelo>(typeof(Modelo).Name);
