@@ -1,4 +1,6 @@
-﻿using System;
+﻿using MongoDB.Bson;
+using MongoDB.Driver;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.Serialization;
@@ -17,6 +19,29 @@ namespace WcfErp.Servicios.Inventarios
         public GrupoComponente delete(string id)
         {
             throw new NotImplementedException();
+        }
+        public List<GrupoComponente> searchXTipoComponente(string busqueda, string _id)
+        {
+            try
+            {
+                MongoClient client = new MongoClient();
+                IMongoDatabase db = client.GetDatabase("PAMC861025DB7");
+
+                IMongoCollection<GrupoComponente> Collection = db.GetCollection<GrupoComponente>(typeof(GrupoComponente).Name);
+
+                //var filter = Builders<SubgrupoComponente>.Filter.Regex("Nombre", new BsonRegularExpression(busqueda, "i")) && ;
+                var builder = Builders<GrupoComponente>.Filter;
+                var filter = builder.Regex("Nombre", new BsonRegularExpression(busqueda, "i")) & builder.Eq("TipoComponente._id", _id);
+
+                List<GrupoComponente> Documentos = Collection.Find<GrupoComponente>(filter).ToList();
+
+                return Documentos;
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
         }
 
     }

@@ -19,29 +19,7 @@ namespace WcfErp.Servicios.Inventarios
             throw new NotImplementedException();
         }
 
-        public List<TipoComponente> searchXTipoComponente(string busqueda, string _id)
-        {
-            try
-            {
-                MongoClient client = new MongoClient();
-                IMongoDatabase db = client.GetDatabase("PAMC861025DB7");
-
-                IMongoCollection<TipoComponente> Collection = db.GetCollection<TipoComponente>(typeof(TipoComponente).Name);
-
-                //var filter = Builders<SubgrupoComponente>.Filter.Regex("Nombre", new BsonRegularExpression(busqueda, "i")) && ;
-                var builder = Builders<TipoComponente>.Filter;
-                var filter = builder.Regex("Nombre", new BsonRegularExpression(busqueda, "i")) & builder.Eq("TipoComponente._id", _id);
-
-                List<TipoComponente> Documentos = Collection.Find<TipoComponente>(filter).ToList();
-
-                return Documentos;
-            }
-            catch (Exception)
-            {
-
-                throw;
-            }
-        }
+        
 
     }
 }
