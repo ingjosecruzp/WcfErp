@@ -23,7 +23,7 @@ namespace WcfErp.Servicios.Generales
         {
             try
             {
-                MongoClient client = new MongoClient();
+                MongoClient client = new MongoClient("mongodb://18.191.252.222");
                 IMongoDatabase db = client.GetDatabase("PAMC861025DB7");
 
                 IMongoCollection<GrupoUnidad> Collection = db.GetCollection<GrupoUnidad>("GrupoUnidad");

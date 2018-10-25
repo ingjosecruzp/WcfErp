@@ -24,7 +24,7 @@ namespace WcfErp.Servicios.Inventarios
         {
             try
             {
-                MongoClient client = new MongoClient();
+                MongoClient client = new MongoClient("mongodb://18.191.252.222");
                 IMongoDatabase db = client.GetDatabase("PAMC861025DB7");
 
                 IMongoCollection<SubgrupoComponente> Collection = db.GetCollection<SubgrupoComponente>(typeof(SubgrupoComponente).Name);
