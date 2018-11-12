@@ -143,7 +143,10 @@
     <Compile Include="Modelos\Generales\Vendedor.cs" />
     <Compile Include="Modelos\Generales\ZonaCliente.cs" />
     <Compile Include="Modelos\Inventarios\Articulo.cs" />
+    <Compile Include="Modelos\Inventarios\CodigosBarra.cs" />
     <Compile Include="Modelos\Inventarios\Concepto.cs" />
+    <Compile Include="Modelos\Inventarios\ConfiguracionesAlmacen.cs" />
+    <Compile Include="Modelos\Inventarios\Imagen.cs" />
     <Compile Include="Modelos\Inventarios\TipoConcepto.cs" />
     <Compile Include="Modelos\ModeloBase.cs" />
     <Compile Include="Modelos\Ventas\Clientes.cs" />

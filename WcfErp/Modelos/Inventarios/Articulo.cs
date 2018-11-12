@@ -23,7 +23,16 @@ namespace WcfErp.Modelos.Inventarios
         public Unidad UnidadCompra { get; set; }
         public string Modelo { get; set; }
         public string NoParte { get; set; }
+        public List<CodigosBarra> CodigosBarra { get; set; }
+        public List<ConfiguracionesAlmacen> ConfiguracionesAlmacen { get; set; }
 
+        public List<Imagen> Imagen { get; set; }
 
+        public Articulo()
+        {
+            this.CodigosBarra = new List<CodigosBarra>();
+            this.ConfiguracionesAlmacen = new List<ConfiguracionesAlmacen>();
+            this.Imagen = new List<Imagen>();
+        }
     }
 }
