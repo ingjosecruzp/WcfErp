@@ -105,6 +105,7 @@
     <Content Include="Servicios\Inventarios\WcfArticulos.svc" />
     <Content Include="Servicios\Inventarios\WcfConceptos.svc" />
     <Content Include="Servicios\Inventarios\WcfGruposComponentes.svc" />
+    <Content Include="Servicios\Inventarios\WcfPureza.svc" />
     <Content Include="Servicios\Inventarios\WcfSubgruposComponentes.svc" />
     <Content Include="Servicios\Inventarios\WcfTipoComponente.svc" />
     <Content Include="Servicios\Inventarios\WcfTipoConceptos.svc" />
@@ -131,6 +132,7 @@
     <Compile Include="Modelos\Generales\Marca.cs" />
     <Compile Include="Modelos\Generales\GrupoComponente.cs" />
     <Compile Include="Modelos\Generales\Puesto.cs" />
+    <Compile Include="Modelos\Generales\Pureza.cs" />
     <Compile Include="Modelos\Generales\SubgrupoComponente.cs" />
     <Compile Include="Modelos\Generales\TipoComponente.cs" />
     <Compile Include="Modelos\Generales\Unidad.cs" />
@@ -215,6 +217,7 @@
     <Compile Include="Servicios\Inventarios\IWcfArticulos.cs" />
     <Compile Include="Servicios\Inventarios\IWcfConceptos.cs" />
     <Compile Include="Servicios\Inventarios\IWcfGruposComponentes.cs" />
+    <Compile Include="Servicios\Inventarios\IWcfPureza.cs" />
     <Compile Include="Servicios\Inventarios\IWcfSubgruposComponentes.cs" />
     <Compile Include="Servicios\Inventarios\IWcfTipoComponente.cs" />
     <Compile Include="Servicios\Inventarios\IWcfTipoConceptos.cs" />
@@ -230,6 +233,9 @@
     </Compile>
     <Compile Include="Servicios\Inventarios\WcfGruposComponentes.svc.cs">
       <DependentUpon>WcfGruposComponentes.svc</DependentUpon>
+    </Compile>
+    <Compile Include="Servicios\Inventarios\WcfPureza.svc.cs">
+      <DependentUpon>WcfPureza.svc</DependentUpon>
     </Compile>
     <Compile Include="Servicios\Inventarios\WcfSubgruposComponentes.svc.cs">
       <DependentUpon>WcfSubgruposComponentes.svc</DependentUpon>

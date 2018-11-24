@@ -1,0 +1,1 @@
+﻿<%@ ServiceHost Language="C#" Debug="true" Service="WcfErp.Servicios.Inventarios.WcfPureza" CodeBehind="WcfPureza.svc.cs" %>
