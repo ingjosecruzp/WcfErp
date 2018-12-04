@@ -52,7 +52,7 @@ namespace WcfErp.Servicios.Inventarios
                 if (base64.Length > 1)
                 {
 
-                    string path = System.Web.HttpContext.Current.Server.MapPath("/img/");
+                    string path = System.Web.HttpContext.Current.Server.MapPath("/WcfErp/img/");
 
                     string filename = DateTime.Now.ToString("yyyyMMddHHmmssff") + GetFileExtension(base64[1]);
 
@@ -92,6 +92,20 @@ namespace WcfErp.Servicios.Inventarios
                     return ".srt";
                 default:
                     return string.Empty;
+            }
+        }
+
+        public string path()
+        {
+            try
+            {
+                string path = System.Web.HttpContext.Current.Server.MapPath("/WcfErp/img/");
+                return path;
+            }
+            catch (Exception ex)
+            {
+
+                return null;
             }
         }
     }
