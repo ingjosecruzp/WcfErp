@@ -12,13 +12,7 @@ namespace WcfErp.Servicios.Inventarios
     // NOTE: In order to launch WCF Test Client for testing this service, please select WcfUnidades.svc or WcfUnidades.svc.cs at the Solution Explorer and start debugging.
     public class WcfUnidades : ServiceBase<Unidad> ,IWcfUnidades
     {
-
-     
-
-        public Unidad delete(string id)
-        {
-            throw new NotImplementedException();
-        }
+  
 
     }
 }

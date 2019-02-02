@@ -4,8 +4,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using System.Net;
 using WcfErp.Modelos;
 using WcfErp.Modelos.Generales;
+using System.ServiceModel.Web;
 
 namespace WcfErp.Servicios
 {
@@ -26,6 +28,7 @@ namespace WcfErp.Servicios
             }
             catch (Exception ex)
             {
+                Error(ex, "");
                 return null;
             }
         }
@@ -44,7 +47,7 @@ namespace WcfErp.Servicios
             }
             catch (Exception ex)
             {
-
+                Error(ex, "");
                 return null;
             }
         }
@@ -65,6 +68,7 @@ namespace WcfErp.Servicios
             }
             catch (Exception ex)
             {
+                Error(ex, "");
                 return null;
             }
         }
@@ -85,9 +89,28 @@ namespace WcfErp.Servicios
                 return item;
 
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                Error(ex, "");
+                return null;
+            }
+        }
+        public virtual Unidad delete(string id)
+        {
+            try
+            {
+                MongoClient client = new MongoClient("mongodb://Alba:pwjrnew@18.191.252.222:27017/PAMC861025DB7");
+                IMongoDatabase db = client.GetDatabase("PAMC861025DB7");
 
+                IMongoCollection<Modelo> Collection = db.GetCollection<Modelo>(typeof(Modelo).Name);
+
+                Collection.DeleteOne(d => d._id == id);
+
+                return null;
+            }
+            catch (Exception ex)
+            {
+                Error(ex, "");
                 return null;
             }
         }
@@ -112,7 +135,7 @@ namespace WcfErp.Servicios
             }
             catch (Exception ex)
             {
-
+                Error(ex, "");
                 return null;
             }
 
@@ -120,6 +143,16 @@ namespace WcfErp.Servicios
         //Metodo para dar respuesta las peticiones OPTION CORS
         public void GetOptions()
         {
+        }
+        private void Error(Exception ex, String nombrevista)
+        {
+            OutgoingWebResponseContext response = WebOperationContext.Current.OutgoingResponse;
+            string error = null;
+
+            error = ex.Message;
+
+            response.StatusCode = HttpStatusCode.InternalServerError;
+            response.StatusDescription = error;
         }
     }
 }
