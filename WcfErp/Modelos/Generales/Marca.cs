@@ -7,6 +7,5 @@ namespace WcfErp.Modelos.Generales
 {
     public class Marca : ModeloBase
     {
-        public string Nombre { get; set; }
     }
 }

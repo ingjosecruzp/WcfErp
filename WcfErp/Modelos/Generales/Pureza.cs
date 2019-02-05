@@ -9,8 +9,6 @@ namespace WcfErp.Modelos.Generales
     public class Pureza : ModeloBase
     {
         [BsonRequired]
-        public string Nombre { get; set; }
-        [BsonRequired]
         public GrupoComponente GrupoComponente { get; set; }
     }
 }

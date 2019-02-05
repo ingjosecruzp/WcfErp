@@ -12,8 +12,7 @@ namespace WcfErp.Modelos
         [BsonId]
         [BsonRepresentation(BsonType.ObjectId)]
         public string _id { get; set; }
-        /*[BsonIgnore]
-        private string __id;*/
+        public string Nombre { get; set; }
 
         [BsonIgnore]
         public string id
@@ -23,9 +22,14 @@ namespace WcfErp.Modelos
                 return this._id;
             }
         }
-
-      
-
+        [BsonIgnore]
+        public string value
+        {
+            get
+            {
+                return this.Nombre;
+            }
+        }
 
     }
 }

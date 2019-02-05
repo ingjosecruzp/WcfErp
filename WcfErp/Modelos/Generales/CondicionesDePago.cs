@@ -9,7 +9,7 @@ namespace WcfErp.Modelos.Generales
 {
     public class CondicionesDePago : ModeloBase
     {
-        public string Nombre { get; set; }
+        
 
     }
 }

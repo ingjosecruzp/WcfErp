@@ -7,6 +7,6 @@ namespace WcfErp.Modelos.Generales
 {
     public class Cobrador : ModeloBase
     {
-        public string Nombre { get; set; }
+        
     }
 }

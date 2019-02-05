@@ -7,6 +7,6 @@ namespace WcfErp.Modelos.Generales
 {
     public class TipoComponente : ModeloBase
     {
-        public string Nombre { get; set; }
+        
     }
 }

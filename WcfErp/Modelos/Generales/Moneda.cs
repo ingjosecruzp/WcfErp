@@ -7,6 +7,5 @@ namespace WcfErp.Modelos.Generales
 {
     public class Moneda : ModeloBase
     {
-        public string Nombre { get; set; }
     }
 }

@@ -7,6 +7,5 @@ namespace WcfErp.Modelos.Inventarios
 {
     public class Peso : ModeloBase
     {
-        public string Nombre { get; set; }
     }
 }

@@ -7,6 +7,6 @@ namespace WcfErp.Modelos.Inventarios
 {
     public class TipoConcepto : ModeloBase
     {
-        public string Nombre { get; set; }
+        
     }
 }

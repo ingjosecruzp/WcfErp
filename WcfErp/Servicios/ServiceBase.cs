@@ -144,7 +144,7 @@ namespace WcfErp.Servicios
         public void GetOptions()
         {
         }
-        private void Error(Exception ex, String nombrevista)
+        public void Error(Exception ex, String nombrevista)
         {
             OutgoingWebResponseContext response = WebOperationContext.Current.OutgoingResponse;
             string error = null;

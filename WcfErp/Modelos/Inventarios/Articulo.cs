@@ -9,7 +9,6 @@ namespace WcfErp.Modelos.Inventarios
     public class Articulo : ModeloBase
     {
         public string Clave { get; set; }
-        public string Nombre { get; set; }
         public string NombreCorto { get; set; }
         public GrupoUnidad GrupoUnidad { get; set; }
         public GrupoComponente GrupoComponente { get; set; }

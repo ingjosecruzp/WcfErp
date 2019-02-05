@@ -7,6 +7,5 @@ namespace WcfErp.Modelos.Administracion
 {
     public class UsuarioRol : ModeloBase
     {
-        public string Nombre { get; set; }
     }
 }

@@ -7,6 +7,6 @@ namespace WcfErp.Modelos.Inventarios
 {
     public class Procedencia : ModeloBase
     {
-        public string Nombre { get; set; }
+
     }
 }
