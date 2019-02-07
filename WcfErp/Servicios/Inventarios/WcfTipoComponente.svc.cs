@@ -14,10 +14,6 @@ namespace WcfErp.Servicios.Inventarios
     // NOTA: para iniciar el Cliente de prueba WCF para probar este servicio, seleccione WcfTipoComponente.svc o WcfTipoComponente.svc.cs en el Explorador de soluciones e inicie la depuración.
     public class WcfTipoComponente : ServiceBase<TipoComponente>, IWcfTipoComponente
     {
-        public TipoComponente delete(string id)
-        {
-            throw new NotImplementedException();
-        }
        
 
     }

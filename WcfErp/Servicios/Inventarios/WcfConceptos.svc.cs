@@ -54,11 +54,6 @@ namespace WcfErp.Servicios.Inventarios
                 return null;
             }
         }
-        public Concepto delete(string id)
-        {
-            throw new NotImplementedException();
-        }
-
 
     }
 }

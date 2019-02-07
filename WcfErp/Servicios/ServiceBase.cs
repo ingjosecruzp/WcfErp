@@ -95,7 +95,7 @@ namespace WcfErp.Servicios
                 return null;
             }
         }
-        public virtual Unidad delete(string id)
+        public virtual Modelo delete(string id)
         {
             try
             {
