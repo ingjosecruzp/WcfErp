@@ -18,21 +18,29 @@ namespace WcfErp.Servicios.Inventarios
         {
             try
             {
+
+                item.ValidarModel(item); //Revisar reglas de validacion para el docuemnto
                 MongoClient client = new MongoClient("mongodb://Alba:pwjrnew@18.191.252.222:27017/PAMC861025DB7");
                 IMongoDatabase db = client.GetDatabase("PAMC861025DB7");
 
                 IMongoCollection<Concepto> Conceptos = db.GetCollection<Concepto>("Concepto");
                 IMongoCollection<Almacen> Almacenes = db.GetCollection<Almacen>("Almacen");
-
-                item.Concepto = Conceptos.Find<Concepto>(d => d._id == item.Concepto.id).FirstOrDefault();
-                item.Almacen = Almacenes.Find<Almacen>(d => d._id == item.Almacen.id).FirstOrDefault();
-
                 IMongoCollection<Articulo> Articulos = db.GetCollection<Articulo>("Articulo");
+
+                item.Concepto = Conceptos.Find<Concepto>(d => d._id == item.Concepto.id).Project<Concepto>(Builders<Concepto>.Projection.Include(p => p._id).Include(p => p.Nombre).Include(p => p.Naturaleza)).FirstOrDefault();
+                item.Almacen = Almacenes.Find<Almacen>(d => d._id == item.Almacen.id).Project<Almacen>(Builders<Almacen>.Projection.Include(p => p._id).Include(p => p.Nombre)).FirstOrDefault();
+
+                var Ids = (from an in item.Detalles_ES select an.Articulo).ToList().Select(ab => ab._id); //recolectamos en una lista los ids que nos manda el cliente
+                var filter = Builders<Articulo>.Filter.In(myClass => myClass._id, Ids);   //creamos un filtro con la clapsula In
+                List<Articulo> ArticuloCompletoServer = Articulos.Find(filter).Project<Articulo>(Builders<Articulo>.Projection.Include(p => p._id).Include(p => p.Nombre).Include(p => p.UnidadInventario.Abreviatura)).ToList(); //Realizamos una sola query a la bd obteniendo solo datos necesarios (en este caso solo el nombre,id y unidad de inventario) para hacerla lo mas liviana 
+
+                item.Sistema_Origen = "IN";
 
                 foreach (Detalles_ES mov in item.Detalles_ES)
                 {
-                    mov.Articulo = Articulos.Find<Articulo>(d => d._id == mov.Articulo._id).FirstOrDefault();
-                    mov.Unidad = mov.Articulo.UnidadInventario;
+                       
+                       
+                       mov.Articulo = ArticuloCompletoServer.Find(b=>b._id==mov.Articulo._id);
                 }
 
 
