@@ -171,7 +171,7 @@ namespace WcfErp.Servicios.Inventarios
 
 
             
-                                                                           ////////////////////////////////////PARA LA TABLA SALDOS/////////////////////////////////////////////
+                                                                           ////////////////////////////////////PARA LA TABLA INVENTARIOSCOSTOS/////////////////////////////////////////////
                                                                                       /*------------------- PROMEDIO PONDERADO------------------------*/
 
                  InventariosCostos Costo = new InventariosCostos();

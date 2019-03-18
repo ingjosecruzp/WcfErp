@@ -83,43 +83,38 @@ namespace WcfErp.Servicios.Reportes.Inventarios
 
 
             var ultimodia = Inv.Find(b => b.ArticuloId == Art._id && b.AlmacenId == almacenId && b.Ano <= date.Year && b.Mes == date.Month);
-                 if(ultimodia!=null)
-                 {
 
-                     if (date.Day >= ultimodia.UltimoDia)
+                     if ((ultimodia != null) && date.Day >= ultimodia.UltimoDia)
                         {
-                            var an = Inv.FindAll(b => b.ArticuloId == articuloId && b.AlmacenId == almacenId && (b.Ano == date.Year && b.Mes <= date.Month || b.Ano < date.Year)).ToList();
-                            SaldoMesesAnteriores = an.Sum(a => a.EntradaUnidades - a.SalidasUnidades);
-                            ValorTotalMesesAnteriores=an.Sum(a => a.EntradasCosto - a.SalidasCosto);
+                            var saldomesesanteriores = Inv.FindAll(b => b.ArticuloId == articuloId && b.AlmacenId == almacenId && (b.Ano == date.Year && b.Mes <= date.Month || b.Ano < date.Year)).ToList();
+                            SaldoMesesAnteriores = saldomesesanteriores.Sum(a => a.EntradaUnidades - a.SalidasUnidades);
+                            ValorTotalMesesAnteriores= saldomesesanteriores.Sum(a => a.EntradasCosto - a.SalidasCosto);
 
                         }
                      else
                         {
                             ultimodia= Inv.Find(b => b.ArticuloId == Art._id && b.AlmacenId == almacenId && b.Ano <= date.Year && b.Mes < date.Month || b.Ano < date.Year);
-                            ultimodiamesanterior = new DateTime(ultimodia.Ano, ultimodia.Mes, ultimodia.UltimoDia, 00, 00, 00);
                             date=new DateTime(date.Year,date.Month,date.Day,0,0,0);
-                            MovimientosEsCompletoServer = CollectionMovimientosEs.Find(builderMovimientos.Eq("Almacen._id", "5bd259a71d28282c7ce19c37") & builderMovimientos.
-                            Where(a => a.Fecha >= ultimodiamesanterior &&  ( a.Fecha < date) )).ToList();
-                            var me = MovimientosEsCompletoServer.Where(i => i.Concepto.Naturaleza == "ENTRADA").SelectMany(l => l.Detalles_ES).Where(p => p.Articulo._id == Art._id);
-                            var ms = MovimientosEsCompletoServer.Where(i => i.Concepto.Naturaleza == "SALIDA").SelectMany(l => l.Detalles_ES).Where(p => p.Articulo._id == Art._id);
-                            var an = Inv.FindAll(b => b.ArticuloId == articuloId && b.AlmacenId == almacenId && (b.Ano == date.Year && b.Mes < date.Month || b.Ano < date.Year)).ToList();
-                            Entradas = me.Sum(o => o.Cantidad);
-                            EntradasCostos = me.Sum(o => o.CostoTotal);
-                            Salidas = ms.Sum(o => o.Cantidad);
-                            SalidasCostos = ms.Sum(o => o.CostoTotal);
-                            
-                            SaldoMesesAnteriores = an.Sum(a => a.EntradaUnidades - a.SalidasUnidades);
-                            ValorTotalMesesAnteriores = an.Sum(a => a.EntradasCosto - a.SalidasCosto);
+
+                            if(ultimodia != null)
+                             {
+                                ultimodiamesanterior = new DateTime(ultimodia.Ano, ultimodia.Mes, ultimodia.UltimoDia, 23, 59, 59);
+                                MovimientosEsCompletoServer = CollectionMovimientosEs.Find(builderMovimientos.Eq("Almacen._id", "5bd259a71d28282c7ce19c37") & builderMovimientos.
+                                Where(a => a.Fecha > ultimodiamesanterior &&  ( a.Fecha < date) )).ToList();
+                                var me = MovimientosEsCompletoServer.Where(i => i.Concepto.Naturaleza == "ENTRADA").SelectMany(l => l.Detalles_ES).Where(p => p.Articulo._id == Art._id);
+                                var ms = MovimientosEsCompletoServer.Where(i => i.Concepto.Naturaleza == "SALIDA").SelectMany(l => l.Detalles_ES).Where(p => p.Articulo._id == Art._id);
+                                Entradas = me.Sum(o => o.Cantidad);
+                                EntradasCostos = me.Sum(o => o.CostoTotal);
+                                Salidas = ms.Sum(o => o.Cantidad);
+                                SalidasCostos = ms.Sum(o => o.CostoTotal);
+                             }
+
+                            var saldomesesanteriores = Inv.FindAll(b => b.ArticuloId == articuloId && b.AlmacenId == almacenId && (b.Ano == date.Year && b.Mes < date.Month || b.Ano < date.Year)).ToList();
+                            SaldoMesesAnteriores = saldomesesanteriores.Sum(a => a.EntradaUnidades - a.SalidasUnidades);
+                            ValorTotalMesesAnteriores = saldomesesanteriores.Sum(a => a.EntradasCosto - a.SalidasCosto);
                         }
 
-                 }
-                 else
-                 {
-                     MovimientosEsCompletoServer = CollectionMovimientosEs.Find(builderMovimientos.Eq("Almacen._id", "5bd259a71d28282c7ce19c37")).ToList();
 
-                     Entradas = MovimientosEsCompletoServer.Where(i => i.Concepto.Naturaleza == "ENTRADA").SelectMany(l => l.Detalles_ES).Where(p => p.Articulo._id == Art._id).Sum(o => o.Cantidad);
-                     Salidas = MovimientosEsCompletoServer.Where(i => i.Concepto.Naturaleza == "SALIDA").SelectMany(l => l.Detalles_ES).Where(p => p.Articulo._id == Art._id).Sum(o => o.Cantidad);
-                 }
 
                  
                  
@@ -132,8 +127,7 @@ namespace WcfErp.Servicios.Reportes.Inventarios
                  existenciaInventario.Fecha = date;
                  existenciaInventario.Existencia = existencia;
                  existenciaInventario.ValorTotal = ValorTotal;
-                 existenciaInventario.CostoUnitario = ValorTotal / existencia;
-                
+                 existenciaInventario.CostoUnitario = ValorTotal > 0 ? ValorTotal / existencia : 0.00 ;
 
             return existenciaInventario;
             
