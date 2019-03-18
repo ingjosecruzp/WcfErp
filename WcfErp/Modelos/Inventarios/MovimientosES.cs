@@ -48,6 +48,7 @@ namespace WcfErp.Modelos.Inventarios
         public string Sistema_Origen { get; set; }
         public List<Detalles_ES> Detalles_ES { get; set; }
 
+        
 
         public MovimientosES ()
         {
@@ -58,6 +59,7 @@ namespace WcfErp.Modelos.Inventarios
         {
             try
             {
+  
                 if (item.Detalles_ES.Count == 0)//sin detalles
                     throw new Exception("No ha realizado ningun movimiento, no es posible guardar");
                 if (item.Detalles_ES.Where(c => c.Cantidad == 0).Count() > 0)//Cantidad de entrada de articulos en 0
