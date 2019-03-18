@@ -39,32 +39,33 @@ namespace WcfErp.Servicios.Reportes.Inventarios
             ExistenciaValorInventario Existencia = new ExistenciaValorInventario() ;
             
 
-            Articulo articulo= new Articulo();
+            Articulo articulo= new Articulo();                      //DATOS QUE OCUPO QUE ME MANDE EL CLIENTE. EN ARTICULOS PODRA MANDAR (1 ARTICULO O 1 SUBGRUPO O 1 GRUPO)
             articulo._id = "5bda1dff68867432000f8e3b".ToString();
-            Almacen almacen = new Almacen();
+            Almacen almacen = new Almacen();                        // EN ALMACEN PODRA MANDAR (1 ALMACEN O TODOS LOS ALMACENES (CONSOLIDADO))
             almacen._id = "5bd259a71d28282c7ce19c37".ToString();
             SubgrupoComponente subgrupo = new SubgrupoComponente();
             subgrupo._id = "5bd258ca1d28282c7ce19c34";
             DateTime date = new DateTime(2018,12,31,23,59,59);
-            var builderSaldos = Builders<InventariosSaldos>.Filter;
 
+
+            var builderSaldos = Builders<InventariosSaldos>.Filter;
             List<Articulo> ArticulosCompletoServer = Articulos.Find<Articulo>(d => d.SubGrupoComponente._id == subgrupo._id).Project<Articulo>(Builders<Articulo>.Projection.Include(p => p._id)).ToList();
 
             var Ids = (from an in ArticulosCompletoServer select an._id).ToList(); //recolectamos en una lista los ids que nos manda el cliente
 
             List < InventariosSaldos> InventariosSaldosCompletoServer = CollectionSaldos.Find(builderSaldos.In("ArticuloId", Ids) & builderSaldos.Eq("AlmacenId", almacen._id)).ToList();    
-            List<ExistenciaValorInventario> Documentos = new List<ExistenciaValorInventario>();
+            List<ExistenciaValorInventario> existenciaInventario = new List<ExistenciaValorInventario>();
 
 
             foreach (Articulo art in ArticulosCompletoServer)
             {
 
                 Existencia = ExistenciaArticulo(art._id, almacen._id, date, InventariosSaldosCompletoServer,art);
-                Documentos.Add(Existencia);
+                existenciaInventario.Add(Existencia);
             }
 
 
-            return Documentos;
+            return existenciaInventario;
         }
 
         public ExistenciaValorInventario ExistenciaArticulo(string articuloId, string almacenId, DateTime date, List<InventariosSaldos> Inv , Articulo Art)
@@ -127,13 +128,14 @@ namespace WcfErp.Servicios.Reportes.Inventarios
                  var ValorTotal = ValorTotalMesesAnteriores + EntradasCostos - SalidasCostos;
 
 
-                 ExistenciaValorInventario opciones = new ExistenciaValorInventario();
-                 opciones.Fecha = date;
-                 opciones.Existencia = existencia;
-                 opciones.ValorTotal = ValorTotal;
+                 ExistenciaValorInventario existenciaInventario = new ExistenciaValorInventario();
+                 existenciaInventario.Fecha = date;
+                 existenciaInventario.Existencia = existencia;
+                 existenciaInventario.ValorTotal = ValorTotal;
+                 existenciaInventario.CostoUnitario = ValorTotal / existencia;
                 
 
-            return opciones;
+            return existenciaInventario;
             
         }
 
