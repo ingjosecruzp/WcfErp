@@ -9,7 +9,6 @@ namespace WcfErp.Modelos.Generales
 {
     public class Paises : ModeloBase
     {
-
         public string Abreviatura { get; set; }
     }
 }

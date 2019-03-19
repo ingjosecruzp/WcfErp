@@ -14,6 +14,50 @@ namespace WcfErp.Servicios.Inventarios
     // NOTA: para iniciar el Cliente de prueba WCF para probar este servicio, seleccione WcfPureza.svc o WcfPureza.svc.cs en el Explorador de soluciones e inicie la depuración.
     public class WcfPureza : ServiceBase<Pureza>, IWcfPureza
     {
+
+        public override Pureza add(Pureza item)
+        {
+            try
+            {
+                MongoClient client = new MongoClient("mongodb://Alba:pwjrnew@18.191.252.222:27017/PAMC861025DB7");
+                IMongoDatabase db = client.GetDatabase("PAMC861025DB7");
+
+                IMongoCollection<GrupoComponente> Collection = db.GetCollection<GrupoComponente>("GrupoComponente");
+
+                item.GrupoComponente = Collection.Find<GrupoComponente>(d => d._id == item.GrupoComponente.id).FirstOrDefault();
+
+                return base.add(item);
+            }
+            catch (Exception ex)
+            {
+
+                Error(ex, "");
+                return null;
+            }
+        }
+
+        public override Pureza update(Pureza item, string id)
+        {
+            try
+            {
+                MongoClient client = new MongoClient("mongodb://Alba:pwjrnew@18.191.252.222:27017/PAMC861025DB7");
+                IMongoDatabase db = client.GetDatabase("PAMC861025DB7");
+
+                IMongoCollection<GrupoComponente> Collection = db.GetCollection<GrupoComponente>("GrupoComponente");
+
+                item.GrupoComponente = Collection.Find<GrupoComponente>(d => d._id == item.GrupoComponente.id).FirstOrDefault();
+
+                return base.update(item, id);
+            }
+            catch (Exception ex)
+            {
+
+                Error(ex, "");
+                return null;
+            }
+        }
+
+
         public Pureza delete(string id)
         {
             throw new NotImplementedException();
