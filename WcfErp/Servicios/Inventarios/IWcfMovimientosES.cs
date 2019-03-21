@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.Serialization;
 using System.ServiceModel;
+using System.ServiceModel.Web;
 using System.Text;
 using WcfErp.Modelos.Inventarios;
 
@@ -12,6 +13,7 @@ namespace WcfErp.Servicios.Inventarios
     [ServiceContract]
     public interface IWcfMovimientosES : ServiciosBase<MovimientosES>
     {
+
       
     }
 }

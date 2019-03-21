@@ -37,22 +37,30 @@ namespace WcfErp.Servicios.Reportes.Inventarios
   
             CollectionMovimientosEs = db.GetCollection<MovimientosES>("MovimientosES");
             ExistenciaValorInventario Existencia = new ExistenciaValorInventario() ;
-            
 
-            Articulo articulo= new Articulo();                      //DATOS QUE OCUPO QUE ME MANDE EL CLIENTE. EN ARTICULOS PODRA MANDAR (1 ARTICULO O 1 SUBGRUPO O 1 GRUPO)
-            articulo._id = "5bda1dff68867432000f8e3b".ToString();
             Almacen almacen = new Almacen();                        // EN ALMACEN PODRA MANDAR (1 ALMACEN O TODOS LOS ALMACENES (CONSOLIDADO))
-            almacen._id = "5bd259a71d28282c7ce19c37".ToString();
+            almacen._id = "5bd259a71d28282c7ce19c38".ToString();
+            Articulo articulo= new Articulo();                      //DATOS QUE OCUPO QUE ME MANDE EL CLIENTE. EN ARTICULOS PODRA MANDAR (1 ARTICULO O 1 SUBGRUPO O 1 GRUPO)
+       //     articulo._id = "5bda1dff68867432000f8e3b".ToString();
             SubgrupoComponente subgrupo = new SubgrupoComponente();
-            subgrupo._id = "5bd258ca1d28282c7ce19c34";
-            DateTime date = new DateTime(2018,12,31,23,59,59);
+       //     subgrupo._id = "5bd258ca1d28282c7ce19c34";
+            GrupoComponente grupo = new GrupoComponente();
+            grupo._id = "5bd2584c1d28282c7ce19c32";
+            DateTime date = new DateTime(2019,3,19,23,59,59);
+            List<Articulo> ArticulosCompletoServer = new List<Articulo>();
 
 
-            var builderSaldos = Builders<InventariosSaldos>.Filter;
-            List<Articulo> ArticulosCompletoServer = Articulos.Find<Articulo>(d => d.SubGrupoComponente._id == subgrupo._id).Project<Articulo>(Builders<Articulo>.Projection.Include(p => p._id)).ToList();
+
+            if (subgrupo._id != null)
+                ArticulosCompletoServer = Articulos.Find<Articulo>(d => d.SubGrupoComponente._id == subgrupo._id).Project<Articulo>(Builders<Articulo>.Projection.Include(p => p._id).Include(o => o.Nombre)).ToList();
+            if (grupo._id != null)
+                ArticulosCompletoServer = Articulos.Find<Articulo>(d => d.GrupoComponente._id == grupo._id).Project<Articulo>(Builders<Articulo>.Projection.Include(p => p._id).Include(o=>o.Nombre)).ToList();
+            if(articulo._id != null)
+                ArticulosCompletoServer = Articulos.Find<Articulo>(d => d._id == articulo._id).Project<Articulo>(Builders<Articulo>.Projection.Include(p => p._id).Include(o => o.Nombre)).ToList();
 
             var Ids = (from an in ArticulosCompletoServer select an._id).ToList(); //recolectamos en una lista los ids que nos manda el cliente
 
+            var builderSaldos = Builders<InventariosSaldos>.Filter;
             List < InventariosSaldos> InventariosSaldosCompletoServer = CollectionSaldos.Find(builderSaldos.In("ArticuloId", Ids) & builderSaldos.Eq("AlmacenId", almacen._id)).ToList();    
             List<ExistenciaValorInventario> existenciaInventario = new List<ExistenciaValorInventario>();
 
@@ -128,6 +136,8 @@ namespace WcfErp.Servicios.Reportes.Inventarios
                  existenciaInventario.Existencia = existencia;
                  existenciaInventario.ValorTotal = ValorTotal;
                  existenciaInventario.CostoUnitario = ValorTotal > 0 ? ValorTotal / existencia : 0.00 ;
+                 existenciaInventario.Articulo = Art;
+                
 
             return existenciaInventario;
             

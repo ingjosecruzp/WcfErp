@@ -11,9 +11,9 @@ namespace WcfErp.Modelos.Reportes.Inventarios
     {
         public DateTime Fecha { get; set; }
         public Almacen Almacen { get; set; }
-     //   public string Valuacion { get; set; }
-     //   public GrupoComponente GrupoComponente { get; set; }
-     //   public SubgrupoComponente SubgrupoComponente { get; set; }
+        public string Valuacion { get; set; }
+        public GrupoComponente GrupoComponente { get; set; }
+        public SubgrupoComponente SubgrupoComponente { get; set; }
         public Articulo Articulo { get; set; }
         public double Existencia { get; set; }
         public double CostoUnitario { get; set; }

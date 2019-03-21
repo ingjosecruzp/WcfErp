@@ -74,6 +74,10 @@ namespace WcfErp.Modelos.Inventarios
                     throw new Exception("Falta capturar el almacen");
                 if (String.IsNullOrWhiteSpace(item.Almacen._id))//Sin Almacen
                     throw new Exception("Falta capturar el almacen");
+                if (item.Concepto._id== "5c59c84f6886742388d9bbcc" && item.Almacen_Destino._id==null) //no se indico el almacen de destino
+                    throw new Exception("Falta capturar el almacen de destino");
+                if (item.Concepto._id == "5c59c84f6886742388d9bbcc" && item.Almacen_Destino._id == item.Almacen._id) //No es posible hacer un traspaso al mismo almacen
+                    throw new Exception("No es posible hacer un traspaso al mismo almacen");
 
 
 

@@ -26,7 +26,9 @@ namespace WcfErp.Servicios.Inventarios
 
             try
             {
-             //   session.StartTransaction();//Begin transaction
+                //   session.StartTransaction();//Begin transaction
+                item.Almacen_Destino = new Almacen();
+                item.Almacen_Destino._id="5bd259a71d28282c7ce19c38";
                 item.ValidarModel(item); //Revisar reglas de validacion para el docuemnto
                 
                 IMongoDatabase db = client.GetDatabase("PAMC861025DB7");
@@ -51,6 +53,7 @@ namespace WcfErp.Servicios.Inventarios
                 List<InventariosSaldos> InventariosSaldosCompletoServer = CollectionSaldos.Find(builderSaldos.In("ArticuloId",Ids) & builderSaldos.Eq("AlmacenId", item.Almacen._id)).ToList();      //   (Builders<InventariosSaldos>.Filter.In(p => p.ArticuloId, Ids)).ToList();    Builders<InventariosSaldos>.Filter.In(p => p.ArticuloId, Ids)).ToList();
                 List<InventariosCostos> InventariosCostosCompletoServer = CollectionCostos.Find(builderCostos.In("ArticuloId", Ids) & builderCostos.Eq("AlmacenId", item.Almacen._id)).ToList();
                 item.Sistema_Origen = "IN";
+                item.Cancelado = "NO";
                 var updatesSaldos = new List<WriteModel<InventariosSaldos>>();
                 var updatesCostos = new List<WriteModel<InventariosCostos>>();
 
@@ -80,6 +83,16 @@ namespace WcfErp.Servicios.Inventarios
                 CollectionCostos.BulkWrite(updatesCostos);
                 CollectionSaldos.BulkWrite(updatesSaldos);
                 Documento.InsertOne(item);
+                if (item.Concepto._id == "5c59c84f6886742388d9bbcc") // SI ES UN TRASPASO DE SALIDA VOLVEMOS A LLAMAR EL METODO ADD PARA DAR ENTRADA AL ALMACEN DE DESTINO
+                   {
+                    item._id = null;
+                    item.Concepto._id = "5c59d6c16886742450e4527f";
+                    item.Almacen._id = item.Almacen_Destino._id;
+                    item.Almacen_Destino = item.Almacen;
+                    add(item);
+
+                   }
+                    
              //   session.CommitTransaction();//Made it here without error? Let's commit the transaction
                 
 
@@ -287,8 +300,6 @@ namespace WcfErp.Servicios.Inventarios
                   }
 
           }
-
-
 
 
     }
