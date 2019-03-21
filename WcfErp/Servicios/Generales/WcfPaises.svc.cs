@@ -18,10 +18,5 @@ namespace WcfErp.Servicios.Generales
         {
             throw new NotImplementedException();
         }
-
-        public Paises update(Paises item, string id)
-        {
-            throw new NotImplementedException();
-        }
     }
 }

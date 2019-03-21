@@ -15,7 +15,47 @@ namespace WcfErp.Servicios.Inventarios
     public class WcfGruposComponentes : ServiceBase<GrupoComponente>, IWcfGruposComponentes
     {
 
-    
+        public override GrupoComponente add(GrupoComponente item)
+        {
+            try
+            {
+                MongoClient client = new MongoClient("mongodb://Alba:pwjrnew@18.191.252.222:27017/PAMC861025DB7");
+                IMongoDatabase db = client.GetDatabase("PAMC861025DB7");
+
+                IMongoCollection<TipoComponente> Collection = db.GetCollection<TipoComponente>("TipoComponente");
+
+                item.TipoComponente = Collection.Find<TipoComponente>(d => d._id == item.TipoComponente.id).FirstOrDefault();
+
+                return base.add(item);
+            }
+            catch (Exception ex)
+            {
+
+                Error(ex, "");
+                return null;
+            }
+        }
+        public override GrupoComponente update(GrupoComponente item, string id)
+        {
+            try
+            {
+                MongoClient client = new MongoClient("mongodb://Alba:pwjrnew@18.191.252.222:27017/PAMC861025DB7");
+                IMongoDatabase db = client.GetDatabase("PAMC861025DB7");
+
+                IMongoCollection<TipoComponente> Collection = db.GetCollection<TipoComponente>("TipoComponente");
+
+                item.TipoComponente = Collection.Find<TipoComponente>(d => d._id == item.TipoComponente.id).FirstOrDefault();
+
+                return base.update(item, id);
+            }
+            catch (Exception ex)
+            {
+
+                Error(ex, "");
+                return null;
+            }
+        }
+
         public GrupoComponente delete(string id)
         {
             throw new NotImplementedException();
