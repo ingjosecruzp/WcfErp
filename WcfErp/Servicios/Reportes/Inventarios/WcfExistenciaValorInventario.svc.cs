@@ -27,7 +27,7 @@ namespace WcfErp.Servicios.Reportes.Inventarios
         IMongoCollection<MovimientosES> CollectionMovimientosEs;
 
 
-        public override List<ExistenciaValorInventario> all ()
+        public override List<ExistenciaValorInventario> all (string cadena)
         {
             client = new MongoClient("mongodb://Alba:pwjrnew@18.191.252.222:27017/PAMC861025DB7");
             db = client.GetDatabase("PAMC861025DB7");
