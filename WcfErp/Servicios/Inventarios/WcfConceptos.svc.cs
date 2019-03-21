@@ -34,6 +34,21 @@ namespace WcfErp.Servicios.Inventarios
                 return null;
             }
         }
+        /*public override List<Concepto> all()
+        {
+            try
+            {
+                ProjectionDefinition<Concepto> fields = Builders<Concepto>.Projection.Include("Nombre").Include("Id");
+
+                return null;
+            }
+            catch (Exception ex)
+            {
+
+                Error(ex, "");
+                return null;
+            }
+        }*/
         public override Concepto update(Concepto item, string id)
         {
             try

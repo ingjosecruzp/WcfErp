@@ -28,7 +28,7 @@ namespace WcfErp.Servicios.Inventarios
                 item.Almacen = Almacenes.Find<Almacen>(d => d._id == item.Almacen.id).FirstOrDefault();
 
                 IMongoCollection<Articulo> Articulos = db.GetCollection<Articulo>("Articulo");
-
+                
                 foreach (Detalles_ES mov in item.Detalles_ES)
                 {
                     mov.Articulo = Articulos.Find<Articulo>(d => d._id == mov.Articulo._id).FirstOrDefault();

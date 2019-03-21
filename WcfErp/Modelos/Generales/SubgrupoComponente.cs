@@ -8,7 +8,7 @@ namespace WcfErp.Modelos.Generales
 {
     public class SubgrupoComponente : ModeloBase
     {
-        [BsonRequired]
+        //[BsonRequired]
         public GrupoComponente GrupoComponente { get; set; }
     }
 }

@@ -34,6 +34,8 @@ namespace WcfErp.Servicios.Inventarios
 
                 List<Almacen> LstAlmacenes = Collection.Find<Almacen>(filter).ToList();
 
+                
+
                 return LstAlmacenes;
             }
             catch (Exception)
