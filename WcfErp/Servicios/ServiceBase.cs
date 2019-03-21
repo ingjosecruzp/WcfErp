@@ -8,6 +8,7 @@ using System.Net;
 using WcfErp.Modelos;
 using WcfErp.Modelos.Generales;
 using System.ServiceModel.Web;
+using Newtonsoft.Json.Linq;
 
 namespace WcfErp.Servicios
 {
@@ -32,16 +33,38 @@ namespace WcfErp.Servicios
                 return null;
             }
         }
-        public virtual List<Modelo> all()
+        public virtual List<Modelo> all(string cadena)
         {
             try
             {
+                JObject rss=new JObject();
+
+                string[] fields = cadena.Split(',');
+
+                string campos = "{";
+
+                foreach(string f in fields)
+                {
+                    rss.Add(new JProperty(f, "1"));
+                }
+                Console.WriteLine(rss.ToString());
+                campos += "}";
+
                 MongoClient client = new MongoClient("mongodb://Alba:pwjrnew@18.191.252.222:27017/PAMC861025DB7");
-                IMongoDatabase db = client.GetDatabase("PAMC861025DB7");
+                 IMongoDatabase db = client.GetDatabase("PAMC861025DB7");
 
-                IMongoCollection<Modelo> CollectionClientes = db.GetCollection<Modelo>(typeof(Modelo).Name);
+                IMongoCollection<Modelo> Collection = db.GetCollection<Modelo>(typeof(Modelo).Name);
+            
+                List<Modelo> Lista;
 
-                List<Modelo> Lista = CollectionClientes.AsQueryable().ToList();
+                /*if(campos != null)
+                    Lista = Collection.Find<Modelo>(null).Project<Modelo>(campos).ToList();
+                else
+                   Lista = Collection.AsQueryable().ToList();*/
+                var filter = Builders<Modelo>.Filter.Regex("Nombre", new BsonRegularExpression("", "i"));
+
+                //Lista = Collection.Find<Modelo>(filter).Project<Modelo>("{_id:1, Nombre:1,TipoConcepto.Nombre:1}").ToList();
+                Lista = Collection.Find<Modelo>(filter).Project<Modelo>(rss.ToString()).ToList();
 
                 return Lista;
             }
@@ -81,10 +104,11 @@ namespace WcfErp.Servicios
                 IMongoDatabase db = client.GetDatabase("PAMC861025DB7");
 
                 IMongoCollection<Modelo> Collection = db.GetCollection<Modelo>(typeof(Modelo).Name);
-                
+
                 //var filter = Builders<Clientes>.Filter.Eq(x => x.name, "system")
 
                 Modelo item = Collection.Find<Modelo>(d => d._id == id).FirstOrDefault();
+                //Modelo item = Collection.Find<Modelo>(d => d._id == id).FirstOrDefault();
 
                 return item;
 

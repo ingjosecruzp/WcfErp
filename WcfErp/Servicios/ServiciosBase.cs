@@ -1,9 +1,11 @@
-﻿using System;
+﻿using MongoDB.Driver;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.ServiceModel;
 using System.ServiceModel.Web;
 using System.Web;
+using WcfErp.Modelos;
 
 namespace WcfErp.Servicios
 {
@@ -11,12 +13,12 @@ namespace WcfErp.Servicios
     public interface ServiciosBase<Tipo>
     {
         [OperationContract]
-        [WebInvoke(UriTemplate = "",
+        [WebInvoke(UriTemplate = "campos/{campos}",
          BodyStyle = WebMessageBodyStyle.Bare,
          ResponseFormat = WebMessageFormat.Json,
          RequestFormat = WebMessageFormat.Json,
          Method = "GET")]
-        List<Tipo> all();
+        List<Tipo> all(string campos);
 
         [OperationContract]
         [WebInvoke(UriTemplate = "{id}",
@@ -28,6 +30,7 @@ namespace WcfErp.Servicios
 
         [OperationContract]
         [WebInvoke(UriTemplate = "?searchBy=getXNombre&busqueda={busqueda}",
+
          BodyStyle = WebMessageBodyStyle.Bare,
          ResponseFormat = WebMessageFormat.Json,
          RequestFormat = WebMessageFormat.Json,

@@ -12,6 +12,5 @@ namespace WcfErp.Servicios.Generales
     [ServiceContract]
     public interface IWcfMarcas : ServiciosBase<Marca>
     {
-     
     }
 }

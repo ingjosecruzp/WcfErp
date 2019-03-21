@@ -5,7 +5,9 @@ using System.Linq;
 using System.Runtime.Serialization;
 using System.ServiceModel;
 using System.Text;
+using MongoDB.Driver;
 using WcfErp.Modelos.Inventarios;
+using WcfErp.Modelos.Generales;
 
 namespace WcfErp.Servicios.Inventarios
 {
@@ -13,11 +15,47 @@ namespace WcfErp.Servicios.Inventarios
     // NOTE: In order to launch WCF Test Client for testing this service, please select WcfArticulos.svc or WcfArticulos.svc.cs at the Solution Explorer and start debugging.
     public class WcfArticulos : ServiceBase<Articulo>, IWcfArticulos
     {
+        public Articulo agregarValores(Articulo item)
+        {
+            try
+            {
+                MongoClient client = new MongoClient("mongodb://Alba:pwjrnew@18.191.252.222:27017/PAMC861025DB7");
+                IMongoDatabase db = client.GetDatabase("PAMC861025DB7");
+
+                IMongoCollection<GrupoComponente> Collection_GrupoComponente = db.GetCollection<GrupoComponente>("GrupoComponente");
+                IMongoCollection<GrupoUnidad> Collection_GrupoUnidad = db.GetCollection<GrupoUnidad>("GrupoUnidad");
+                IMongoCollection<Marca> Collection_Marca = db.GetCollection<Marca>("Marca");
+                IMongoCollection<SubgrupoComponente> Collection_SubGrupoComponente = db.GetCollection<SubgrupoComponente>("SubgrupoComponente");
+                IMongoCollection<Unidad> Collection_Unidad = db.GetCollection<Unidad>("Unidad");
+
+                item.GrupoComponente = Collection_GrupoComponente.Find<GrupoComponente>(d => d._id == item.GrupoComponente.id).FirstOrDefault();
+                item.GrupoUnidad = Collection_GrupoUnidad.Find<GrupoUnidad>(d => d._id == item.GrupoUnidad.id).FirstOrDefault();
+                item.Marca = Collection_Marca.Find<Marca>(d => d._id == item.Marca.id).FirstOrDefault();
+                item.SubGrupoComponente = Collection_SubGrupoComponente.Find<SubgrupoComponente>(d => d._id == item.SubGrupoComponente.id).FirstOrDefault();
+
+                item.UnidadCompra = item.GrupoUnidad.GrupoUnidadDetalle.Where(i => i.UnidadEquivalente._id == item.UnidadCompra._id).Select(x => x.UnidadEquivalente).FirstOrDefault();
+                item.UnidadVenta = item.GrupoUnidad.GrupoUnidadDetalle.Where(i => i.UnidadEquivalente._id == item.UnidadVenta._id).Select(x => x.UnidadEquivalente).FirstOrDefault();
+                item.UnidadInventario = item.GrupoUnidad.GrupoUnidadDetalle.Where(i => i.UnidadEquivalente._id == item.UnidadInventario._id).Select(x => x.UnidadEquivalente).FirstOrDefault();
+
+                foreach (CodigosBarra codigo in item.CodigosBarra)
+                {
+                    codigo.Unidad = Collection_Unidad.Find<Unidad>(d => d._id == codigo.Unidad.id).FirstOrDefault();
+                }
+
+                GrabarImagen(item);
+                return item;
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
         public override Articulo add(Articulo item)
         {
             try
             {
-                GrabarImagen(item);
+                item = agregarValores(item);
                 return base.add(item);
             }
             catch (Exception ex)
@@ -30,7 +68,8 @@ namespace WcfErp.Servicios.Inventarios
         {
             try
             {
-                GrabarImagen(item);
+                //GrabarImagen(item);
+                item = agregarValores(item);
                 return base.update(item, id);
             }
             catch (Exception)
@@ -52,7 +91,8 @@ namespace WcfErp.Servicios.Inventarios
                 if (base64.Length > 1)
                 {
 
-                    string path = System.Web.HttpContext.Current.Server.MapPath("/WcfErp/img/");
+                    //string path = System.Web.HttpContext.Current.Server.MapPath("/WcfErp/img/");
+                    string path = System.Web.HttpContext.Current.Server.MapPath("/img/");
 
                     string filename = DateTime.Now.ToString("yyyyMMddHHmmssff") + GetFileExtension(base64[1]);
 
@@ -61,8 +101,11 @@ namespace WcfErp.Servicios.Inventarios
                     img.Source = filename;
                 }
                 else
-                    if(item._id == null)
+                {
+                    img.Source= img.Source.Replace("http://localhost:60493/img/", "");
+                    if (item._id == null)
                         img.Source = "NoImagen.jpg";
+                }
             }
         }
         public string GetFileExtension(string base64String)
