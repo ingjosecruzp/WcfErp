@@ -11,7 +11,7 @@ namespace WcfErp.Modelos.Generales
         public string TipoAlmacen { get; set; }
         public string Activo { get; set; }
         public TipoComponente TipoComponente { get; set; }
-        public List<GrupoComponente> GrupoComponente { get; set; }
+        public GrupoComponente GrupoComponente { get; set; }
 
     }
 }
