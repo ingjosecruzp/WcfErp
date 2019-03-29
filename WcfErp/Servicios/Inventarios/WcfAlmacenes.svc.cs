@@ -14,6 +14,51 @@ namespace WcfErp.Servicios.Inventarios
     // NOTA: para iniciar el Cliente de prueba WCF para probar este servicio, seleccione WcfAlmacenes.svc o WcfAlmacenes.svc.cs en el Explorador de soluciones e inicie la depuración.
     public class WcfAlmacenes : ServiceBase<Almacen>, IWcfAlmacenes
     {
+
+        public override Almacen add(Almacen item)
+        {
+            try
+            {
+                MongoClient client = new MongoClient("mongodb://Alba:pwjrnew@18.191.252.222:27017/PAMC861025DB7");
+                IMongoDatabase db = client.GetDatabase("PAMC861025DB7");
+
+                IMongoCollection<TipoComponente> Collection = db.GetCollection<TipoComponente>("TipoComponente");
+
+                item.TipoComponente = Collection.Find<TipoComponente>(d => d._id == item.TipoComponente.id).FirstOrDefault();
+
+                return base.add(item);
+            }
+            catch (Exception ex)
+            {
+
+                Error(ex, "");
+                return null;
+            }
+        }
+
+
+        public override Almacen update(Almacen item, string id)
+        {
+            try
+            {
+                MongoClient client = new MongoClient("mongodb://Alba:pwjrnew@18.191.252.222:27017/PAMC861025DB7");
+                IMongoDatabase db = client.GetDatabase("PAMC861025DB7");
+
+                IMongoCollection<TipoComponente> Collection = db.GetCollection<TipoComponente>("TipoComponente");
+
+                item.TipoComponente = Collection.Find<TipoComponente>(d => d._id == item.TipoComponente.id).FirstOrDefault();
+
+                return base.update(item, id);
+            }
+            catch (Exception ex)
+            {
+
+                Error(ex, "");
+                return null;
+            }
+        }
+
+
         public Almacen delete(string id)
         {
             throw new NotImplementedException();
@@ -23,25 +68,23 @@ namespace WcfErp.Servicios.Inventarios
         {
             try
             {
-                MongoClient client = new MongoClient("mongodb://Alba:pwjrnew@18.191.252.222:27017/PAMC861025DB7");
+                MongoClient client = new MongoClient();
                 IMongoDatabase db = client.GetDatabase("PAMC861025DB7");
 
-                IMongoCollection<Almacen> Collection = db.GetCollection<Almacen>("Almacen");
+                IMongoCollection<Almacen> Collection = db.GetCollection<Almacen>(typeof(Almacen).Name);
 
+                //var filter = Builders<SubgrupoComponente>.Filter.Regex("Nombre", new BsonRegularExpression(busqueda, "i")) && ;
                 var builder = Builders<Almacen>.Filter;
-
                 var filter = builder.Regex("Nombre", new BsonRegularExpression(busqueda, "i")) & builder.Eq("TipoComponente._id", _id);
 
-                List<Almacen> LstAlmacenes = Collection.Find<Almacen>(filter).ToList();
+                List<Almacen> Documentos = Collection.Find<Almacen>(filter).ToList();
 
-                
-
-                return LstAlmacenes;
+                return Documentos;
             }
             catch (Exception)
             {
 
-                return null;
+                throw;
             }
         }
     }
