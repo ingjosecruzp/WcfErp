@@ -64,7 +64,7 @@ namespace WcfErp.Modelos.Inventarios
                     throw new Exception("No ha realizado ningun movimiento, no es posible guardar");
                 if (item.Detalles_ES.Where(c => c.Cantidad == 0).Count() > 0)//Cantidad de entrada de articulos en 0
                     throw new Exception("No se permite guardar  componentes en cantidad cero");
-                if (String.IsNullOrWhiteSpace(item.Folio))//Sin folio
+                if (item.Concepto.CostoAutomatico == "NO" && String.IsNullOrWhiteSpace(item.Folio))//Sin folio
                     throw new Exception("Falta capturar el folio");
                 if (String.IsNullOrWhiteSpace(item.Concepto._id))//Sin Concepto
                     throw new Exception("Falta capturar el concepto");
@@ -78,8 +78,6 @@ namespace WcfErp.Modelos.Inventarios
                     throw new Exception("Falta capturar el almacen de destino");
                 if (item.Concepto._id == "5c59c84f6886742388d9bbcc" && item.Almacen_Destino._id == item.Almacen._id) //No es posible hacer un traspaso al mismo almacen
                     throw new Exception("No es posible hacer un traspaso al mismo almacen");
-
-
 
             }
             catch (Exception)

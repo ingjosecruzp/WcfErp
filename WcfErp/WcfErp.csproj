@@ -129,6 +129,7 @@
     <Compile Include="FormatterJsonNET\RawBodyWriter.cs" />
     <Compile Include="Modelos\Administracion\UsuarioRol.cs" />
     <Compile Include="Modelos\Administracion\Usuario.cs" />
+    <Compile Include="Modelos\Counters.cs" />
     <Compile Include="Modelos\Generales\Almacen.cs" />
     <Compile Include="Modelos\Generales\Departamento.cs" />
     <Compile Include="Modelos\Generales\GrupoUnidad.cs" />

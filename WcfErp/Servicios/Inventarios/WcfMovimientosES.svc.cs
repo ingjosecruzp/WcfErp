@@ -1,4 +1,5 @@
-﻿using MongoDB.Driver;
+﻿using MongoDB.Bson;
+using MongoDB.Driver;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -6,6 +7,7 @@ using System.Runtime.Serialization;
 using System.ServiceModel;
 using System.Text;
 using System.Threading.Tasks;
+using WcfErp.Modelos;
 using WcfErp.Modelos.Generales;
 using WcfErp.Modelos.Inventarios;
 
@@ -19,18 +21,19 @@ namespace WcfErp.Servicios.Inventarios
         public  override  MovimientosES add(MovimientosES item)
         {
             MongoClient client = new MongoClient("mongodb://Alba:pwjrnew@18.191.252.222:27017/PAMC861025DB7");
-        //    var session = client.StartSession();//Create a session  transactions
-            
-           
+            //    var session = client.StartSession();//Create a session  transactions
+
+
 
 
             try
             {
+
                 //   session.StartTransaction();//Begin transaction
                 item.Almacen_Destino = new Almacen();
-                item.Almacen_Destino._id="5bd259a71d28282c7ce19c38";
-                item.ValidarModel(item); //Revisar reglas de validacion para el docuemnto
-                
+                item.Almacen_Destino._id = "5bd259a71d28282c7ce19c38";
+
+
                 IMongoDatabase db = client.GetDatabase("PAMC861025DB7");
 
                 IMongoCollection<MovimientosES> Documento = db.GetCollection<MovimientosES>("MovimientosES");// db.GetCollection<MovimientosES>("MovimientosES");
@@ -40,10 +43,12 @@ namespace WcfErp.Servicios.Inventarios
                 IMongoCollection<InventariosSaldos> CollectionSaldos = db.GetCollection<InventariosSaldos>("InventariosSaldos");
                 IMongoCollection<InventariosCostos> CollectionCostos = db.GetCollection<InventariosCostos>("InventariosCostos");
 
-                item.Concepto = Conceptos.Find<Concepto>(d => d._id == item.Concepto.id).Project<Concepto>(Builders<Concepto>.Projection.Include(p => p._id).Include(p => p.Nombre).Include(p => p.Naturaleza).Include(p => p.CostoAutomatico)).FirstOrDefault();
-                item.Almacen = Almacenes.Find<Almacen>(d => d._id == item.Almacen.id ).Project<Almacen>(Builders<Almacen>.Projection.Include(p => p._id).Include(p => p.Nombre)).FirstOrDefault();
+                item.Concepto = Conceptos.Find<Concepto>(d => d._id == item.Concepto.id).Project<Concepto>(Builders<Concepto>.Projection.Include(p => p._id).Include(p => p.Nombre).Include(p => p.Naturaleza).Include(p => p.CostoAutomatico).Include(p => p.FolioAutomatico)).FirstOrDefault();
+                item.Almacen = Almacenes.Find<Almacen>(d => d._id == item.Almacen.id).Project<Almacen>(Builders<Almacen>.Projection.Include(p => p._id).Include(p => p.Nombre)).FirstOrDefault();
 
-
+                if (item.Concepto.FolioAutomatico == "SI"){
+                    item.Folio = AutoIncrement("FolioAutomatico").ToString();
+                }
 
                 var builderSaldos = Builders<InventariosSaldos>.Filter;
                 var builderCostos = Builders<InventariosCostos>.Filter;
@@ -57,6 +62,7 @@ namespace WcfErp.Servicios.Inventarios
                 var updatesSaldos = new List<WriteModel<InventariosSaldos>>();
                 var updatesCostos = new List<WriteModel<InventariosCostos>>();
 
+                item.ValidarModel(item); //Revisar reglas de validacion para el documento
 
                 foreach (Detalles_ES mov in item.Detalles_ES)
                 {
@@ -74,9 +80,6 @@ namespace WcfErp.Servicios.Inventarios
                         updatesSaldos.Add(new ReplaceOneModel<InventariosSaldos>(filtersaldos, invsaldo) { IsUpsert = true });
                     else
                         updatesSaldos.Add(new InsertOneModel<InventariosSaldos>(invsaldo));
-                    
-
-
                 }
 
 
@@ -109,7 +112,31 @@ namespace WcfErp.Servicios.Inventarios
 
         }
 
+        public int AutoIncrement (string _id)
+        {
+            try
+            {
+                MongoClient client = new MongoClient("mongodb://Alba:pwjrnew@18.191.252.222:27017/PAMC861025DB7");
+                IMongoDatabase db = client.GetDatabase("PAMC861025DB7");
 
+                var collection = db.GetCollection<Counters>("Counters");
+                var filter = Builders<Counters>.Filter.Eq(x => x._id,_id);
+                var update = Builders<Counters>.Update.Inc(x => x.sequence_value, 1);
+                var options = new FindOneAndUpdateOptions<Counters>
+                {
+                    //Sort = Builders<Counters>.Sort.Ascending("Counters"),
+                    ReturnDocument= ReturnDocument.After
+                };
+                Counters id=collection.FindOneAndUpdate(filter, update, options);
+
+                return id.sequence_value;
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
         public InventariosSaldos LlenarObjetoInventartiosSaldos(MovimientosES item,Detalles_ES mov, List<Articulo> ArticuloCompletoServer, List<InventariosSaldos> InventariosSaldosCompletoServer)
         {
 
