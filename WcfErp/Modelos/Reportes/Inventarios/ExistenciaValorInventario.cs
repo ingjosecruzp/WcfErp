@@ -9,7 +9,7 @@ namespace WcfErp.Modelos.Reportes.Inventarios
 {
     public class ExistenciaValorInventario :ModeloBase
     {
-        public DateTime Fecha { get; set; }
+        public string Fecha { get; set; }
         public Almacen Almacen { get; set; }
         public string Valuacion { get; set; }
         public GrupoComponente GrupoComponente { get; set; }
@@ -18,5 +18,7 @@ namespace WcfErp.Modelos.Reportes.Inventarios
         public double Existencia { get; set; }
         public double CostoUnitario { get; set; }
         public double ValorTotal { get; set; }
+        
+
     }
 }

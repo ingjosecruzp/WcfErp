@@ -1,5 +1,6 @@
 ﻿using MongoDB.Bson;
 using MongoDB.Driver;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,12 +12,13 @@ using System.Text;
 using WcfErp.Modelos.Generales;
 using WcfErp.Modelos.Inventarios;
 using WcfErp.Modelos.Reportes.Inventarios;
+using WcfErp.Reportes;
 
 namespace WcfErp.Servicios.Reportes.Inventarios
 {
     // NOTE: You can use the "Rename" command on the "Refactor" menu to change the class name "WcfExistenciaValorInventario" in code, svc and config file together.
     // NOTE: In order to launch WCF Test Client for testing this service, please select WcfExistenciaValorInventario.svc or WcfExistenciaValorInventario.svc.cs at the Solution Explorer and start debugging.
-    public class WcfExistenciaValorInventario : ServiceBase<ExistenciaValorInventario>,IWcfExistenciaValorInventario
+    public class WcfExistenciaValorInventario : IWcfExistenciaValorInventario
     {
 
         MongoClient client;
@@ -27,8 +29,11 @@ namespace WcfErp.Servicios.Reportes.Inventarios
         IMongoCollection<MovimientosES> CollectionMovimientosEs;
 
 
-        public override List<ExistenciaValorInventario> all (string cadena)
+        public List<ExistenciaValorInventario> Existencia(string Fecha,string AlmacenId,string ArticuloId, string GrupoId,string SubGrupoId,string Valoracion)
         {
+            if (AlmacenId == "" && GrupoId == "")
+                return null;
+
             client = new MongoClient("mongodb://Alba:pwjrnew@18.191.252.222:27017/PAMC861025DB7");
             db = client.GetDatabase("PAMC861025DB7");
             Almacenes = db.GetCollection<Almacen>("Almacen");
@@ -39,24 +44,25 @@ namespace WcfErp.Servicios.Reportes.Inventarios
             ExistenciaValorInventario Existencia = new ExistenciaValorInventario() ;
 
             Almacen almacen = new Almacen();                        // EN ALMACEN PODRA MANDAR (1 ALMACEN O TODOS LOS ALMACENES (CONSOLIDADO))
-            almacen._id = "5bd259a71d28282c7ce19c38".ToString();
+            almacen._id = AlmacenId;
             Articulo articulo= new Articulo();                      //DATOS QUE OCUPO QUE ME MANDE EL CLIENTE. EN ARTICULOS PODRA MANDAR (1 ARTICULO O 1 SUBGRUPO O 1 GRUPO)
-       //     articulo._id = "5bda1dff68867432000f8e3b".ToString();
+            articulo._id = ArticuloId;
             SubgrupoComponente subgrupo = new SubgrupoComponente();
-       //     subgrupo._id = "5bd258ca1d28282c7ce19c34";
-            GrupoComponente grupo = new GrupoComponente();
-            grupo._id = "5bd2584c1d28282c7ce19c32";
-            DateTime date = new DateTime(2019,3,19,23,59,59);
+            subgrupo._id = SubGrupoId;
+            GrupoComponente grupo = new GrupoComponente();;
+            grupo._id = GrupoId;
+            //DateTime date = new DateTime(2019,3,26,23,59,59);
+            DateTime date = DateTime.Parse(Fecha);
             List<Articulo> ArticulosCompletoServer = new List<Articulo>();
 
 
 
-            if (subgrupo._id != null)
-                ArticulosCompletoServer = Articulos.Find<Articulo>(d => d.SubGrupoComponente._id == subgrupo._id).Project<Articulo>(Builders<Articulo>.Projection.Include(p => p._id).Include(o => o.Nombre)).ToList();
-            if (grupo._id != null)
-                ArticulosCompletoServer = Articulos.Find<Articulo>(d => d.GrupoComponente._id == grupo._id).Project<Articulo>(Builders<Articulo>.Projection.Include(p => p._id).Include(o=>o.Nombre)).ToList();
-            if(articulo._id != null)
-                ArticulosCompletoServer = Articulos.Find<Articulo>(d => d._id == articulo._id).Project<Articulo>(Builders<Articulo>.Projection.Include(p => p._id).Include(o => o.Nombre)).ToList();
+            if (subgrupo._id != null && subgrupo._id != "")
+                ArticulosCompletoServer = Articulos.Find<Articulo>(d => d.SubGrupoComponente._id == subgrupo._id).Project<Articulo>(Builders<Articulo>.Projection.Include(p => p._id).Include(o => o.Nombre).Include(i => i.SubGrupoComponente).Include(y => y.GrupoComponente)).ToList();
+            if (grupo._id != null && grupo._id != "")
+                ArticulosCompletoServer = Articulos.Find<Articulo>(d => d.GrupoComponente._id == grupo._id).Project<Articulo>(Builders<Articulo>.Projection.Include(p => p._id).Include(o=>o.Nombre).Include(i => i.SubGrupoComponente).Include(y => y.GrupoComponente)).ToList();
+            if(articulo._id != null && articulo._id != "")
+                ArticulosCompletoServer = Articulos.Find<Articulo>(d => d._id == articulo._id).Project<Articulo>(Builders<Articulo>.Projection.Include(p => p._id).Include(o => o.Nombre).Include(i=>i.SubGrupoComponente).Include(y => y.GrupoComponente)).ToList();
 
             var Ids = (from an in ArticulosCompletoServer select an._id).ToList(); //recolectamos en una lista los ids que nos manda el cliente
 
@@ -121,28 +127,67 @@ namespace WcfErp.Servicios.Reportes.Inventarios
                             SaldoMesesAnteriores = saldomesesanteriores.Sum(a => a.EntradaUnidades - a.SalidasUnidades);
                             ValorTotalMesesAnteriores = saldomesesanteriores.Sum(a => a.EntradasCosto - a.SalidasCosto);
                         }
-
-
-
-                 
-                 
-                                                                                                                    
+                                                                                           
                  var existencia = SaldoMesesAnteriores + Entradas - Salidas;
                  var ValorTotal = ValorTotalMesesAnteriores + EntradasCostos - SalidasCostos;
 
-
                  ExistenciaValorInventario existenciaInventario = new ExistenciaValorInventario();
-                 existenciaInventario.Fecha = date;
+                 existenciaInventario.Fecha = date.ToString();
                  existenciaInventario.Existencia = existencia;
                  existenciaInventario.ValorTotal = ValorTotal;
                  existenciaInventario.CostoUnitario = ValorTotal > 0 ? ValorTotal / existencia : 0.00 ;
                  existenciaInventario.Articulo = Art;
-                
+                 existenciaInventario.SubgrupoComponente=Art.SubGrupoComponente;
+                 existenciaInventario.GrupoComponente = Art.GrupoComponente;
+
+
 
             return existenciaInventario;
             
         }
 
+        public string VerReporte(string parametros)
+        {
+            try
+            {
+                var jsonObject = JObject.Parse(parametros);
 
+                List<reportParameter> JasperParametros = new List<reportParameter>();
+
+                foreach (var p in jsonObject) 
+                {
+                    //Console.WriteLine(p.Value.Type); // eg. integer
+
+                    reportParameter param = new reportParameter();
+                    param.name = p.Key;
+                    param.value.Add(p.Value.ToString());
+
+                    JasperParametros.Add(param);
+                }
+
+                string Archivo = GetTimestamp(DateTime.Now);
+                string extension = "pdf";
+
+                ReportesPFD VmReporte = new ReportesPFD("/ERP/Existencias", JasperParametros, extension, Archivo);
+
+                return Archivo + "." + extension;
+
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+
+        public String GetTimestamp(DateTime value)
+        {
+            return value.ToString("yyyyMMddHHmmssffff");
+        }
+
+        //Metodo para dar respuesta las peticiones OPTION CORS
+        public void GetOptions()
+        {
+        }
     }
 }
