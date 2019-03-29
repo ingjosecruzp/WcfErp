@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.Serialization;
 using System.ServiceModel;
+using System.ServiceModel.Web;
 using System.Text;
 using WcfErp.Modelos.Inventarios;
 
@@ -12,6 +13,15 @@ namespace WcfErp.Servicios.Inventarios
     [ServiceContract]
     public interface IWcfConceptos : ServiciosBase<Concepto>
     {
-      
+
+         [OperationContract]
+         [WebInvoke(UriTemplate = "Nombrebusqueda={busqueda}/tipoMovimiento={tipoMovimiento}",
+         BodyStyle = WebMessageBodyStyle.Bare,
+         ResponseFormat = WebMessageFormat.Json,
+         RequestFormat = WebMessageFormat.Json,
+         Method = "GET")]
+         List<Concepto> searchConceptosES(string busqueda, string tipoMovimiento);
+
+
     }
 }
