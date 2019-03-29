@@ -163,6 +163,13 @@
     <Compile Include="Modelos\ModeloBase.cs" />
     <Compile Include="Modelos\Reportes\Inventarios\ExistenciaValorInventario.cs" />
     <Compile Include="Modelos\Ventas\Clientes.cs" />
+    <Compile Include="Reportes\exports.cs" />
+    <Compile Include="Reportes\outputResource.cs" />
+    <Compile Include="Reportes\ReporteModel.cs" />
+    <Compile Include="Reportes\ReportesPFD.cs" />
+    <Compile Include="Reportes\reportParameter.cs" />
+    <Compile Include="Reportes\ReportParameters.cs" />
+    <Compile Include="Reportes\ResponseReportModel.cs" />
     <Compile Include="Service1.svc.cs">
       <DependentUpon>Service1.svc</DependentUpon>
     </Compile>
