@@ -21,7 +21,7 @@ namespace WcfErp.Servicios.Inventarios
         
         public  override  MovimientosES add(MovimientosES item)
         {
-            MongoClient client = new MongoClient("mongodb://Alba:pwjrnew@18.191.252.222:27017/PAMC861025DB7");
+            MongoClient client = new MongoClient("mongodb://adminErp:pwjrnew@18.191.252.222:27017/?authSource=admin");
             //    var session = client.StartSession();//Create a session  transactions
 
 
@@ -35,7 +35,7 @@ namespace WcfErp.Servicios.Inventarios
                 item.Almacen_Destino._id = "5bd259a71d28282c7ce19c38";
 
 
-                IMongoDatabase db = client.GetDatabase("PAMC861025DB7");
+                IMongoDatabase db = client.GetDatabase(getKeyToken("empresa","token"));
 
                 IMongoCollection<MovimientosES> Documento = db.GetCollection<MovimientosES>("MovimientosES");// db.GetCollection<MovimientosES>("MovimientosES");
                 IMongoCollection<Concepto> Conceptos = db.GetCollection<Concepto>("Concepto");
@@ -117,8 +117,8 @@ namespace WcfErp.Servicios.Inventarios
         {
             try
             {
-                MongoClient client = new MongoClient("mongodb://Alba:pwjrnew@18.191.252.222:27017/PAMC861025DB7");
-                IMongoDatabase db = client.GetDatabase("PAMC861025DB7");
+                MongoClient client = new MongoClient("mongodb://adminErp:pwjrnew@18.191.252.222:27017/?authSource=admin");
+                IMongoDatabase db = client.GetDatabase(getKeyToken("empresa","token"));
 
                 var collection = db.GetCollection<Counters>("Counters");
                 var filter = Builders<Counters>.Filter.Eq(x => x._id,_id);
@@ -348,8 +348,8 @@ namespace WcfErp.Servicios.Inventarios
                 Console.WriteLine(rss.ToString());
                 campos += "}";
 
-                MongoClient client = new MongoClient("mongodb://Alba:pwjrnew@18.191.252.222:27017/PAMC861025DB7");
-                IMongoDatabase db = client.GetDatabase("PAMC861025DB7");
+                MongoClient client = new MongoClient("mongodb://adminErp:pwjrnew@18.191.252.222:27017/?authSource=admin");
+                IMongoDatabase db = client.GetDatabase(getKeyToken("empresa","token"));
 
                 IMongoCollection<MovimientosES> Collection = db.GetCollection<MovimientosES>(typeof(MovimientosES).Name);
 

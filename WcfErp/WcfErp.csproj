@@ -46,6 +46,10 @@
       <HintPath>..\packages\DnsClient.1.0.7\lib\net45\DnsClient.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="JWT, Version=1.3.3.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\JWT.1.3.4\lib\3.5\JWT.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="MongoDB.Bson, Version=2.7.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\MongoDB.Bson.2.7.0\lib\net45\MongoDB.Bson.dll</HintPath>
@@ -93,6 +97,7 @@
     <Content Include="Servicios\Generales\WcfCobrador.svc" />
     <Content Include="Servicios\Generales\WcfCondicionesDePago.svc" />
     <Content Include="Servicios\Generales\WcfDepartamentos.svc" />
+    <Content Include="Servicios\Generales\WcfEmpresas.svc" />
     <Content Include="Servicios\Generales\WcfGrupoUnidades.svc" />
     <Content Include="Servicios\Generales\WcfMarcas.svc" />
     <Content Include="Servicios\Generales\WcfMoneda.svc" />
@@ -115,6 +120,7 @@
     <Content Include="Servicios\Inventarios\WcfUnidades.svc" />
     <Content Include="Servicios\Reportes\Inventarios\WcfExistenciaValorInventario.svc" />
     <Content Include="Servicios\Ventas\WcfClientes.svc" />
+    <Content Include="Servicios\WSLogin.svc" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
@@ -127,10 +133,12 @@
     <Compile Include="FormatterJsonNET\NewtonsoftJsonContentTypeMapper .cs" />
     <Compile Include="FormatterJsonNET\NewtonsoftJsonDispatchFormatter.cs" />
     <Compile Include="FormatterJsonNET\RawBodyWriter.cs" />
+    <Compile Include="FormatterJsonNET\ServiceAuthorization.cs" />
     <Compile Include="Modelos\Administracion\UsuarioRol.cs" />
     <Compile Include="Modelos\Administracion\Usuario.cs" />
     <Compile Include="Modelos\Counters.cs" />
     <Compile Include="Modelos\Generales\Almacen.cs" />
+    <Compile Include="Modelos\Generales\BDEmpresas.cs" />
     <Compile Include="Modelos\Generales\Departamento.cs" />
     <Compile Include="Modelos\Generales\GrupoUnidad.cs" />
     <Compile Include="Modelos\Generales\GrupoUnidadDetalle.cs" />
@@ -138,6 +146,7 @@
     <Compile Include="Modelos\Generales\GrupoComponente.cs" />
     <Compile Include="Modelos\Generales\Puesto.cs" />
     <Compile Include="Modelos\Generales\Pureza.cs" />
+    <Compile Include="Modelos\Generales\Roles.cs" />
     <Compile Include="Modelos\Generales\SubgrupoComponente.cs" />
     <Compile Include="Modelos\Generales\TipoComponente.cs" />
     <Compile Include="Modelos\Generales\Unidad.cs" />
@@ -147,6 +156,7 @@
     <Compile Include="Modelos\Generales\Moneda.cs" />
     <Compile Include="Modelos\Generales\Paises.cs" />
     <Compile Include="Modelos\Generales\TipoCliente.cs" />
+    <Compile Include="Modelos\Generales\Usuarios.cs" />
     <Compile Include="Modelos\Generales\Vendedor.cs" />
     <Compile Include="Modelos\Generales\ZonaCliente.cs" />
     <Compile Include="Modelos\Inventarios\Articulo.cs" />
@@ -163,6 +173,7 @@
     <Compile Include="Modelos\Inventarios\TipoConcepto.cs" />
     <Compile Include="Modelos\ModeloBase.cs" />
     <Compile Include="Modelos\Reportes\Inventarios\ExistenciaValorInventario.cs" />
+    <Compile Include="Modelos\tokens.cs" />
     <Compile Include="Modelos\Ventas\Clientes.cs" />
     <Compile Include="Reportes\exports.cs" />
     <Compile Include="Reportes\outputResource.cs" />
@@ -191,6 +202,7 @@
     <Compile Include="Servicios\Generales\IWcfCobrador.cs" />
     <Compile Include="Servicios\Generales\IWcfCondicionesDePago.cs" />
     <Compile Include="Servicios\Generales\IWcfDepartamentos.cs" />
+    <Compile Include="Servicios\Generales\IWcfEmpresas.cs" />
     <Compile Include="Servicios\Generales\IWcfGrupoUnidades.cs" />
     <Compile Include="Servicios\Generales\IWcfMarcas.cs" />
     <Compile Include="Servicios\Generales\IWcfMoneda.cs" />
@@ -207,6 +219,9 @@
     </Compile>
     <Compile Include="Servicios\Generales\WcfDepartamentos.svc.cs">
       <DependentUpon>WcfDepartamentos.svc</DependentUpon>
+    </Compile>
+    <Compile Include="Servicios\Generales\WcfEmpresas.svc.cs">
+      <DependentUpon>WcfEmpresas.svc</DependentUpon>
     </Compile>
     <Compile Include="Servicios\Generales\WcfGrupoUnidades.svc.cs">
       <DependentUpon>WcfGrupoUnidades.svc</DependentUpon>
@@ -280,6 +295,7 @@
     <Compile Include="Servicios\Inventarios\WcfUnidades.svc.cs">
       <DependentUpon>WcfUnidades.svc</DependentUpon>
     </Compile>
+    <Compile Include="Servicios\IWSLogin.cs" />
     <Compile Include="Servicios\Reportes\Inventarios\IWcfExistenciaValorInventario.cs" />
     <Compile Include="Servicios\Reportes\Inventarios\WcfExistenciaValorInventario.svc.cs">
       <DependentUpon>WcfExistenciaValorInventario.svc</DependentUpon>
@@ -289,6 +305,9 @@
     <Compile Include="Servicios\Ventas\IWcfClientes.cs" />
     <Compile Include="Servicios\Ventas\WcfClientes.svc.cs">
       <DependentUpon>WcfClientes.svc</DependentUpon>
+    </Compile>
+    <Compile Include="Servicios\WSLogin.svc.cs">
+      <DependentUpon>WSLogin.svc</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>

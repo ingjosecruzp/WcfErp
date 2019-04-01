@@ -31,118 +31,131 @@ namespace WcfErp.Servicios.Reportes.Inventarios
 
         public List<ExistenciaValorInventario> Existencia(string Fecha,string AlmacenId,string ArticuloId, string GrupoId,string SubGrupoId,string Valoracion)
         {
-            if (AlmacenId == "" && GrupoId == "")
-                return null;
+            /*if (AlmacenId == "" && GrupoId == "")
+                return null;*/
+            try
+            {
+                client = new MongoClient("mongodb://Alba:pwjrnew@18.191.252.222:27017/PAMC861025DB7");
+                db = client.GetDatabase("PAMC861025DB7");
+                Almacenes = db.GetCollection<Almacen>("Almacen");
+                Articulos = db.GetCollection<Articulo>("Articulo");
+                CollectionSaldos = db.GetCollection<InventariosSaldos>("InventariosSaldos");
 
-            client = new MongoClient("mongodb://Alba:pwjrnew@18.191.252.222:27017/PAMC861025DB7");
-            db = client.GetDatabase("PAMC861025DB7");
-            Almacenes = db.GetCollection<Almacen>("Almacen");
-            Articulos = db.GetCollection<Articulo>("Articulo");
-            CollectionSaldos = db.GetCollection<InventariosSaldos>("InventariosSaldos");
-  
-            CollectionMovimientosEs = db.GetCollection<MovimientosES>("MovimientosES");
-            ExistenciaValorInventario Existencia = new ExistenciaValorInventario() ;
+                CollectionMovimientosEs = db.GetCollection<MovimientosES>("MovimientosES");
+                ExistenciaValorInventario Existencia = new ExistenciaValorInventario();
 
-            Almacen almacen = new Almacen();                        // EN ALMACEN PODRA MANDAR (1 ALMACEN O TODOS LOS ALMACENES (CONSOLIDADO))
-            almacen._id = AlmacenId;
-            Articulo articulo= new Articulo();                      //DATOS QUE OCUPO QUE ME MANDE EL CLIENTE. EN ARTICULOS PODRA MANDAR (1 ARTICULO O 1 SUBGRUPO O 1 GRUPO)
-            articulo._id = ArticuloId;
-            SubgrupoComponente subgrupo = new SubgrupoComponente();
-            subgrupo._id = SubGrupoId;
-            GrupoComponente grupo = new GrupoComponente();;
-            grupo._id = GrupoId;
-            //DateTime date = new DateTime(2019,3,26,23,59,59);
-            DateTime date = DateTime.Parse(Fecha);
-            List<Articulo> ArticulosCompletoServer = new List<Articulo>();
-
-
-
-            if (subgrupo._id != null && subgrupo._id != "")
-                ArticulosCompletoServer = Articulos.Find<Articulo>(d => d.SubGrupoComponente._id == subgrupo._id).Project<Articulo>(Builders<Articulo>.Projection.Include(p => p._id).Include(o => o.Nombre).Include(i => i.SubGrupoComponente).Include(y => y.GrupoComponente)).ToList();
-            if (grupo._id != null && grupo._id != "")
-                ArticulosCompletoServer = Articulos.Find<Articulo>(d => d.GrupoComponente._id == grupo._id).Project<Articulo>(Builders<Articulo>.Projection.Include(p => p._id).Include(o=>o.Nombre).Include(i => i.SubGrupoComponente).Include(y => y.GrupoComponente)).ToList();
-            if(articulo._id != null && articulo._id != "")
-                ArticulosCompletoServer = Articulos.Find<Articulo>(d => d._id == articulo._id).Project<Articulo>(Builders<Articulo>.Projection.Include(p => p._id).Include(o => o.Nombre).Include(i=>i.SubGrupoComponente).Include(y => y.GrupoComponente)).ToList();
-
-            var Ids = (from an in ArticulosCompletoServer select an._id).ToList(); //recolectamos en una lista los ids que nos manda el cliente
-
-            var builderSaldos = Builders<InventariosSaldos>.Filter;
-            List < InventariosSaldos> InventariosSaldosCompletoServer = CollectionSaldos.Find(builderSaldos.In("ArticuloId", Ids) & builderSaldos.Eq("AlmacenId", almacen._id)).ToList();    
-            List<ExistenciaValorInventario> existenciaInventario = new List<ExistenciaValorInventario>();
+                Almacen almacen = new Almacen();                        // EN ALMACEN PODRA MANDAR (1 ALMACEN O TODOS LOS ALMACENES (CONSOLIDADO))
+                almacen._id = AlmacenId;
+                Articulo articulo = new Articulo();                      //DATOS QUE OCUPO QUE ME MANDE EL CLIENTE. EN ARTICULOS PODRA MANDAR (1 ARTICULO O 1 SUBGRUPO O 1 GRUPO)
+                articulo._id = ArticuloId;
+                SubgrupoComponente subgrupo = new SubgrupoComponente();
+                subgrupo._id = SubGrupoId;
+                GrupoComponente grupo = new GrupoComponente(); ;
+                grupo._id = GrupoId;
+                //DateTime date = new DateTime(2019,3,26,23,59,59);
+                DateTime date = DateTime.Parse(Fecha);
+                List<Articulo> ArticulosCompletoServer = new List<Articulo>();
 
 
-            foreach (Articulo art in ArticulosCompletoServer)
+                if((subgrupo._id != null || subgrupo._id != "") && (grupo._id != null || grupo._id != "") && (articulo._id != null || articulo._id != ""))
+                    ArticulosCompletoServer = Articulos.Find<Articulo>(_ => true).Project<Articulo>(Builders<Articulo>.Projection.Include(p => p._id).Include(o => o.Nombre).Include(i => i.SubGrupoComponente).Include(y => y.GrupoComponente).Include(l => l.UnidadInventario)).ToList();
+                if (subgrupo._id != null && subgrupo._id != "")
+                    ArticulosCompletoServer = Articulos.Find<Articulo>(d => d.SubGrupoComponente._id == subgrupo._id).Project<Articulo>(Builders<Articulo>.Projection.Include(p => p._id).Include(o => o.Nombre).Include(i => i.SubGrupoComponente).Include(l => l.UnidadInventario)).ToList();
+                if (grupo._id != null && grupo._id != "")
+                    ArticulosCompletoServer = Articulos.Find<Articulo>(d => d.GrupoComponente._id == grupo._id).Project<Articulo>(Builders<Articulo>.Projection.Include(p => p._id).Include(o => o.Nombre).Include(i => i.SubGrupoComponente).Include(l => l.UnidadInventario)).ToList();
+                if (articulo._id != null && articulo._id != "")
+                    ArticulosCompletoServer = Articulos.Find<Articulo>(d => d._id == articulo._id).Project<Articulo>(Builders<Articulo>.Projection.Include(p => p._id).Include(o => o.Nombre).Include(i => i.SubGrupoComponente).Include(l => l.UnidadInventario)).ToList();
+
+                var Ids = (from an in ArticulosCompletoServer select an._id).ToList(); //recolectamos en una lista los ids que nos manda el cliente
+
+                var builderSaldos = Builders<InventariosSaldos>.Filter;
+                List<InventariosSaldos> InventariosSaldosCompletoServer = CollectionSaldos.Find(builderSaldos.In("ArticuloId", Ids) & builderSaldos.Eq("AlmacenId", almacen._id)).ToList();
+                List<ExistenciaValorInventario> existenciaInventario = new List<ExistenciaValorInventario>();
+
+                foreach (Articulo art in ArticulosCompletoServer)
+                {
+
+                    Existencia = ExistenciaArticulo(art._id, almacen._id, date, InventariosSaldosCompletoServer, art);
+                    existenciaInventario.Add(Existencia);
+                }
+
+                return existenciaInventario;
+            }
+            catch (Exception ex)
             {
 
-                Existencia = ExistenciaArticulo(art._id, almacen._id, date, InventariosSaldosCompletoServer,art);
-                existenciaInventario.Add(Existencia);
+                return null;
             }
-
-
-            return existenciaInventario;
         }
 
         public ExistenciaValorInventario ExistenciaArticulo(string articuloId, string almacenId, DateTime date, List<InventariosSaldos> Inv , Articulo Art)
         {
-                 var builderMovimientos = Builders<MovimientosES>.Filter;
-                 DateTime ultimodiamesanterior = new DateTime();
-                 double Entradas = 0;
-                 double Salidas = 0;
-                 double EntradasCostos = 0;
-                 double SalidasCostos = 0;
-                 double SaldoMesesAnteriores=0;
-                 double ValorTotalMesesAnteriores = 0;
-                 List<MovimientosES> MovimientosEsCompletoServer = new List<MovimientosES>();
+            try
+            {
+                var builderMovimientos = Builders<MovimientosES>.Filter;
+                DateTime ultimodiamesanterior = new DateTime();
+                double Entradas = 0;
+                double Salidas = 0;
+                double EntradasCostos = 0;
+                double SalidasCostos = 0;
+                double SaldoMesesAnteriores = 0;
+                double ValorTotalMesesAnteriores = 0;
+                List<MovimientosES> MovimientosEsCompletoServer = new List<MovimientosES>();
 
 
 
-            var ultimodia = Inv.Find(b => b.ArticuloId == Art._id && b.AlmacenId == almacenId && b.Ano <= date.Year && b.Mes == date.Month);
+                var ultimodia = Inv.Find(b => b.ArticuloId == Art._id && b.AlmacenId == almacenId && b.Ano <= date.Year && b.Mes == date.Month);
 
-                     if ((ultimodia != null) && date.Day >= ultimodia.UltimoDia)
-                        {
-                            var saldomesesanteriores = Inv.FindAll(b => b.ArticuloId == articuloId && b.AlmacenId == almacenId && (b.Ano == date.Year && b.Mes <= date.Month || b.Ano < date.Year)).ToList();
-                            SaldoMesesAnteriores = saldomesesanteriores.Sum(a => a.EntradaUnidades - a.SalidasUnidades);
-                            ValorTotalMesesAnteriores= saldomesesanteriores.Sum(a => a.EntradasCosto - a.SalidasCosto);
+                if ((ultimodia != null) && date.Day >= ultimodia.UltimoDia)
+                {
+                    var saldomesesanteriores = Inv.FindAll(b => b.ArticuloId == articuloId && b.AlmacenId == almacenId && (b.Ano == date.Year && b.Mes <= date.Month || b.Ano < date.Year)).ToList();
+                    SaldoMesesAnteriores = saldomesesanteriores.Sum(a => a.EntradaUnidades - a.SalidasUnidades);
+                    ValorTotalMesesAnteriores = saldomesesanteriores.Sum(a => a.EntradasCosto - a.SalidasCosto);
 
-                        }
-                     else
-                        {
-                            ultimodia= Inv.Find(b => b.ArticuloId == Art._id && b.AlmacenId == almacenId && b.Ano <= date.Year && b.Mes < date.Month || b.Ano < date.Year);
-                            date=new DateTime(date.Year,date.Month,date.Day,0,0,0);
+                }
+                else
+                {
+                    ultimodia = Inv.Find(b => b.ArticuloId == Art._id && b.AlmacenId == almacenId && b.Ano <= date.Year && b.Mes < date.Month || b.Ano < date.Year);
+                    date = new DateTime(date.Year, date.Month, date.Day, 0, 0, 0);
 
-                            if(ultimodia != null)
-                             {
-                                ultimodiamesanterior = new DateTime(ultimodia.Ano, ultimodia.Mes, ultimodia.UltimoDia, 23, 59, 59);
-                                MovimientosEsCompletoServer = CollectionMovimientosEs.Find(builderMovimientos.Eq("Almacen._id", "5bd259a71d28282c7ce19c37") & builderMovimientos.
-                                Where(a => a.Fecha > ultimodiamesanterior &&  ( a.Fecha < date) )).ToList();
-                                var me = MovimientosEsCompletoServer.Where(i => i.Concepto.Naturaleza == "ENTRADA").SelectMany(l => l.Detalles_ES).Where(p => p.Articulo._id == Art._id);
-                                var ms = MovimientosEsCompletoServer.Where(i => i.Concepto.Naturaleza == "SALIDA").SelectMany(l => l.Detalles_ES).Where(p => p.Articulo._id == Art._id);
-                                Entradas = me.Sum(o => o.Cantidad);
-                                EntradasCostos = me.Sum(o => o.CostoTotal);
-                                Salidas = ms.Sum(o => o.Cantidad);
-                                SalidasCostos = ms.Sum(o => o.CostoTotal);
-                             }
+                    if (ultimodia != null)
+                    {
+                        ultimodiamesanterior = new DateTime(ultimodia.Ano, ultimodia.Mes, ultimodia.UltimoDia, 23, 59, 59);
+                        MovimientosEsCompletoServer = CollectionMovimientosEs.Find(builderMovimientos.Eq("Almacen._id", "5bd259a71d28282c7ce19c37") & builderMovimientos.
+                        Where(a => a.Fecha > ultimodiamesanterior && (a.Fecha < date))).ToList();
+                        var me = MovimientosEsCompletoServer.Where(i => i.Concepto.Naturaleza == "ENTRADA").SelectMany(l => l.Detalles_ES).Where(p => p.Articulo._id == Art._id);
+                        var ms = MovimientosEsCompletoServer.Where(i => i.Concepto.Naturaleza == "SALIDA").SelectMany(l => l.Detalles_ES).Where(p => p.Articulo._id == Art._id);
+                        Entradas = me.Sum(o => o.Cantidad);
+                        EntradasCostos = me.Sum(o => o.CostoTotal);
+                        Salidas = ms.Sum(o => o.Cantidad);
+                        SalidasCostos = ms.Sum(o => o.CostoTotal);
+                    }
 
-                            var saldomesesanteriores = Inv.FindAll(b => b.ArticuloId == articuloId && b.AlmacenId == almacenId && (b.Ano == date.Year && b.Mes < date.Month || b.Ano < date.Year)).ToList();
-                            SaldoMesesAnteriores = saldomesesanteriores.Sum(a => a.EntradaUnidades - a.SalidasUnidades);
-                            ValorTotalMesesAnteriores = saldomesesanteriores.Sum(a => a.EntradasCosto - a.SalidasCosto);
-                        }
-                                                                                           
-                 var existencia = SaldoMesesAnteriores + Entradas - Salidas;
-                 var ValorTotal = ValorTotalMesesAnteriores + EntradasCostos - SalidasCostos;
+                    var saldomesesanteriores = Inv.FindAll(b => b.ArticuloId == articuloId && b.AlmacenId == almacenId && (b.Ano == date.Year && b.Mes < date.Month || b.Ano < date.Year)).ToList();
+                    SaldoMesesAnteriores = saldomesesanteriores.Sum(a => a.EntradaUnidades - a.SalidasUnidades);
+                    ValorTotalMesesAnteriores = saldomesesanteriores.Sum(a => a.EntradasCosto - a.SalidasCosto);
+                }
 
-                 ExistenciaValorInventario existenciaInventario = new ExistenciaValorInventario();
-                 existenciaInventario.Fecha = date.ToString();
-                 existenciaInventario.Existencia = existencia;
-                 existenciaInventario.ValorTotal = ValorTotal;
-                 existenciaInventario.CostoUnitario = ValorTotal > 0 ? ValorTotal / existencia : 0.00 ;
-                 existenciaInventario.Articulo = Art;
-                 existenciaInventario.SubgrupoComponente=Art.SubGrupoComponente;
-                 existenciaInventario.GrupoComponente = Art.GrupoComponente;
+                var existencia = SaldoMesesAnteriores + Entradas - Salidas;
+                var ValorTotal = ValorTotalMesesAnteriores + EntradasCostos - SalidasCostos;
+
+                ExistenciaValorInventario existenciaInventario = new ExistenciaValorInventario();
+                existenciaInventario.Fecha = date.ToString();
+                existenciaInventario.Existencia = existencia;
+                existenciaInventario.ValorTotal = ValorTotal;
+                existenciaInventario.CostoUnitario = ValorTotal > 0 ? ValorTotal / existencia : 0.00;
+                existenciaInventario.Articulo = Art;
+                existenciaInventario.SubgrupoComponente = Art.SubGrupoComponente;
+                existenciaInventario.GrupoComponente = Art.GrupoComponente;
+                existenciaInventario.UnidadInventario = Art.UnidadInventario.Abreviatura;
 
 
-
-            return existenciaInventario;
+                return existenciaInventario;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
             
         }
 

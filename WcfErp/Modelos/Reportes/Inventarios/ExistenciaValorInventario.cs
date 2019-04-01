@@ -18,7 +18,8 @@ namespace WcfErp.Modelos.Reportes.Inventarios
         public double Existencia { get; set; }
         public double CostoUnitario { get; set; }
         public double ValorTotal { get; set; }
-        
+        public string UnidadInventario { get; set; }
+
 
     }
 }

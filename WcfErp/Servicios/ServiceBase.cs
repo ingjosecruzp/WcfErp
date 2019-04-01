@@ -9,6 +9,8 @@ using WcfErp.Modelos;
 using WcfErp.Modelos.Generales;
 using System.ServiceModel.Web;
 using Newtonsoft.Json.Linq;
+using System.ServiceModel;
+using System.ServiceModel.Channels;
 
 namespace WcfErp.Servicios
 {
@@ -18,9 +20,9 @@ namespace WcfErp.Servicios
         {
             try
             {
-                MongoClient client = new MongoClient("mongodb://Alba:pwjrnew@18.191.252.222:27017/PAMC861025DB7");
-                IMongoDatabase db = client.GetDatabase("PAMC861025DB7");
-                
+                MongoClient client = new MongoClient("mongodb://adminErp:pwjrnew@18.191.252.222:27017/?authSource=admin");
+                IMongoDatabase db = client.GetDatabase(getKeyToken("empresa","token"));
+
                 IMongoCollection<Modelo> CollectionClientes = db.GetCollection<Modelo>(typeof(Modelo).Name);
 
                 CollectionClientes.InsertOne(item);
@@ -50,8 +52,8 @@ namespace WcfErp.Servicios
                 Console.WriteLine(rss.ToString());
                 campos += "}";
 
-                MongoClient client = new MongoClient("mongodb://Alba:pwjrnew@18.191.252.222:27017/PAMC861025DB7");
-                 IMongoDatabase db = client.GetDatabase("PAMC861025DB7");
+                MongoClient client = new MongoClient("mongodb://adminErp:pwjrnew@18.191.252.222:27017/?authSource=admin");
+                 IMongoDatabase db = client.GetDatabase(getKeyToken("empresa","token"));
 
                 IMongoCollection<Modelo> Collection = db.GetCollection<Modelo>(typeof(Modelo).Name);
             
@@ -78,8 +80,8 @@ namespace WcfErp.Servicios
         {
             try
             {
-                MongoClient client = new MongoClient("mongodb://Alba:pwjrnew@18.191.252.222:27017/PAMC861025DB7");
-                IMongoDatabase db = client.GetDatabase("PAMC861025DB7");
+                MongoClient client = new MongoClient("mongodb://adminErp:pwjrnew@18.191.252.222:27017/?authSource=admin");
+                IMongoDatabase db = client.GetDatabase(getKeyToken("empresa","token"));
 
                 IMongoCollection<Modelo> Collection = db.GetCollection<Modelo>(typeof(Modelo).Name);
 
@@ -100,8 +102,8 @@ namespace WcfErp.Servicios
             try
             {
                 //ObjectId ClienteId = ObjectId.Parse(id);
-                MongoClient client = new MongoClient("mongodb://Alba:pwjrnew@18.191.252.222:27017/PAMC861025DB7");
-                IMongoDatabase db = client.GetDatabase("PAMC861025DB7");
+                MongoClient client = new MongoClient("mongodb://adminErp:pwjrnew@18.191.252.222:27017/?authSource=admin");
+                IMongoDatabase db = client.GetDatabase(getKeyToken("empresa","token"));
 
                 IMongoCollection<Modelo> Collection = db.GetCollection<Modelo>(typeof(Modelo).Name);
 
@@ -123,8 +125,8 @@ namespace WcfErp.Servicios
         {
             try
             {
-                MongoClient client = new MongoClient("mongodb://Alba:pwjrnew@18.191.252.222:27017/PAMC861025DB7");
-                IMongoDatabase db = client.GetDatabase("PAMC861025DB7");
+                MongoClient client = new MongoClient("mongodb://adminErp:pwjrnew@18.191.252.222:27017/?authSource=admin");
+                IMongoDatabase db = client.GetDatabase(getKeyToken("empresa","token"));
 
                 IMongoCollection<Modelo> Collection = db.GetCollection<Modelo>(typeof(Modelo).Name);
 
@@ -146,8 +148,8 @@ namespace WcfErp.Servicios
 
                 //item._id = ClienteId;
 
-                MongoClient client = new MongoClient("mongodb://Alba:pwjrnew@18.191.252.222:27017/PAMC861025DB7");
-                IMongoDatabase db = client.GetDatabase("PAMC861025DB7");
+                MongoClient client = new MongoClient("mongodb://adminErp:pwjrnew@18.191.252.222:27017/?authSource=admin");
+                IMongoDatabase db = client.GetDatabase(getKeyToken("empresa","token"));
 
                 IMongoCollection<Modelo> CollectionClientes = db.GetCollection<Modelo>(typeof(Modelo).Name);
 
@@ -177,6 +179,31 @@ namespace WcfErp.Servicios
 
             response.StatusCode = HttpStatusCode.InternalServerError;
             response.StatusDescription = error;
+        }
+        public string getKeyToken(string key, string Token)
+        {
+            try
+            {
+                OperationContext currentContext = OperationContext.Current;
+                HttpRequestMessageProperty reqMsg = currentContext.IncomingMessageProperties["httpRequest"] as HttpRequestMessageProperty;
+                string authToken = reqMsg.Headers[Token];
+                string value;
+                if (authToken != "")
+                {
+                    var payload = JWT.JsonWebToken.DecodeToObject(authToken, "pwjrnew") as IDictionary<string, object>;
+                    value = payload.ContainsKey(key) ? payload[key].ToString() : "";
+                }
+                else
+                {
+                    value = "";
+                }
+                return value;
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
         }
     }
 }

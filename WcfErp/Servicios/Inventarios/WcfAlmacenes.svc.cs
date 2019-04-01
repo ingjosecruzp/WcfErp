@@ -19,8 +19,8 @@ namespace WcfErp.Servicios.Inventarios
         {
             try
             {
-                MongoClient client = new MongoClient("mongodb://Alba:pwjrnew@18.191.252.222:27017/PAMC861025DB7");
-                IMongoDatabase db = client.GetDatabase("PAMC861025DB7");
+                MongoClient client = new MongoClient("mongodb://adminErp:pwjrnew@18.191.252.222:27017/?authSource=admin");
+                IMongoDatabase db = client.GetDatabase(getKeyToken("empresa","token"));
 
                 IMongoCollection<TipoComponente> Collection = db.GetCollection<TipoComponente>("TipoComponente");
 
@@ -41,8 +41,8 @@ namespace WcfErp.Servicios.Inventarios
         {
             try
             {
-                MongoClient client = new MongoClient("mongodb://Alba:pwjrnew@18.191.252.222:27017/PAMC861025DB7");
-                IMongoDatabase db = client.GetDatabase("PAMC861025DB7");
+                MongoClient client = new MongoClient("mongodb://adminErp:pwjrnew@18.191.252.222:27017/?authSource=admin");
+                IMongoDatabase db = client.GetDatabase(getKeyToken("empresa","token"));
 
                 IMongoCollection<TipoComponente> Collection = db.GetCollection<TipoComponente>("TipoComponente");
 
@@ -69,7 +69,7 @@ namespace WcfErp.Servicios.Inventarios
             try
             {
                 MongoClient client = new MongoClient();
-                IMongoDatabase db = client.GetDatabase("PAMC861025DB7");
+                IMongoDatabase db = client.GetDatabase(getKeyToken("empresa","token"));
 
                 IMongoCollection<Almacen> Collection = db.GetCollection<Almacen>(typeof(Almacen).Name);
 
