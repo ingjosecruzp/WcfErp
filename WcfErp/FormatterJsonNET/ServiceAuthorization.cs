@@ -18,6 +18,7 @@ namespace WcfErp.FormatterJsonNET
         protected override bool CheckAccessCore(OperationContext operationContext)
         { // Do custom stuff here...
           //Extract the Authorization header, and parse out the credentials converting the Base64 string:
+            return true;
             if (WebOperationContext.Current.IncomingRequest.Method == "OPTIONS") return true;
             if (operationContext.RequestContext.RequestMessage.Headers.To.AbsoluteUri == "http://localhost:60493/Servicios/WSLogin.svc/") return true;
             
