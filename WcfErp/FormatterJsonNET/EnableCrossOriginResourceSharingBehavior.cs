@@ -24,7 +24,9 @@ namespace WcfErp.FormatterJsonNET
             var requiredHeaders = new Dictionary<string, string>();
 
             requiredHeaders.Add("Access-Control-Allow-Origin", "*");
+            //requiredHeaders.Add("Access-Control-Allow-Origin", "http://localhost:8080");
             requiredHeaders.Add("Access-Control-Request-Method", "POST,GET,PUT,DELETE,OPTIONS");
+            requiredHeaders.Add("Access-Control-Allow-Methods", "POST,GET,PUT,DELETE,OPTIONS");
             requiredHeaders.Add("Access-Control-Expose-Headers", "Error");
             requiredHeaders.Add("Access-Control-Allow-Headers", "X-Requested-With,Content-Type,token,tokenempresa,udn,Error");
 

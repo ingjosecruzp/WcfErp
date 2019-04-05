@@ -147,7 +147,7 @@ namespace WcfErp.Servicios.Reportes.Inventarios
                 existenciaInventario.Articulo = Art;
                 existenciaInventario.SubgrupoComponente = Art.SubGrupoComponente;
                 existenciaInventario.GrupoComponente = Art.GrupoComponente;
-                existenciaInventario.UnidadInventario = Art.UnidadInventario.Abreviatura;
+                existenciaInventario.UnidadInventario = Art.UnidadInventario == null ? null : Art.UnidadInventario.Abreviatura;
 
 
                 return existenciaInventario;

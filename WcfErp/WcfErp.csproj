@@ -134,6 +134,7 @@
     <Compile Include="FormatterJsonNET\NewtonsoftJsonDispatchFormatter.cs" />
     <Compile Include="FormatterJsonNET\RawBodyWriter.cs" />
     <Compile Include="FormatterJsonNET\ServiceAuthorization.cs" />
+    <Compile Include="Modelos\Administracion\Semaforo.cs" />
     <Compile Include="Modelos\Administracion\UsuarioRol.cs" />
     <Compile Include="Modelos\Administracion\Usuario.cs" />
     <Compile Include="Modelos\Counters.cs" />

@@ -11,6 +11,7 @@ using System.ServiceModel.Web;
 using Newtonsoft.Json.Linq;
 using System.ServiceModel;
 using System.ServiceModel.Channels;
+using WcfErp.Modelos.Administracion;
 
 namespace WcfErp.Servicios
 {
@@ -101,6 +102,8 @@ namespace WcfErp.Servicios
         {
             try
             {
+                DisponibilidadDocumento(typeof(Modelo).Name,id);
+
                 //ObjectId ClienteId = ObjectId.Parse(id);
                 MongoClient client = new MongoClient("mongodb://adminErp:pwjrnew@18.191.252.222:27017/?authSource=admin");
                 IMongoDatabase db = client.GetDatabase(getKeyToken("empresa","token"));
@@ -111,6 +114,8 @@ namespace WcfErp.Servicios
 
                 Modelo item = Collection.Find<Modelo>(d => d._id == id).FirstOrDefault();
                 //Modelo item = Collection.Find<Modelo>(d => d._id == id).FirstOrDefault();
+
+                bloquearDocumento(typeof(Modelo).Name,item._id);
 
                 return item;
 
@@ -198,6 +203,55 @@ namespace WcfErp.Servicios
                     value = "";
                 }
                 return value;
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+        public void bloquearDocumento(string documento,string documentoId)
+        {
+            try
+            {
+                MongoClient client = new MongoClient("mongodb://adminErp:pwjrnew@18.191.252.222:27017/?authSource=admin");
+                IMongoDatabase db = client.GetDatabase("Usuarios");
+
+                IMongoCollection<Semaforo> CollectionSemaforo = db.GetCollection<Semaforo>("Semaforo");
+
+                Semaforo item = new Semaforo();
+                item.Empresa = getKeyToken("empresa", "token");
+                item.Documento = documento;
+                item.DocumentoId = documentoId;
+                item.Usuario = getKeyToken("user", "token");
+                item.usuarioId = getKeyToken("id", "token");
+
+                CollectionSemaforo.InsertOne(item);
+            }
+            catch (Exception ex)
+            {
+
+                throw;
+            }
+        }
+        public void DisponibilidadDocumento(string documento,string documentoId)
+        {
+            try
+            {
+                MongoClient client = new MongoClient("mongodb://adminErp:pwjrnew@18.191.252.222:27017/?authSource=admin");
+                IMongoDatabase db = client.GetDatabase("Usuarios");
+
+                IMongoCollection<Semaforo> CollectionSemaforo = db.GetCollection<Semaforo>("Semaforo");
+
+                string Empresa = getKeyToken("empresa", "token");
+
+                Semaforo item = CollectionSemaforo.Find<Semaforo>(d => d.Empresa == Empresa && d.DocumentoId == documentoId && d.Documento== documento ).FirstOrDefault();
+
+                if(item != null)
+                {
+                    throw new Exception("Este documento se encuentra en uso por el usuario: " + item.Usuario);
+                }
+
             }
             catch (Exception)
             {

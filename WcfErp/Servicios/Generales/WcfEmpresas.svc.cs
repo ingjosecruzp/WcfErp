@@ -103,6 +103,8 @@ namespace WcfErp.Servicios.Generales
 
                 tokens token = CollectionTokens.Find<tokens>(t => t.Token == authToken).FirstOrDefault();
                 token.Token = Nuevotoken;
+                token.Usuario = user;
+                token.Nombre = user;
 
                 var filter = Builders<tokens>.Filter.Eq(s => s.Token, authToken);
 
