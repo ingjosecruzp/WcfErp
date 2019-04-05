@@ -15,6 +15,89 @@ namespace WcfErp.Servicios.Generales
     // NOTE: In order to launch WCF Test Client for testing this service, please select WcfEmpresas.svc or WcfEmpresas.svc.cs at the Solution Explorer and start debugging.
     public class WcfEmpresas : ServiceBase<BDEmpresas>, IWcfEmpresas
     {
+        public override  List<BDEmpresas> all(string cadena)
+        {
+            try
+            {
+                return base.all(cadena, "Usuarios");
+            }
+            catch (Exception ex)
+            {
+                Error(ex, "");
+                return null;
+            }
+        }
+
+        //Tipo add(Tipo item);
+        public override BDEmpresas add(BDEmpresas bDEmpresas)
+        {
+            try
+            {
+                return base.add(bDEmpresas, "Usuarios");
+            }
+            catch (Exception ex)
+            {
+                Error(ex, "");
+                return null;
+            }
+        }
+
+        //List<Tipo> search(string busqueda);
+        public override List<BDEmpresas> search(string busqueda)
+        {
+            try
+            {
+                return base.search(busqueda, "Usuarios");
+            }
+            catch (Exception ex)
+            {
+                Error(ex, "");
+                return null;
+            }
+        }
+
+        //Tipo get(string id);
+        public override BDEmpresas get(string id)
+        {
+            try
+            {
+                return base.get(id, "Usuarios");
+            }
+            catch (Exception ex)
+            {
+                Error(ex, "");
+                return null;
+            }
+        }
+
+        //Tipo delete(string id);
+        public override BDEmpresas delete(string id)
+        {
+            try
+            {
+                return base.delete(id, "Usuarios");
+            }
+            catch (Exception ex)
+            {
+                Error(ex, "");
+                return null;
+            }
+        }
+
+        //Tipo update(Tipo item, string id);
+        public override BDEmpresas update(BDEmpresas item, string id)
+        {
+            try
+            {
+                return base.update(item, id, "Usuarios");
+            }
+            catch (Exception ex)
+            {
+                Error(ex, "");
+                return null;
+            }
+        }
+
         public List<BDEmpresas> getEmpresasUsuarios()
         {
             try
