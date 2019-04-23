@@ -102,7 +102,7 @@ namespace WcfErp.Servicios.Generales
         {
             try
             {
-                MongoClient client = new MongoClient("mongodb://adminErp:pwjrnew@18.191.252.222:27017/?authSource=admin");
+                MongoClient client = new MongoClient(getConnection());
                 IMongoDatabase db = client.GetDatabase("Usuarios");
 
                 IMongoCollection<Usuarios> CollectionUsuarios = db.GetCollection<Usuarios>("Usuarios");
@@ -142,7 +142,7 @@ namespace WcfErp.Servicios.Generales
         {
             try
             {
-                MongoClient client = new MongoClient("mongodb://adminErp:pwjrnew@18.191.252.222:27017/?authSource=admin");
+                MongoClient client = new MongoClient(getConnection());
                 IMongoDatabase db = client.GetDatabase("Usuarios");
 
                 IMongoCollection<Usuarios> CollectionUsuarios = db.GetCollection<Usuarios>("Usuarios");

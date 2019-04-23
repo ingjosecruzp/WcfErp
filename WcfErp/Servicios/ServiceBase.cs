@@ -12,6 +12,7 @@ using Newtonsoft.Json.Linq;
 using System.ServiceModel;
 using System.ServiceModel.Channels;
 using WcfErp.Modelos.Administracion;
+using System.Configuration;
 
 namespace WcfErp.Servicios
 {
@@ -21,7 +22,7 @@ namespace WcfErp.Servicios
         {
             try
             {
-                MongoClient client = new MongoClient("mongodb://adminErp:pwjrnew@18.191.252.222:27017/?authSource=admin");
+                MongoClient client = new MongoClient(getConnection());
                 IMongoDatabase db = client.GetDatabase(getKeyToken("empresa","token"));
 
                 IMongoCollection<Modelo> CollectionClientes = db.GetCollection<Modelo>(typeof(Modelo).Name);
@@ -41,7 +42,7 @@ namespace WcfErp.Servicios
         {
             try
             {
-                MongoClient client = new MongoClient("mongodb://adminErp:pwjrnew@18.191.252.222:27017/?authSource=admin");
+                MongoClient client = new MongoClient(getConnection());
                 IMongoDatabase db = client.GetDatabase(bd);
 
                 IMongoCollection<Modelo> CollectionClientes = db.GetCollection<Modelo>(typeof(Modelo).Name);
@@ -74,7 +75,7 @@ namespace WcfErp.Servicios
                 Console.WriteLine(rss.ToString());
                 campos += "}";
 
-                MongoClient client = new MongoClient("mongodb://adminErp:pwjrnew@18.191.252.222:27017/?authSource=admin");
+                MongoClient client = new MongoClient(getConnection());
                 IMongoDatabase db = client.GetDatabase(bd);
 
                 IMongoCollection<Modelo> Collection = db.GetCollection<Modelo>(typeof(Modelo).Name);
@@ -115,7 +116,7 @@ namespace WcfErp.Servicios
                 Console.WriteLine(rss.ToString());
                 campos += "}";
 
-                MongoClient client = new MongoClient("mongodb://adminErp:pwjrnew@18.191.252.222:27017/?authSource=admin");
+                MongoClient client = new MongoClient(getConnection());
                 IMongoDatabase db = client.GetDatabase(getKeyToken("empresa","token"));
 
                 IMongoCollection<Modelo> Collection = db.GetCollection<Modelo>(typeof(Modelo).Name);
@@ -143,7 +144,7 @@ namespace WcfErp.Servicios
         {
             try
             {
-                MongoClient client = new MongoClient("mongodb://adminErp:pwjrnew@18.191.252.222:27017/?authSource=admin");
+                MongoClient client = new MongoClient(getConnection());
                 IMongoDatabase db = client.GetDatabase(getKeyToken("empresa","token"));
 
                 IMongoCollection<Modelo> Collection = db.GetCollection<Modelo>(typeof(Modelo).Name);
@@ -165,7 +166,7 @@ namespace WcfErp.Servicios
         {
             try
             {
-                MongoClient client = new MongoClient("mongodb://adminErp:pwjrnew@18.191.252.222:27017/?authSource=admin");
+                MongoClient client = new MongoClient(getConnection());
                 IMongoDatabase db = client.GetDatabase(bd);
 
                 IMongoCollection<Modelo> Collection = db.GetCollection<Modelo>(typeof(Modelo).Name);
@@ -190,7 +191,7 @@ namespace WcfErp.Servicios
                 DisponibilidadDocumento(typeof(Modelo).Name,id);
 
                 //ObjectId ClienteId = ObjectId.Parse(id);
-                MongoClient client = new MongoClient("mongodb://adminErp:pwjrnew@18.191.252.222:27017/?authSource=admin");
+                MongoClient client = new MongoClient(getConnection());
                 IMongoDatabase db = client.GetDatabase(getKeyToken("empresa","token"));
 
                 IMongoCollection<Modelo> Collection = db.GetCollection<Modelo>(typeof(Modelo).Name);
@@ -217,7 +218,7 @@ namespace WcfErp.Servicios
             try
             {
                 //ObjectId ClienteId = ObjectId.Parse(id);
-                MongoClient client = new MongoClient("mongodb://adminErp:pwjrnew@18.191.252.222:27017/?authSource=admin");
+                MongoClient client = new MongoClient(getConnection());
                 IMongoDatabase db = client.GetDatabase(bd);
 
                 IMongoCollection<Modelo> Collection = db.GetCollection<Modelo>(typeof(Modelo).Name);
@@ -241,7 +242,7 @@ namespace WcfErp.Servicios
         {
             try
             {
-                MongoClient client = new MongoClient("mongodb://adminErp:pwjrnew@18.191.252.222:27017/?authSource=admin");
+                MongoClient client = new MongoClient(getConnection());
                 IMongoDatabase db = client.GetDatabase(getKeyToken("empresa","token"));
 
                 IMongoCollection<Modelo> Collection = db.GetCollection<Modelo>(typeof(Modelo).Name);
@@ -261,7 +262,7 @@ namespace WcfErp.Servicios
         {
             try
             {
-                MongoClient client = new MongoClient("mongodb://adminErp:pwjrnew@18.191.252.222:27017/?authSource=admin");
+                MongoClient client = new MongoClient(getConnection());
                 IMongoDatabase db = client.GetDatabase(bd);
 
                 IMongoCollection<Modelo> Collection = db.GetCollection<Modelo>(typeof(Modelo).Name);
@@ -285,7 +286,7 @@ namespace WcfErp.Servicios
 
                 //item._id = ClienteId;
 
-                MongoClient client = new MongoClient("mongodb://adminErp:pwjrnew@18.191.252.222:27017/?authSource=admin");
+                MongoClient client = new MongoClient(getConnection());
                 IMongoDatabase db = client.GetDatabase(getKeyToken("empresa","token"));
 
                 IMongoCollection<Modelo> CollectionClientes = db.GetCollection<Modelo>(typeof(Modelo).Name);
@@ -312,7 +313,7 @@ namespace WcfErp.Servicios
 
                 //item._id = ClienteId;
 
-                MongoClient client = new MongoClient("mongodb://adminErp:pwjrnew@18.191.252.222:27017/?authSource=admin");
+                MongoClient client = new MongoClient(getConnection());
                 IMongoDatabase db = client.GetDatabase(bd);
 
                 IMongoCollection<Modelo> CollectionClientes = db.GetCollection<Modelo>(typeof(Modelo).Name);
@@ -370,11 +371,23 @@ namespace WcfErp.Servicios
                 throw;
             }
         }
+        public string getConnection()
+        {
+            try
+            {
+                return ConfigurationManager.AppSettings["pathMongo"];
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
         public void bloquearDocumento(string documento,string documentoId)
         {
             try
             {
-                MongoClient client = new MongoClient("mongodb://adminErp:pwjrnew@18.191.252.222:27017/?authSource=admin");
+                MongoClient client = new MongoClient(getConnection());
                 IMongoDatabase db = client.GetDatabase("Usuarios");
 
                 IMongoCollection<Semaforo> CollectionSemaforo = db.GetCollection<Semaforo>("Semaforo");
@@ -398,7 +411,7 @@ namespace WcfErp.Servicios
         {
             try
             {
-                MongoClient client = new MongoClient("mongodb://adminErp:pwjrnew@18.191.252.222:27017/?authSource=admin");
+                MongoClient client = new MongoClient(getConnection());
                 IMongoDatabase db = client.GetDatabase("Usuarios");
 
                 IMongoCollection<Semaforo> CollectionSemaforo = db.GetCollection<Semaforo>("Semaforo");

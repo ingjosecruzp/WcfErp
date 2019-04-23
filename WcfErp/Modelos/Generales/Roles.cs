@@ -14,5 +14,20 @@ namespace WcfErp.Modelos.Generales
         {
             this.BDEmpresas = new List<BDEmpresas>();
         }
+
+        public void ValidarModel(Roles item)
+        {
+            try
+            {
+
+                if (item.BDEmpresas.Count == 0)//sin detalles
+                    throw new Exception("Al menos debes seleccionar una empresa");
+            }
+            catch (Exception)
+            {
+                throw;
+
+            }
+        }
     }
 }

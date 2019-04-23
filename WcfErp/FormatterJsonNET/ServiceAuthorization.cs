@@ -1,6 +1,7 @@
 ﻿using MongoDB.Driver;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.Net;
 using System.Reflection;
@@ -27,7 +28,7 @@ namespace WcfErp.FormatterJsonNET
             if ((authHeader != null) && (authHeader != string.Empty))
             {
 
-                MongoClient client = new MongoClient("mongodb://adminErp:pwjrnew@18.191.252.222:27017/?authSource=admin");
+                MongoClient client = new MongoClient(ConfigurationManager.AppSettings["pathMongo"]);
                 IMongoDatabase db = client.GetDatabase("Usuarios");
 
                 IMongoCollection<tokens> CollectionTokens = db.GetCollection<tokens>("tokens");

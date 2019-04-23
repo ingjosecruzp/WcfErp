@@ -1,6 +1,7 @@
 ﻿using MongoDB.Driver;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.Net;
 using System.Runtime.Serialization;
@@ -20,7 +21,7 @@ namespace WcfErp.Servicios
         {
             try
             {
-                MongoClient client = new MongoClient("mongodb://adminErp:pwjrnew@18.191.252.222:27017/?authSource=admin");
+                MongoClient client = new MongoClient(ConfigurationManager.AppSettings["pathMongo"]);
                 IMongoDatabase db = client.GetDatabase("Usuarios");
 
                 IMongoCollection<Usuarios> Collection = db.GetCollection<Usuarios>("Usuarios");
