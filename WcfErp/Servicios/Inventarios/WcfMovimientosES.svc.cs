@@ -21,7 +21,7 @@ namespace WcfErp.Servicios.Inventarios
         
         public  override  MovimientosES add(MovimientosES item)
         {
-            MongoClient client = new MongoClient("mongodb://adminErp:pwjrnew@18.191.252.222:27017/?authSource=admin");
+            MongoClient client = new MongoClient(getConnection());
             //    var session = client.StartSession();//Create a session  transactions
 
 
@@ -121,7 +121,7 @@ namespace WcfErp.Servicios.Inventarios
         {
             try
             {
-                MongoClient client = new MongoClient("mongodb://adminErp:pwjrnew@18.191.252.222:27017/?authSource=admin");
+                MongoClient client = new MongoClient(getConnection());
                 IMongoDatabase db = client.GetDatabase(getKeyToken("empresa","token"));
 
                 var collection = db.GetCollection<Counters>("Counters");
@@ -352,7 +352,7 @@ namespace WcfErp.Servicios.Inventarios
                 Console.WriteLine(rss.ToString());
                 campos += "}";
 
-                MongoClient client = new MongoClient("mongodb://adminErp:pwjrnew@18.191.252.222:27017/?authSource=admin");
+                MongoClient client = new MongoClient(getConnection());
                 IMongoDatabase db = client.GetDatabase(getKeyToken("empresa","token"));
 
                 IMongoCollection<MovimientosES> Collection = db.GetCollection<MovimientosES>(typeof(MovimientosES).Name);

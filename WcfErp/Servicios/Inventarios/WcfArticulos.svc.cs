@@ -19,7 +19,7 @@ namespace WcfErp.Servicios.Inventarios
         {
             try
             {
-                MongoClient client = new MongoClient("mongodb://adminErp:pwjrnew@18.191.252.222:27017/?authSource=admin");
+                MongoClient client = new MongoClient(getConnection());
                 IMongoDatabase db = client.GetDatabase(getKeyToken("empresa","token"));
 
                 IMongoCollection<GrupoComponente> Collection_GrupoComponente = db.GetCollection<GrupoComponente>("GrupoComponente");

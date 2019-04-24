@@ -59,7 +59,6 @@ namespace WcfErp.Modelos.Inventarios
         public MovimientosES ()
         {
             this.Detalles_ES = new List<Detalles_ES>();
-
         }
         public void ValidarModel(MovimientosES item)
         {

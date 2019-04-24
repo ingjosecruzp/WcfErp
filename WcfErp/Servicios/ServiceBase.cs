@@ -11,6 +11,8 @@ using System.ServiceModel.Web;
 using Newtonsoft.Json.Linq;
 using System.ServiceModel;
 using System.ServiceModel.Channels;
+using WcfErp.Modelos.Administracion;
+using System.Configuration;
 
 namespace WcfErp.Servicios
 {
@@ -20,7 +22,7 @@ namespace WcfErp.Servicios
         {
             try
             {
-                MongoClient client = new MongoClient("mongodb://adminErp:pwjrnew@18.191.252.222:27017/?authSource=admin");
+                MongoClient client = new MongoClient(getConnection());
                 IMongoDatabase db = client.GetDatabase(getKeyToken("empresa","token"));
 
                 IMongoCollection<Modelo> CollectionClientes = db.GetCollection<Modelo>(typeof(Modelo).Name);
@@ -28,6 +30,68 @@ namespace WcfErp.Servicios
                 CollectionClientes.InsertOne(item);
 
                 return item;
+            }
+            catch (Exception ex)
+            {
+                Error(ex, "");
+                return null;
+            }
+        }
+
+        public virtual Modelo add(Modelo item, string bd)
+        {
+            try
+            {
+                MongoClient client = new MongoClient(getConnection());
+                IMongoDatabase db = client.GetDatabase(bd);
+
+                IMongoCollection<Modelo> CollectionClientes = db.GetCollection<Modelo>(typeof(Modelo).Name);
+
+                CollectionClientes.InsertOne(item);
+
+                return item;
+            }
+            catch (Exception ex)
+            {
+                Error(ex, "");
+                return null;
+            }
+        }
+
+        public virtual List<Modelo> all(string cadena,string bd)
+        {
+            try
+            {
+                JObject rss = new JObject();
+
+                string[] fields = cadena.Split(',');
+
+                string campos = "{";
+
+                foreach (string f in fields)
+                {
+                    rss.Add(new JProperty(f, "1"));
+                }
+                Console.WriteLine(rss.ToString());
+                campos += "}";
+
+                MongoClient client = new MongoClient(getConnection());
+                IMongoDatabase db = client.GetDatabase(bd);
+
+                IMongoCollection<Modelo> Collection = db.GetCollection<Modelo>(typeof(Modelo).Name);
+
+                List<Modelo> Lista;
+
+                /*if(campos != null)
+                    Lista = Collection.Find<Modelo>(null).Project<Modelo>(campos).ToList();
+                else
+                   Lista = Collection.AsQueryable().ToList();*/
+                var filter = Builders<Modelo>.Filter.Regex("Nombre", new BsonRegularExpression("", "i"));
+
+                //Lista = Collection.Find<Modelo>(filter).Project<Modelo>("{_id:1, Nombre:1,TipoConcepto.Nombre:1}").ToList();
+                Lista = Collection.Find<Modelo>(filter).Project<Modelo>(rss.ToString()).ToList();
+
+                return Lista;
             }
             catch (Exception ex)
             {
@@ -52,8 +116,8 @@ namespace WcfErp.Servicios
                 Console.WriteLine(rss.ToString());
                 campos += "}";
 
-                MongoClient client = new MongoClient("mongodb://adminErp:pwjrnew@18.191.252.222:27017/?authSource=admin");
-                 IMongoDatabase db = client.GetDatabase(getKeyToken("empresa","token"));
+                MongoClient client = new MongoClient(getConnection());
+                IMongoDatabase db = client.GetDatabase(getKeyToken("empresa","token"));
 
                 IMongoCollection<Modelo> Collection = db.GetCollection<Modelo>(typeof(Modelo).Name);
             
@@ -80,7 +144,7 @@ namespace WcfErp.Servicios
         {
             try
             {
-                MongoClient client = new MongoClient("mongodb://adminErp:pwjrnew@18.191.252.222:27017/?authSource=admin");
+                MongoClient client = new MongoClient(getConnection());
                 IMongoDatabase db = client.GetDatabase(getKeyToken("empresa","token"));
 
                 IMongoCollection<Modelo> Collection = db.GetCollection<Modelo>(typeof(Modelo).Name);
@@ -97,13 +161,65 @@ namespace WcfErp.Servicios
                 return null;
             }
         }
+
+        public virtual List<Modelo> search(string busqueda, string bd)
+        {
+            try
+            {
+                MongoClient client = new MongoClient(getConnection());
+                IMongoDatabase db = client.GetDatabase(bd);
+
+                IMongoCollection<Modelo> Collection = db.GetCollection<Modelo>(typeof(Modelo).Name);
+
+                var filter = Builders<Modelo>.Filter.Regex("Nombre", new BsonRegularExpression(busqueda, "i"));
+
+                List<Modelo> Documentos = Collection.Find<Modelo>(filter).ToList();
+
+                return Documentos;
+            }
+            catch (Exception ex)
+            {
+                Error(ex, "");
+                return null;
+            }
+        }
+
         public virtual Modelo get(string id)
         {
             try
             {
+                DisponibilidadDocumento(typeof(Modelo).Name,id);
+
                 //ObjectId ClienteId = ObjectId.Parse(id);
-                MongoClient client = new MongoClient("mongodb://adminErp:pwjrnew@18.191.252.222:27017/?authSource=admin");
+                MongoClient client = new MongoClient(getConnection());
                 IMongoDatabase db = client.GetDatabase(getKeyToken("empresa","token"));
+
+                IMongoCollection<Modelo> Collection = db.GetCollection<Modelo>(typeof(Modelo).Name);
+
+                //var filter = Builders<Clientes>.Filter.Eq(x => x.name, "system")
+
+                Modelo item = Collection.Find<Modelo>(d => d._id == id).FirstOrDefault();
+                //Modelo item = Collection.Find<Modelo>(d => d._id == id).FirstOrDefault();
+
+                bloquearDocumento(typeof(Modelo).Name,item._id);
+
+                return item;
+
+            }
+            catch (Exception ex)
+            {
+                Error(ex, "");
+                return null;
+            }
+        }
+
+        public virtual Modelo get(string id, string bd)
+        {
+            try
+            {
+                //ObjectId ClienteId = ObjectId.Parse(id);
+                MongoClient client = new MongoClient(getConnection());
+                IMongoDatabase db = client.GetDatabase(bd);
 
                 IMongoCollection<Modelo> Collection = db.GetCollection<Modelo>(typeof(Modelo).Name);
 
@@ -121,11 +237,12 @@ namespace WcfErp.Servicios
                 return null;
             }
         }
+
         public virtual Modelo delete(string id)
         {
             try
             {
-                MongoClient client = new MongoClient("mongodb://adminErp:pwjrnew@18.191.252.222:27017/?authSource=admin");
+                MongoClient client = new MongoClient(getConnection());
                 IMongoDatabase db = client.GetDatabase(getKeyToken("empresa","token"));
 
                 IMongoCollection<Modelo> Collection = db.GetCollection<Modelo>(typeof(Modelo).Name);
@@ -140,6 +257,27 @@ namespace WcfErp.Servicios
                 return null;
             }
         }
+
+        public virtual Modelo delete(string id, string bd)
+        {
+            try
+            {
+                MongoClient client = new MongoClient(getConnection());
+                IMongoDatabase db = client.GetDatabase(bd);
+
+                IMongoCollection<Modelo> Collection = db.GetCollection<Modelo>(typeof(Modelo).Name);
+
+                Collection.DeleteOne(d => d._id == id);
+
+                return null;
+            }
+            catch (Exception ex)
+            {
+                Error(ex, "");
+                return null;
+            }
+        }
+
         public virtual Modelo update(Modelo item, string id)
         {
             try
@@ -148,7 +286,7 @@ namespace WcfErp.Servicios
 
                 //item._id = ClienteId;
 
-                MongoClient client = new MongoClient("mongodb://adminErp:pwjrnew@18.191.252.222:27017/?authSource=admin");
+                MongoClient client = new MongoClient(getConnection());
                 IMongoDatabase db = client.GetDatabase(getKeyToken("empresa","token"));
 
                 IMongoCollection<Modelo> CollectionClientes = db.GetCollection<Modelo>(typeof(Modelo).Name);
@@ -166,6 +304,34 @@ namespace WcfErp.Servicios
             }
 
         }
+
+        public virtual Modelo update(Modelo item, string id, string bd)
+        {
+            try
+            {
+                //ObjectId ClienteId = ObjectId.Parse(id);
+
+                //item._id = ClienteId;
+
+                MongoClient client = new MongoClient(getConnection());
+                IMongoDatabase db = client.GetDatabase(bd);
+
+                IMongoCollection<Modelo> CollectionClientes = db.GetCollection<Modelo>(typeof(Modelo).Name);
+
+                var filter = Builders<Modelo>.Filter.Eq(s => s._id, id);
+
+                var result = CollectionClientes.ReplaceOne(filter, item);
+
+                return item;
+            }
+            catch (Exception ex)
+            {
+                Error(ex, "");
+                return null;
+            }
+
+        }
+
         //Metodo para dar respuesta las peticiones OPTION CORS
         public void GetOptions()
         {
@@ -198,6 +364,67 @@ namespace WcfErp.Servicios
                     value = "";
                 }
                 return value;
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+        public string getConnection()
+        {
+            try
+            {
+                return ConfigurationManager.AppSettings["pathMongo"];
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+        public void bloquearDocumento(string documento,string documentoId)
+        {
+            try
+            {
+                MongoClient client = new MongoClient(getConnection());
+                IMongoDatabase db = client.GetDatabase("Usuarios");
+
+                IMongoCollection<Semaforo> CollectionSemaforo = db.GetCollection<Semaforo>("Semaforo");
+
+                Semaforo item = new Semaforo();
+                item.Empresa = getKeyToken("empresa", "token");
+                item.Documento = documento;
+                item.DocumentoId = documentoId;
+                item.Usuario = getKeyToken("user", "token");
+                item.usuarioId = getKeyToken("id", "token");
+
+                CollectionSemaforo.InsertOne(item);
+            }
+            catch (Exception ex)
+            {
+
+                throw;
+            }
+        }
+        public void DisponibilidadDocumento(string documento,string documentoId)
+        {
+            try
+            {
+                MongoClient client = new MongoClient(getConnection());
+                IMongoDatabase db = client.GetDatabase("Usuarios");
+
+                IMongoCollection<Semaforo> CollectionSemaforo = db.GetCollection<Semaforo>("Semaforo");
+
+                string Empresa = getKeyToken("empresa", "token");
+
+                Semaforo item = CollectionSemaforo.Find<Semaforo>(d => d.Empresa == Empresa && d.DocumentoId == documentoId && d.Documento== documento ).FirstOrDefault();
+
+                if(item != null)
+                {
+                    throw new Exception("Este documento se encuentra en uso por el usuario: " + item.Usuario);
+                }
+
             }
             catch (Exception)
             {

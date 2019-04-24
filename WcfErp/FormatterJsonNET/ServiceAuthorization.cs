@@ -1,6 +1,7 @@
 ﻿using MongoDB.Driver;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.Net;
 using System.Reflection;
@@ -18,6 +19,7 @@ namespace WcfErp.FormatterJsonNET
         protected override bool CheckAccessCore(OperationContext operationContext)
         { // Do custom stuff here...
           //Extract the Authorization header, and parse out the credentials converting the Base64 string:
+            return true;
             if (WebOperationContext.Current.IncomingRequest.Method == "OPTIONS") return true;
             if (operationContext.RequestContext.RequestMessage.Headers.To.AbsoluteUri == "http://localhost:60493/Servicios/WSLogin.svc/") return true;
             
@@ -26,7 +28,7 @@ namespace WcfErp.FormatterJsonNET
             if ((authHeader != null) && (authHeader != string.Empty))
             {
 
-                MongoClient client = new MongoClient("mongodb://adminErp:pwjrnew@18.191.252.222:27017/?authSource=admin");
+                MongoClient client = new MongoClient(ConfigurationManager.AppSettings["pathMongo"]);
                 IMongoDatabase db = client.GetDatabase("Usuarios");
 
                 IMongoCollection<tokens> CollectionTokens = db.GetCollection<tokens>("tokens");

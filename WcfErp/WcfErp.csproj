@@ -91,6 +91,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Service1.svc" />
+    <Content Include="Servicios\Administracion\WcfRoles.svc" />
     <Content Include="Servicios\Administracion\WcfUsuarios.svc" />
     <Content Include="Servicios\Administracion\WcfUsuariosRoles.svc" />
     <Content Include="Servicios\Especiales\WcfLogin.svc" />
@@ -135,6 +136,7 @@
     <Compile Include="FormatterJsonNET\NewtonsoftJsonDispatchFormatter.cs" />
     <Compile Include="FormatterJsonNET\RawBodyWriter.cs" />
     <Compile Include="FormatterJsonNET\ServiceAuthorization.cs" />
+    <Compile Include="Modelos\Administracion\Semaforo.cs" />
     <Compile Include="Modelos\Administracion\UsuarioRol.cs" />
     <Compile Include="Modelos\Administracion\Usuario.cs" />
     <Compile Include="Modelos\Counters.cs" />
@@ -190,8 +192,12 @@
     </Compile>
     <Compile Include="IService1.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Servicios\Administracion\IWcfRoles.cs" />
     <Compile Include="Servicios\Administracion\IWcfUsuarios.cs" />
     <Compile Include="Servicios\Administracion\IWcfUsuariosRoles.cs" />
+    <Compile Include="Servicios\Administracion\WcfRoles.svc.cs">
+      <DependentUpon>WcfRoles.svc</DependentUpon>
+    </Compile>
     <Compile Include="Servicios\Administracion\WcfUsuarios.svc.cs">
       <DependentUpon>WcfUsuarios.svc</DependentUpon>
     </Compile>
