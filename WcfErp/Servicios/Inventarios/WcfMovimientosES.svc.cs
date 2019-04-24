@@ -60,6 +60,10 @@ namespace WcfErp.Servicios.Inventarios
                 List<InventariosCostos> InventariosCostosCompletoServer = CollectionCostos.Find(builderCostos.In("ArticuloId", Ids) & builderCostos.Eq("AlmacenId", item.Almacen._id)).ToList();
                 item.Sistema_Origen = "IN";
                 item.Cancelado = "NO";
+                item.Fecha = item.Fecha.Date < DateTime.Now.Date ? item.Fecha.AddHours(DateTime.Now.Hour).AddMinutes(DateTime.Now.Minute).AddSeconds(DateTime.Now.Second) : item.Fecha;
+                item.Ano = item.Fecha.Year;
+                item.Mes = item.Fecha.Month;
+                item.Dia = item.Fecha.Day;
                 var updatesSaldos = new List<WriteModel<InventariosSaldos>>();
                 var updatesCostos = new List<WriteModel<InventariosCostos>>();
 

@@ -7,7 +7,7 @@ using WcfErp.Modelos.Inventarios;
 
 namespace WcfErp.Modelos.Reportes.Inventarios
 {
-    public class ExistenciaValorInventario :ModeloBase
+    public class KardexArticulos : ModeloBase
     {
         public string Fecha { get; set; }
         public Almacen Almacen { get; set; }
@@ -15,15 +15,13 @@ namespace WcfErp.Modelos.Reportes.Inventarios
         public GrupoComponente GrupoComponente { get; set; }
         public SubgrupoComponente SubgrupoComponente { get; set; }
         public Articulo Articulo { get; set; }
-        public double Existencia { get; set; }
+        public double ExistenciaInicial { get; set; }
         public double CostoUnitario { get; set; }
         public double ValorTotal { get; set; }
+        public string UnidadInventario { get; set; }
+        public double ExistenciaFinal { get; set; }
         public double TotalEntradas { get; set; }
         public double TotalSalidas { get; set; }
-        public string UnidadInventario { get; set; }
-        public List<MovimientosES> movimientos { get; set; }
-
-
-
+        public List<DetallesKardexArticulos> detalles { get; set; }
     }
 }
