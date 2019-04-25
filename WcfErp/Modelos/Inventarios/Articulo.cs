@@ -9,7 +9,6 @@ namespace WcfErp.Modelos.Inventarios
     public class Articulo : ModeloBase
     {
         public string Clave { get; set; }
-        public string NombreCorto { get; set; }
         public GrupoUnidad GrupoUnidad { get; set; }
         public GrupoComponente GrupoComponente { get; set; }
         public SubgrupoComponente SubGrupoComponente { get; set; }
@@ -25,6 +24,10 @@ namespace WcfErp.Modelos.Inventarios
         public List<CodigosBarra> CodigosBarra { get; set; }
         public List<ConfiguracionesAlmacen> ConfiguracionesAlmacen { get; set; }
 
+        //Datos Particulares
+        public Pureza Pureza { get; set; }
+        public Peso Peso { get; set; }
+        public Paises Paises { get; set; }
         public List<Imagen> Imagen { get; set; }
 
         public Articulo()
