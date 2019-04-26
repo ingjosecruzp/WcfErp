@@ -120,6 +120,7 @@
     <Content Include="Servicios\Inventarios\WcfTipoConceptos.svc" />
     <Content Include="Servicios\Inventarios\WcfUnidades.svc" />
     <Content Include="Servicios\Reportes\Inventarios\WcfExistenciaValorInventario.svc" />
+    <Content Include="Servicios\Reportes\Inventarios\WcfKardexArticulos.svc" />
     <Content Include="Servicios\Ventas\WcfClientes.svc" />
     <Content Include="Servicios\WSLogin.svc" />
     <Content Include="Web.config">
@@ -174,7 +175,9 @@
     <Compile Include="Modelos\Inventarios\Procedencia.cs" />
     <Compile Include="Modelos\Inventarios\TipoConcepto.cs" />
     <Compile Include="Modelos\ModeloBase.cs" />
+    <Compile Include="Modelos\Reportes\Inventarios\DetallesKardexArticulos.cs" />
     <Compile Include="Modelos\Reportes\Inventarios\ExistenciaValorInventario.cs" />
+    <Compile Include="Modelos\Reportes\Inventarios\KardexArticulos.cs" />
     <Compile Include="Modelos\tokens.cs" />
     <Compile Include="Modelos\Ventas\Clientes.cs" />
     <Compile Include="Reportes\exports.cs" />
@@ -303,8 +306,12 @@
     </Compile>
     <Compile Include="Servicios\IWSLogin.cs" />
     <Compile Include="Servicios\Reportes\Inventarios\IWcfExistenciaValorInventario.cs" />
+    <Compile Include="Servicios\Reportes\Inventarios\IWcfKardexArticulos.cs" />
     <Compile Include="Servicios\Reportes\Inventarios\WcfExistenciaValorInventario.svc.cs">
       <DependentUpon>WcfExistenciaValorInventario.svc</DependentUpon>
+    </Compile>
+    <Compile Include="Servicios\Reportes\Inventarios\WcfKardexArticulos.svc.cs">
+      <DependentUpon>WcfKardexArticulos.svc</DependentUpon>
     </Compile>
     <Compile Include="Servicios\ServiceBase.cs" />
     <Compile Include="Servicios\ServiciosBase.cs" />

@@ -34,5 +34,7 @@ namespace WcfErp.Modelos.Inventarios
         public string Clave { get; set; }
         public double Costo { get; set; }
         public double CostoTotal { get; set; }
+        public double TotalEntrada { get; set; }
+        public double TotalSalida { get; set; }
     }
 }

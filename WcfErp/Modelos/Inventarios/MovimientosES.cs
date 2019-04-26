@@ -47,8 +47,14 @@ namespace WcfErp.Modelos.Inventarios
         public string Descripcion { get; set; }
         public string Sistema_Origen { get; set; }
         public List<Detalles_ES> Detalles_ES { get; set; }
+        public int Ano { get; set; }
+        public int Mes { get; set; }
+        public int Dia { get; set; }
+        public double TotaldetalleEntrada { get; set; }
+        public double TotaldetalleSalida { get; set; }
 
-        
+
+
 
         public MovimientosES ()
         {
