@@ -113,31 +113,6 @@ namespace WcfErp.Servicios.Inventarios
 
         }
 
-        public int AutoIncrement (string _id)
-        {
-            try
-            {
-                MongoClient client = new MongoClient(getConnection());
-                IMongoDatabase db = client.GetDatabase(getKeyToken("empresa","token"));
-
-                var collection = db.GetCollection<Counters>("Counters");
-                var filter = Builders<Counters>.Filter.Eq(x => x._id,_id);
-                var update = Builders<Counters>.Update.Inc(x => x.sequence_value, 1);
-                var options = new FindOneAndUpdateOptions<Counters>
-                {
-                    //Sort = Builders<Counters>.Sort.Ascending("Counters"),
-                    ReturnDocument= ReturnDocument.After
-                };
-                Counters id=collection.FindOneAndUpdate(filter, update, options);
-
-                return id.sequence_value;
-            }
-            catch (Exception)
-            {
-
-                throw;
-            }
-        }
         public InventariosSaldos LlenarObjetoInventartiosSaldos(MovimientosES item,Detalles_ES mov, List<Articulo> ArticuloCompletoServer, List<InventariosSaldos> InventariosSaldosCompletoServer)
         {
 

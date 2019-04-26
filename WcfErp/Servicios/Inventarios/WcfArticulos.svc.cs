@@ -50,6 +50,7 @@ namespace WcfErp.Servicios.Inventarios
                     codigo.Unidad = Collection_Unidad.Find<Unidad>(d => d._id == codigo.Unidad.id).FirstOrDefault();
                 }
 
+                
                 GrabarImagen(item);
                 return item;
             }
@@ -64,6 +65,12 @@ namespace WcfErp.Servicios.Inventarios
             try
             {
                 item = agregarValores(item);
+
+                //Genera la clave del articulo
+                string ArticuloId = AutoIncrement("Articulos").ToString().PadLeft(5, '0');
+
+                item.Clave = item.GrupoComponente.Clave + item.SubGrupoComponente.Clave + ArticuloId;
+                
                 return base.add(item);
             }
             catch (Exception ex)
