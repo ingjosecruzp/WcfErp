@@ -7,6 +7,7 @@ namespace WcfErp.Modelos.Generales
 {
     public class GrupoComponente: ModeloBase
     {
+        public string Clave { get; set; }
         public TipoComponente TipoComponente { get; set; }
     }
 }

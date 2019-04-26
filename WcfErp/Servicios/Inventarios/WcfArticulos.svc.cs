@@ -28,14 +28,22 @@ namespace WcfErp.Servicios.Inventarios
                 IMongoCollection<SubgrupoComponente> Collection_SubGrupoComponente = db.GetCollection<SubgrupoComponente>("SubgrupoComponente");
                 IMongoCollection<Unidad> Collection_Unidad = db.GetCollection<Unidad>("Unidad");
 
+                IMongoCollection<Pureza> Collection_Pureza = db.GetCollection<Pureza>("Pureza");
+                IMongoCollection<Peso> Collection_Peso = db.GetCollection<Peso>("Peso");
+                IMongoCollection<Paises> Collection_Paises = db.GetCollection<Paises>("Paises");
+
                 item.GrupoComponente = Collection_GrupoComponente.Find<GrupoComponente>(d => d._id == item.GrupoComponente.id).FirstOrDefault();
                 item.GrupoUnidad = Collection_GrupoUnidad.Find<GrupoUnidad>(d => d._id == item.GrupoUnidad.id).FirstOrDefault();
-                item.Marca = Collection_Marca.Find<Marca>(d => d._id == item.Marca.id).FirstOrDefault();
+                item.Marca = item.Marca.id=="" ? null : Collection_Marca.Find<Marca>(d => d._id == item.Marca.id).FirstOrDefault();
                 item.SubGrupoComponente = Collection_SubGrupoComponente.Find<SubgrupoComponente>(d => d._id == item.SubGrupoComponente.id).FirstOrDefault();
 
                 item.UnidadCompra = item.GrupoUnidad.GrupoUnidadDetalle.Where(i => i.UnidadEquivalente._id == item.UnidadCompra._id).Select(x => x.UnidadEquivalente).FirstOrDefault();
                 item.UnidadVenta = item.GrupoUnidad.GrupoUnidadDetalle.Where(i => i.UnidadEquivalente._id == item.UnidadVenta._id).Select(x => x.UnidadEquivalente).FirstOrDefault();
                 item.UnidadInventario = item.GrupoUnidad.GrupoUnidadDetalle.Where(i => i.UnidadEquivalente._id == item.UnidadInventario._id).Select(x => x.UnidadEquivalente).FirstOrDefault();
+
+                item.Pureza = item.Pureza.id == "" ? null :Collection_Pureza.Find<Pureza>(d => d._id == item.Pureza.id).FirstOrDefault();
+                item.Peso = item.Peso.id == "" ? null : Collection_Peso.Find<Peso>(d => d._id == item.Peso.id).FirstOrDefault();
+                item.Paises = item.Paises.id == "" ? null : Collection_Paises.Find<Paises>(d => d._id == item.Paises.id).FirstOrDefault();
 
                 foreach (CodigosBarra codigo in item.CodigosBarra)
                 {
@@ -60,7 +68,7 @@ namespace WcfErp.Servicios.Inventarios
             }
             catch (Exception ex)
             {
-
+                Error(ex, "");
                 return null;
             } 
         }
@@ -72,10 +80,10 @@ namespace WcfErp.Servicios.Inventarios
                 item = agregarValores(item);
                 return base.update(item, id);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-
-                throw;
+                Error(ex, "");
+                return null;
             }
         }
         public Articulo delete(string id)
@@ -84,57 +92,77 @@ namespace WcfErp.Servicios.Inventarios
         }
         public void GrabarImagen(Articulo item)
         {
-            foreach (Imagen img in item.Imagen)
+            try
             {
-                string[] base64 = img.Source.Split(',');
-
-                if (base64.Length > 1)
+                foreach (Imagen img in item.Imagen)
                 {
+                    string[] base64 = img.Source.Split(',');
 
-                    //string path = System.Web.HttpContext.Current.Server.MapPath("/WcfErp/img/");
-                    string path = System.Web.HttpContext.Current.Server.MapPath("/img/");
+                    if (base64.Length > 1)
+                    {
 
-                    string filename = DateTime.Now.ToString("yyyyMMddHHmmssff") + GetFileExtension(base64[1]);
+                        //string path = System.Web.HttpContext.Current.Server.MapPath("/WcfErp/img/");
+                        //string path = System.Web.HttpContext.Current.Server.MapPath("/img/");
+                        //string path = "c:\\inetpub\\wwwroot\\img\\";
+                        string path = System.Diagnostics.Debugger.IsAttached == true ? System.Web.HttpContext.Current.Server.MapPath("/img/") : "c:\\inetpub\\wwwroot\\img\\";
 
-                    File.WriteAllBytes(path + filename, Convert.FromBase64String(base64[1]));
+                        string filename = DateTime.Now.ToString("yyyyMMddHHmmssff") + GetFileExtension(base64[1]);
 
-                    img.Source = filename;
+                        File.WriteAllBytes(path + filename, Convert.FromBase64String(base64[1]));
+
+                        img.Source = filename;
+                    }
+                    else
+                    {
+                        string path = System.Diagnostics.Debugger.IsAttached == true ? "http://localhost:60493/img/" : "http://localhost/img/";
+
+                        img.Source = img.Source.Replace(path, "");
+                        if (item._id == null)
+                            img.Source = "NoImagen.jpg";
+                    }
                 }
-                else
-                {
-                    img.Source= img.Source.Replace("http://localhost:60493/img/", "");
-                    if (item._id == null)
-                        img.Source = "NoImagen.jpg";
-                }
+            }
+            catch (Exception)
+            {
+
+                throw;
             }
         }
         public string GetFileExtension(string base64String)
         {
-            var data = base64String.Substring(0, 5);
-
-            switch (data.ToUpper())
+            try
             {
-                case "IVBOR":
-                    return ".png";
-                case "/9J/4":
-                    return ".jpg";
-                case "AAAAF":
-                    return ".mp4";
-                case "JVBER":
-                    return ".pdf";
-                case "AAABA":
-                    return ".ico";
-                case "UMFYI":
-                    return ".rar";
-                case "E1XYD":
-                    return ".rtf";
-                case "U1PKC":
-                    return ".txt";
-                case "MQOWM":
-                case "77U/M":
-                    return ".srt";
-                default:
-                    return string.Empty;
+                var data = base64String.Substring(0, 5);
+
+                switch (data.ToUpper())
+                {
+                    case "IVBOR":
+                        return ".png";
+                    case "/9J/4":
+                        return ".jpg";
+                    case "AAAAF":
+                        return ".mp4";
+                    case "JVBER":
+                        return ".pdf";
+                    case "AAABA":
+                        return ".ico";
+                    case "UMFYI":
+                        return ".rar";
+                    case "E1XYD":
+                        return ".rtf";
+                    case "U1PKC":
+                        return ".txt";
+                    case "MQOWM":
+                    case "77U/M":
+                        return ".srt";
+                    default:
+                        return string.Empty;
+                }
+            }
+            catch (Exception)
+            {
+
+                throw;
             }
         }
 

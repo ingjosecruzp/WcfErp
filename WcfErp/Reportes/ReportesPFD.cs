@@ -194,8 +194,10 @@ namespace WcfErp.Reportes
 
                 if (Extension == "pdf")
                 {
-                    //string rutaTemporal = "c:\\CLG\\" + NombreArchivo + "." + Extension;
-                    string rutaTemporal = System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath + "\\webReports\\" + NombreArchivo + "." + Extension;
+                    //c:\\CLG\\
+                    //string rutaTemporal = "c:\\inetpub\\wwwroot\\webReports\\" + NombreArchivo + "." + Extension;
+                    //string rutaTemporal = System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath + "\\webReports\\" + NombreArchivo + "." + Extension;
+                    string rutaTemporal = System.Diagnostics.Debugger.IsAttached == true ? System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath + "\\webReports\\" + NombreArchivo + "." + Extension : "c:\\inetpub\\wwwroot\\webReports\\" + NombreArchivo + "." + Extension;
 
 
                     WebClient Cliente = new WebClient();
