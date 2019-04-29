@@ -116,6 +116,18 @@ namespace WcfErp.Servicios.Inventarios
 
 
         }
+        public override MovimientosES update(MovimientosES item, string id)
+        {
+            try
+            {
+                throw new Exception("Los ajustes de inventario no son modificables");
+            }
+            catch (Exception ex)
+            {
+                Error(ex, "");
+                return null;
+            }
+        }
 
         public InventariosSaldos LlenarObjetoInventartiosSaldos(MovimientosES item,Detalles_ES mov, List<Articulo> ArticuloCompletoServer, List<InventariosSaldos> InventariosSaldosCompletoServer)
         {
