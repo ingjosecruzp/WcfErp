@@ -53,8 +53,6 @@ namespace WcfErp.Servicios.Inventarios
                     item.Folio = AutoIncrement("FolioAutomatico",db).ToString();
                 }
 
-                throw new Exception("ataras");
-
                 var builderSaldos = Builders<InventariosSaldos>.Filter;
                 var builderCostos = Builders<InventariosCostos>.Filter;
                 var Ids = (from an in item.Detalles_ES select an.Articulo).ToList().Select(ab => ab._id); //recolectamos en una lista los ids que nos manda el cliente
