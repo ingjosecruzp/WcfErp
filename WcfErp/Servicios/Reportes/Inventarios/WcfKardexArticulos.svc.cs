@@ -2,6 +2,7 @@
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.Runtime.Serialization;
 using System.ServiceModel;
@@ -58,7 +59,7 @@ namespace WcfErp.Servicios.Reportes.Inventarios
             int mesFin = DateFin.Month;
             int diaFin = DateFin.Day;
             
-            client = new MongoClient("mongodb://Alba:pwjrnew@18.191.252.222:27017/PAMC861025DB7");
+            client = new MongoClient(ConfigurationManager.AppSettings["pathMongo"]);
             db = client.GetDatabase("PAMC861025DB7");
             IMongoCollection<MovimientosES> CollectionMovimientosEs =db.GetCollection<MovimientosES>("MovimientosES");
             List<MovimientosES> MovimientosEsCompletoServer = new List<MovimientosES>();

@@ -14,14 +14,20 @@ namespace WcfErp.Servicios.Inventarios
     public interface IWcfConceptos : ServiciosBase<Concepto>
     {
 
-         [OperationContract]
+         /*[OperationContract]
          [WebInvoke(UriTemplate = "Nombrebusqueda={busqueda}/tipoMovimiento={tipoMovimiento}",
          BodyStyle = WebMessageBodyStyle.Bare,
          ResponseFormat = WebMessageFormat.Json,
          RequestFormat = WebMessageFormat.Json,
          Method = "GET")]
-         List<Concepto> searchConceptosES(string busqueda, string tipoMovimiento);
+         List<Concepto> searchConceptosES(string busqueda, string tipoMovimiento);*/
 
-
+        [OperationContract]
+        [WebInvoke(UriTemplate = "?searchBy=getXNaturaleza&Nombrebusqueda={busqueda}&tipoMovimiento={tipoMovimiento}",
+           BodyStyle = WebMessageBodyStyle.Bare,
+           ResponseFormat = WebMessageFormat.Json,
+           RequestFormat = WebMessageFormat.Json,
+           Method = "GET")]
+        List<Concepto> searchXNaturaleza(string busqueda, string tipoMovimiento);
     }
 }

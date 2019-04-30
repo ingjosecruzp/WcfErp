@@ -3,6 +3,7 @@ using MongoDB.Driver;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.Net;
 using System.Runtime.Serialization;
@@ -35,7 +36,8 @@ namespace WcfErp.Servicios.Reportes.Inventarios
                 return null;*/
             try
             {
-                client = new MongoClient("mongodb://Alba:pwjrnew@18.191.252.222:27017/PAMC861025DB7");
+                //client = new MongoClient("mongodb://Alba:pwjrnew@18.191.252.222:27017/PAMC861025DB7");
+                client = new MongoClient(ConfigurationManager.AppSettings["pathMongo"]);
                 db = client.GetDatabase("PAMC861025DB7");
                 Almacenes = db.GetCollection<Almacen>("Almacen");
                 Articulos = db.GetCollection<Articulo>("Articulo");

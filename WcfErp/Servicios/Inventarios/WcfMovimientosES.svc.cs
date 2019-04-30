@@ -23,9 +23,7 @@ namespace WcfErp.Servicios.Inventarios
         {
             MongoClient client = new MongoClient(getConnection());
             //    var session = client.StartSession();//Create a session  transactions
-
-
-
+            var session = client.StartSession();
 
             try
             {
@@ -35,7 +33,11 @@ namespace WcfErp.Servicios.Inventarios
                 item.Almacen_Destino._id = "5bd259a71d28282c7ce19c38";
 
 
-                IMongoDatabase db = client.GetDatabase(getKeyToken("empresa","token"));
+                //IMongoDatabase db = client.GetDatabase(getKeyToken("empresa","token"));
+                IMongoDatabase db = session.Client.GetDatabase(getKeyToken("empresa", "token"));
+
+                session.StartTransaction();
+
 
                 IMongoCollection<MovimientosES> Documento = db.GetCollection<MovimientosES>("MovimientosES");// db.GetCollection<MovimientosES>("MovimientosES");
                 IMongoCollection<Concepto> Conceptos = db.GetCollection<Concepto>("Concepto");
@@ -48,8 +50,10 @@ namespace WcfErp.Servicios.Inventarios
                 item.Almacen = Almacenes.Find<Almacen>(d => d._id == item.Almacen.id).Project<Almacen>(Builders<Almacen>.Projection.Include(p => p._id).Include(p => p.Nombre)).FirstOrDefault();
 
                 if (item.Concepto.FolioAutomatico == "SI"){
-                    item.Folio = AutoIncrement("FolioAutomatico").ToString();
+                    item.Folio = AutoIncrement("FolioAutomatico",db).ToString();
                 }
+
+                throw new Exception("ataras");
 
                 var builderSaldos = Builders<InventariosSaldos>.Filter;
                 var builderCostos = Builders<InventariosCostos>.Filter;
@@ -101,14 +105,12 @@ namespace WcfErp.Servicios.Inventarios
 
                    }
                     
-             //   session.CommitTransaction();//Made it here without error? Let's commit the transaction
-                
-
+               session.CommitTransaction();//Made it here without error? Let's commit the transaction   
                 return  item;
             }
             catch (Exception ex)
             {
-             //   session.AbortTransaction();
+                session.AbortTransaction();
                 Error(ex, "");
                 
                 return null;

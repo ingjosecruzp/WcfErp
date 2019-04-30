@@ -71,42 +71,22 @@ namespace WcfErp.Servicios.Inventarios
             }
         }
 
-        public List<Concepto> searchConceptosES(string cadena, string tipoMovimiento)
+        public List<Concepto> searchXNaturaleza(string busqueda, string tipoMovimiento)
         {
 
             try
             {
-                var builderMovimientos = Builders<MovimientosES>.Filter;
-                JObject rss = new JObject();
-
-                string[] fields = cadena.Split(',');
-
-                string campos = "{";
-
-                foreach (string f in fields)
-                {
-                    rss.Add(new JProperty(f, "1"));
-                }
-                Console.WriteLine(rss.ToString());
-                campos += "}";
-
                 MongoClient client = new MongoClient(getConnection());
-                IMongoDatabase db = client.GetDatabase(getKeyToken("empresa","token"));
+                IMongoDatabase db = client.GetDatabase(getKeyToken("empresa", "token"));
 
                 IMongoCollection<Concepto> Collection = db.GetCollection<Concepto>(typeof(Concepto).Name);
 
-                List<Concepto> Lista;
+                var builder = Builders<Concepto>.Filter;
+                var filter = builder.Regex("Nombre", new BsonRegularExpression(busqueda, "i")) & builder.Eq("Naturaleza", tipoMovimiento);
 
-                /*if(campos != null)
-                    Lista = Collection.Find<Modelo>(null).Project<Modelo>(campos).ToList();
-                else
-                   Lista = Collection.AsQueryable().ToList();*/
-                var filter = Builders<MovimientosES>.Filter.Regex("Nombre", new BsonRegularExpression("", "i"));
+                List<Concepto> Documentos = Collection.Find<Concepto>(filter).ToList();
 
-                //Lista = Collection.Find<Modelo>(filter).Project<Modelo>("{_id:1, Nombre:1,TipoConcepto.Nombre:1}").ToList();
-                Lista = Collection.Find<Concepto>(a => a.Naturaleza == tipoMovimiento).Project<Concepto>(rss.ToString()).ToList();
-
-                return Lista;
+                return Documentos;
             }
             catch (Exception ex)
             {
