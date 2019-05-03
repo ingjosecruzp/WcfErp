@@ -8,6 +8,7 @@ using System.Linq;
 using System.Net;
 using System.Runtime.Serialization;
 using System.ServiceModel;
+using System.ServiceModel.Channels;
 using System.ServiceModel.Web;
 using System.Text;
 using WcfErp.Modelos.Generales;
@@ -38,7 +39,8 @@ namespace WcfErp.Servicios.Reportes.Inventarios
             {
                 //client = new MongoClient("mongodb://Alba:pwjrnew@18.191.252.222:27017/PAMC861025DB7");
                 client = new MongoClient(ConfigurationManager.AppSettings["pathMongo"]);
-                db = client.GetDatabase("PAMC861025DB7");
+                //db = client.GetDatabase("PAMC861025DB7");
+                db = client.GetDatabase(getKeyToken("empresa", "token"));
                 Almacenes = db.GetCollection<Almacen>("Almacen");
                 Articulos = db.GetCollection<Articulo>("Articulo");
                 CollectionSaldos = db.GetCollection<InventariosSaldos>("InventariosSaldos");
@@ -199,6 +201,17 @@ namespace WcfErp.Servicios.Reportes.Inventarios
                     JasperParametros.Add(param);
                 }
 
+                //Agrega token
+                reportParameter paramToken = new reportParameter();
+                paramToken.name ="Token";
+
+                OperationContext currentContext = OperationContext.Current;
+                HttpRequestMessageProperty reqMsg = currentContext.IncomingMessageProperties["httpRequest"] as HttpRequestMessageProperty;
+                string authToken = reqMsg.Headers["Token"];
+
+                paramToken.value.Add(authToken);
+                JasperParametros.Add(paramToken);
+
                 string Archivo = GetTimestamp(DateTime.Now);
                 string extension = "pdf";
 
@@ -222,6 +235,31 @@ namespace WcfErp.Servicios.Reportes.Inventarios
         //Metodo para dar respuesta las peticiones OPTION CORS
         public void GetOptions()
         {
+        }
+        public string getKeyToken(string key, string Token)
+        {
+            try
+            {
+                OperationContext currentContext = OperationContext.Current;
+                HttpRequestMessageProperty reqMsg = currentContext.IncomingMessageProperties["httpRequest"] as HttpRequestMessageProperty;
+                string authToken = reqMsg.Headers[Token];
+                string value;
+                if (authToken != "")
+                {
+                    var payload = JWT.JsonWebToken.DecodeToObject(authToken, "pwjrnew") as IDictionary<string, object>;
+                    value = payload.ContainsKey(key) ? payload[key].ToString() : "";
+                }
+                else
+                {
+                    value = "";
+                }
+                return value;
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
         }
     }
 }

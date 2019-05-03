@@ -42,7 +42,7 @@ namespace WcfErp.Servicios.Inventarios
                 item.UnidadInventario = item.GrupoUnidad.GrupoUnidadDetalle.Where(i => i.UnidadEquivalente._id == item.UnidadInventario._id).Select(x => x.UnidadEquivalente).FirstOrDefault();
 
                 item.Pureza = item.Pureza.id == "" ? null :Collection_Pureza.Find<Pureza>(d => d._id == item.Pureza.id).FirstOrDefault();
-                item.Peso = item.Peso.id == "" ? null : Collection_Peso.Find<Peso>(d => d._id == item.Peso.id).FirstOrDefault();
+                //item.Peso = item.Peso.id == "" ? null : Collection_Peso.Find<Peso>(d => d._id == item.Peso.id).FirstOrDefault();
                 item.Paises = item.Paises.id == "" ? null : Collection_Paises.Find<Paises>(d => d._id == item.Paises.id).FirstOrDefault();
 
                 foreach (CodigosBarra codigo in item.CodigosBarra)

@@ -25,6 +25,7 @@ namespace WcfErp.Servicios
                 MongoClient client = new MongoClient(getConnection());
                 IMongoDatabase db = client.GetDatabase(getKeyToken("empresa","token"));
 
+
                 IMongoCollection<Modelo> CollectionClientes = db.GetCollection<Modelo>(typeof(Modelo).Name);
 
                 CollectionClientes.InsertOne(item);

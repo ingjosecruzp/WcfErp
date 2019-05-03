@@ -26,7 +26,7 @@ namespace WcfErp.Modelos.Inventarios
 
         //Datos Particulares
         public Pureza Pureza { get; set; }
-        public Peso Peso { get; set; }
+        public double Peso { get; set; }
         public Paises Paises { get; set; }
         public List<Imagen> Imagen { get; set; }
 

@@ -50,7 +50,8 @@ namespace WcfErp.Servicios.Inventarios
                 item.Almacen = Almacenes.Find<Almacen>(d => d._id == item.Almacen.id).Project<Almacen>(Builders<Almacen>.Projection.Include(p => p._id).Include(p => p.Nombre)).FirstOrDefault();
 
                 if (item.Concepto.FolioAutomatico == "SI"){
-                    item.Folio = AutoIncrement("FolioAutomatico",db).ToString();
+                    //item.Folio = AutoIncrement("FolioAutomatico",db).ToString();
+                    item.Folio = AutoIncrement(item.Concepto.Clave, db).ToString();
                 }
 
                 var builderSaldos = Builders<InventariosSaldos>.Filter;
