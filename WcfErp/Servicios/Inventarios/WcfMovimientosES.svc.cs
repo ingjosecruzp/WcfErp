@@ -53,7 +53,7 @@ namespace WcfErp.Servicios.Inventarios
                     item.Folio = AutoIncrement("FolioAutomatico",db).ToString();
                 }
 
-                throw new Exception("ataras");
+         //       throw new Exception("ataras");
 
                 var builderSaldos = Builders<InventariosSaldos>.Filter;
                 var builderCostos = Builders<InventariosCostos>.Filter;
