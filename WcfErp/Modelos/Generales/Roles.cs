@@ -5,7 +5,7 @@ using System.Web;
 
 namespace WcfErp.Modelos.Generales
 {
-    public class Roles : ModeloBase
+    public class Roles : ModeloBase<Roles>
     {
         public string Administrador { get; set; }
 

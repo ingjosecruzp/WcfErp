@@ -7,7 +7,7 @@ using System.Web;
 
 namespace WcfErp.Modelos.Generales
 {
-    public class CondicionesDePago : ModeloBase
+    public class CondicionesDePago : ModeloBase<CondicionesDePago>
     {
         
 

@@ -14,51 +14,6 @@ namespace WcfErp.Servicios.Inventarios
     // NOTA: para iniciar el Cliente de prueba WCF para probar este servicio, seleccione WcfAlmacenes.svc o WcfAlmacenes.svc.cs en el Explorador de soluciones e inicie la depuración.
     public class WcfAlmacenes : ServiceBase<Almacen>, IWcfAlmacenes
     {
-
-        public override Almacen add(Almacen item)
-        {
-            try
-            {
-                MongoClient client = new MongoClient(getConnection());
-                IMongoDatabase db = client.GetDatabase(getKeyToken("empresa","token"));
-
-                IMongoCollection<TipoComponente> Collection = db.GetCollection<TipoComponente>("TipoComponente");
-
-                item.TipoComponente = Collection.Find<TipoComponente>(d => d._id == item.TipoComponente.id).FirstOrDefault();
-
-                return base.add(item);
-            }
-            catch (Exception ex)
-            {
-
-                Error(ex, "");
-                return null;
-            }
-        }
-
-
-        public override Almacen update(Almacen item, string id)
-        {
-            try
-            {
-                MongoClient client = new MongoClient(getConnection());
-                IMongoDatabase db = client.GetDatabase(getKeyToken("empresa","token"));
-
-                IMongoCollection<TipoComponente> Collection = db.GetCollection<TipoComponente>("TipoComponente");
-
-                item.TipoComponente = Collection.Find<TipoComponente>(d => d._id == item.TipoComponente.id).FirstOrDefault();
-
-                return base.update(item, id);
-            }
-            catch (Exception ex)
-            {
-
-                Error(ex, "");
-                return null;
-            }
-        }
-
-
         public Almacen delete(string id)
         {
             throw new NotImplementedException();

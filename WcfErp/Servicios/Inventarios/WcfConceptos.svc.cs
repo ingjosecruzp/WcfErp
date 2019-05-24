@@ -15,62 +15,6 @@ namespace WcfErp.Servicios.Inventarios
     // NOTE: In order to launch WCF Test Client for testing this service, please select WcfConceptos.svc or WcfConceptos.svc.cs at the Solution Explorer and start debugging.
     public class WcfConceptos : ServiceBase<Concepto>,IWcfConceptos
     {
-        public override Concepto add(Concepto item)
-        {
-            try
-            {
-                MongoClient client = new MongoClient(getConnection());
-                IMongoDatabase db = client.GetDatabase(getKeyToken("empresa","token"));
-
-                IMongoCollection<TipoConcepto> Collection = db.GetCollection<TipoConcepto>("TipoConcepto");
-
-                item.TipoConcepto = Collection.Find<TipoConcepto>(d => d._id == item.TipoConcepto.id).FirstOrDefault();
-
-                return base.add(item);
-            }
-            catch (Exception ex)
-            {
-
-                Error(ex, "");
-                return null;
-            }
-        }
-        /*public override List<Concepto> all()
-        {
-            try
-            {
-                ProjectionDefinition<Concepto> fields = Builders<Concepto>.Projection.Include("Nombre").Include("Id");
-
-                return null;
-            }
-            catch (Exception ex)
-            {
-
-                Error(ex, "");
-                return null;
-            }
-        }*/
-        public override Concepto update(Concepto item, string id)
-        {
-            try
-            {
-                MongoClient client = new MongoClient(getConnection());
-                IMongoDatabase db = client.GetDatabase(getKeyToken("empresa","token"));
-
-                IMongoCollection<TipoConcepto> Collection = db.GetCollection<TipoConcepto>("TipoConcepto");
-
-                item.TipoConcepto = Collection.Find<TipoConcepto>(d => d._id == item.TipoConcepto.id).FirstOrDefault();
-
-                return base.update(item,id);
-            }
-            catch (Exception ex)
-            {
-
-                Error(ex, "");
-                return null;
-            }
-        }
-
         public List<Concepto> searchXNaturaleza(string busqueda, string tipoMovimiento)
         {
 

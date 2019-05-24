@@ -14,48 +14,6 @@ namespace WcfErp.Servicios.Inventarios
     // NOTE: In order to launch WCF Test Client for testing this service, please select WcfSubgruposComponentes.svc or WcfSubgruposComponentes.svc.cs at the Solution Explorer and start debugging.
     public class WcfSubgruposComponentes : ServiceBase<SubgrupoComponente>, IWcfSubgruposComponentes
     {
-
-        public override SubgrupoComponente add(SubgrupoComponente item)
-        {
-            try
-            {
-                MongoClient client = new MongoClient(getConnection());
-                IMongoDatabase db = client.GetDatabase(getKeyToken("empresa","token"));
-
-                IMongoCollection<GrupoComponente> Collection = db.GetCollection<GrupoComponente>("GrupoComponente");
-
-                item.GrupoComponente = Collection.Find<GrupoComponente>(d => d._id == item.GrupoComponente.id).FirstOrDefault();
-
-                return base.add(item);
-            }
-            catch (Exception ex)
-            {
-
-                Error(ex, "");
-                return null;
-            }
-        }
-        public override SubgrupoComponente update(SubgrupoComponente item, string id)
-        {
-            try
-            {
-                MongoClient client = new MongoClient(getConnection());
-                IMongoDatabase db = client.GetDatabase(getKeyToken("empresa","token"));
-
-                IMongoCollection<GrupoComponente> Collection = db.GetCollection<GrupoComponente>("GrupoComponente");
-
-                item.GrupoComponente = Collection.Find<GrupoComponente>(d => d._id == item.GrupoComponente.id).FirstOrDefault();
-
-                return base.update(item, id);
-            }
-            catch (Exception ex)
-            {
-
-                Error(ex, "");
-                return null;
-            }
-        }
-
         public SubgrupoComponente delete(string id)
         {
             throw new NotImplementedException();
@@ -70,7 +28,6 @@ namespace WcfErp.Servicios.Inventarios
 
                 IMongoCollection<SubgrupoComponente> Collection = db.GetCollection<SubgrupoComponente>(typeof(SubgrupoComponente).Name);
 
-                //var filter = Builders<SubgrupoComponente>.Filter.Regex("Nombre", new BsonRegularExpression(busqueda, "i")) && ;
                 var builder = Builders<SubgrupoComponente>.Filter;
                 var filter = builder.Regex("Nombre", new BsonRegularExpression(busqueda, "i")) &  builder.Eq("GrupoComponente._id", _id);
 

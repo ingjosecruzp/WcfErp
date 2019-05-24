@@ -1,5 +1,6 @@
 ﻿using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
+using MongoDB.Driver;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,7 +9,7 @@ using WcfErp.Modelos.Generales;
 
 namespace WcfErp.Modelos.Ventas
 {
-    public class Clientes : ModeloBase
+    public class Clientes : ModeloBase<Clientes>
     {
         public string Nombre { get; protected  set; }
         public string Rfc { get; set; }

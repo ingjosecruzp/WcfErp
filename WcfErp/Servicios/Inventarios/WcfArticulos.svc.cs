@@ -15,56 +15,11 @@ namespace WcfErp.Servicios.Inventarios
     // NOTE: In order to launch WCF Test Client for testing this service, please select WcfArticulos.svc or WcfArticulos.svc.cs at the Solution Explorer and start debugging.
     public class WcfArticulos : ServiceBase<Articulo>, IWcfArticulos
     {
-        public Articulo agregarValores(Articulo item)
-        {
-            try
-            {
-                MongoClient client = new MongoClient(getConnection());
-                IMongoDatabase db = client.GetDatabase(getKeyToken("empresa","token"));
-
-                IMongoCollection<GrupoComponente> Collection_GrupoComponente = db.GetCollection<GrupoComponente>("GrupoComponente");
-                IMongoCollection<GrupoUnidad> Collection_GrupoUnidad = db.GetCollection<GrupoUnidad>("GrupoUnidad");
-                IMongoCollection<Marca> Collection_Marca = db.GetCollection<Marca>("Marca");
-                IMongoCollection<SubgrupoComponente> Collection_SubGrupoComponente = db.GetCollection<SubgrupoComponente>("SubgrupoComponente");
-                IMongoCollection<Unidad> Collection_Unidad = db.GetCollection<Unidad>("Unidad");
-
-                IMongoCollection<Pureza> Collection_Pureza = db.GetCollection<Pureza>("Pureza");
-                IMongoCollection<Peso> Collection_Peso = db.GetCollection<Peso>("Peso");
-                IMongoCollection<Paises> Collection_Paises = db.GetCollection<Paises>("Paises");
-
-                item.GrupoComponente = Collection_GrupoComponente.Find<GrupoComponente>(d => d._id == item.GrupoComponente.id).FirstOrDefault();
-                item.GrupoUnidad = Collection_GrupoUnidad.Find<GrupoUnidad>(d => d._id == item.GrupoUnidad.id).FirstOrDefault();
-                item.Marca = item.Marca.id=="" ? null : Collection_Marca.Find<Marca>(d => d._id == item.Marca.id).FirstOrDefault();
-                item.SubGrupoComponente = Collection_SubGrupoComponente.Find<SubgrupoComponente>(d => d._id == item.SubGrupoComponente.id).FirstOrDefault();
-
-                item.UnidadCompra = item.GrupoUnidad.GrupoUnidadDetalle.Where(i => i.UnidadEquivalente._id == item.UnidadCompra._id).Select(x => x.UnidadEquivalente).FirstOrDefault();
-                item.UnidadVenta = item.GrupoUnidad.GrupoUnidadDetalle.Where(i => i.UnidadEquivalente._id == item.UnidadVenta._id).Select(x => x.UnidadEquivalente).FirstOrDefault();
-                item.UnidadInventario = item.GrupoUnidad.GrupoUnidadDetalle.Where(i => i.UnidadEquivalente._id == item.UnidadInventario._id).Select(x => x.UnidadEquivalente).FirstOrDefault();
-
-                item.Pureza = item.Pureza.id == "" ? null :Collection_Pureza.Find<Pureza>(d => d._id == item.Pureza.id).FirstOrDefault();
-                //item.Peso = item.Peso.id == "" ? null : Collection_Peso.Find<Peso>(d => d._id == item.Peso.id).FirstOrDefault();
-                item.Paises = item.Paises.id == "" ? null : Collection_Paises.Find<Paises>(d => d._id == item.Paises.id).FirstOrDefault();
-
-                foreach (CodigosBarra codigo in item.CodigosBarra)
-                {
-                    codigo.Unidad = Collection_Unidad.Find<Unidad>(d => d._id == codigo.Unidad.id).FirstOrDefault();
-                }
-
-                
-                GrabarImagen(item);
-                return item;
-            }
-            catch (Exception)
-            {
-
-                throw;
-            }
-        }
         public override Articulo add(Articulo item)
         {
             try
             {
-                item = agregarValores(item);
+                GrabarImagen(item);
 
                 //Genera la clave del articulo
                 string ArticuloId = AutoIncrement("Articulos").ToString().PadLeft(5, '0');
@@ -83,8 +38,7 @@ namespace WcfErp.Servicios.Inventarios
         {
             try
             {
-                //GrabarImagen(item);
-                item = agregarValores(item);
+                GrabarImagen(item);
                 return base.update(item, id);
             }
             catch (Exception ex)
