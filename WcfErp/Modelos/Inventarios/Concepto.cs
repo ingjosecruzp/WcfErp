@@ -5,7 +5,7 @@ using System.Web;
 
 namespace WcfErp.Modelos.Inventarios
 {
-    public class Concepto : ModeloBase
+    public class Concepto : ModeloBase<Concepto>
     {
         
         public string Clave { get; set; }
@@ -15,5 +15,19 @@ namespace WcfErp.Modelos.Inventarios
         public string Predefinido { get; set; }
 
         public string CostoAutomatico { get; set; }
+
+        protected override Concepto addValues(Concepto item, EmpresaContext db)
+        {
+            try
+            {
+                item.TipoConcepto = db.TipoConcepto.get(item.TipoConcepto._id, db);
+                return item;
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
     }
 }

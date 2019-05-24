@@ -16,18 +16,15 @@ using System.Configuration;
 
 namespace WcfErp.Servicios
 {
-    public class ServiceBase<Modelo> where Modelo : ModeloBase
+    public class ServiceBase<Modelo> where Modelo : ModeloBase<Modelo>
     {
         public virtual Modelo add(Modelo item)
         {
             try
             {
-                MongoClient client = new MongoClient(getConnection());
-                IMongoDatabase db = client.GetDatabase(getKeyToken("empresa","token"));
 
-                IMongoCollection<Modelo> CollectionClientes = db.GetCollection<Modelo>(typeof(Modelo).Name);
-
-                CollectionClientes.InsertOne(item);
+                EmpresaContext db = new EmpresaContext();
+                db.Set<Modelo>().add(item,db);
 
                 return item;
             }
@@ -45,10 +42,10 @@ namespace WcfErp.Servicios
                 MongoClient client = new MongoClient(getConnection());
                 IMongoDatabase db = client.GetDatabase(bd);
 
-                IMongoCollection<Modelo> CollectionClientes = db.GetCollection<Modelo>(typeof(Modelo).Name);
+                IMongoCollection<Modelo> Collection = db.GetCollection<Modelo>(typeof(Modelo).Name);
 
-                CollectionClientes.InsertOne(item);
-
+                Collection.InsertOne(item);
+                
                 return item;
             }
             catch (Exception ex)
@@ -103,34 +100,8 @@ namespace WcfErp.Servicios
         {
             try
             {
-                JObject rss=new JObject();
-
-                string[] fields = cadena.Split(',');
-
-                string campos = "{";
-
-                foreach(string f in fields)
-                {
-                    rss.Add(new JProperty(f, "1"));
-                }
-                Console.WriteLine(rss.ToString());
-                campos += "}";
-
-                MongoClient client = new MongoClient(getConnection());
-                IMongoDatabase db = client.GetDatabase(getKeyToken("empresa","token"));
-
-                IMongoCollection<Modelo> Collection = db.GetCollection<Modelo>(typeof(Modelo).Name);
-            
-                List<Modelo> Lista;
-
-                /*if(campos != null)
-                    Lista = Collection.Find<Modelo>(null).Project<Modelo>(campos).ToList();
-                else
-                   Lista = Collection.AsQueryable().ToList();*/
-                var filter = Builders<Modelo>.Filter.Regex("Nombre", new BsonRegularExpression("", "i"));
-
-                //Lista = Collection.Find<Modelo>(filter).Project<Modelo>("{_id:1, Nombre:1,TipoConcepto.Nombre:1}").ToList();
-                Lista = Collection.Find<Modelo>(filter).Project<Modelo>(rss.ToString()).ToList();
+                EmpresaContext db = new EmpresaContext();
+                List<Modelo> Lista=db.Set<Modelo>().all(cadena, db);
 
                 return Lista;
             }
@@ -144,15 +115,9 @@ namespace WcfErp.Servicios
         {
             try
             {
-                MongoClient client = new MongoClient(getConnection());
-                IMongoDatabase db = client.GetDatabase(getKeyToken("empresa","token"));
-
-                IMongoCollection<Modelo> Collection = db.GetCollection<Modelo>(typeof(Modelo).Name);
-
-                var filter = Builders<Modelo>.Filter.Regex("Nombre", new BsonRegularExpression(busqueda, "i"));
-
-                List<Modelo> Documentos = Collection.Find<Modelo>(filter).ToList();
-
+                EmpresaContext db = new EmpresaContext();
+                List<Modelo> Documentos= db.Set<Modelo>().search(busqueda, db);
+                    
                 return Documentos;
             }
             catch (Exception ex)
@@ -190,18 +155,11 @@ namespace WcfErp.Servicios
             {
                 DisponibilidadDocumento(typeof(Modelo).Name,id);
 
-                //ObjectId ClienteId = ObjectId.Parse(id);
-                MongoClient client = new MongoClient(getConnection());
-                IMongoDatabase db = client.GetDatabase(getKeyToken("empresa","token"));
+                EmpresaContext db = new EmpresaContext();
 
-                IMongoCollection<Modelo> Collection = db.GetCollection<Modelo>(typeof(Modelo).Name);
+                Modelo item = db.Set<Modelo>().get(id, db);
 
-                //var filter = Builders<Clientes>.Filter.Eq(x => x.name, "system")
-
-                Modelo item = Collection.Find<Modelo>(d => d._id == id).FirstOrDefault();
-                //Modelo item = Collection.Find<Modelo>(d => d._id == id).FirstOrDefault();
-
-                bloquearDocumento(typeof(Modelo).Name,item._id);
+                //bloquearDocumento(typeof(Modelo).Name,item._id);
 
                 return item;
 
@@ -282,18 +240,9 @@ namespace WcfErp.Servicios
         {
             try
             {
-                //ObjectId ClienteId = ObjectId.Parse(id);
+                EmpresaContext db = new EmpresaContext();
 
-                //item._id = ClienteId;
-
-                MongoClient client = new MongoClient(getConnection());
-                IMongoDatabase db = client.GetDatabase(getKeyToken("empresa","token"));
-
-                IMongoCollection<Modelo> CollectionClientes = db.GetCollection<Modelo>(typeof(Modelo).Name);
-
-                var filter = Builders<Modelo>.Filter.Eq(s => s._id, id);
-
-                var result = CollectionClientes.ReplaceOne(filter, item);
+                db.Set<Modelo>().update(item,id,db);
 
                 return item;
             }

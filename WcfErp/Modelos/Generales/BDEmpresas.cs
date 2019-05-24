@@ -5,7 +5,7 @@ using System.Web;
 
 namespace WcfErp.Modelos.Generales
 {
-    public class BDEmpresas : ModeloBase
+    public class BDEmpresas : ModeloBase<BDEmpresas>
     {
         public string RazonSocial { get; set; }
         public string RFC { get; set; }

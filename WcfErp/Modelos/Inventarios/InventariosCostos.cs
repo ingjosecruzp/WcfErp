@@ -5,7 +5,7 @@ using System.Web;
 
 namespace WcfErp.Modelos.Inventarios
 {
-    public class InventariosCostos : ModeloBase
+    public class InventariosCostos : ModeloBase<InventariosCostos>
     {
 
         /*CAPA_ID ENTERO_ID NOT NULL 

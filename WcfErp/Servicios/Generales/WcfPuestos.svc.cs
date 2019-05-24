@@ -14,49 +14,6 @@ namespace WcfErp.Servicios.Generales
     // NOTA: para iniciar el Cliente de prueba WCF para probar este servicio, seleccione WcfPuestos.svc o WcfPuestos.svc.cs en el Explorador de soluciones e inicie la depuración.
     public class WcfPuestos : ServiceBase<Puesto>, IWcfPuestos
     {
-
-        public override Puesto add(Puesto item)
-        {
-            try
-            {
-                MongoClient client = new MongoClient(getConnection());
-                IMongoDatabase db = client.GetDatabase(getKeyToken("empresa","token"));
-
-                IMongoCollection<Departamento> Collection = db.GetCollection<Departamento>("Departamento");
-
-                item.Departamento = Collection.Find<Departamento>(d => d._id == item.Departamento.id).FirstOrDefault();
-
-                return base.add(item);
-            }
-            catch (Exception ex)
-            {
-
-                Error(ex, "");
-                return null;
-            }
-        }
-
-        public override Puesto update(Puesto item, string id)
-        {
-            try
-            {
-                MongoClient client = new MongoClient(getConnection());
-                IMongoDatabase db = client.GetDatabase(getKeyToken("empresa","token"));
-
-                IMongoCollection<Departamento> Collection = db.GetCollection<Departamento>("Departamento");
-
-                item.Departamento = Collection.Find<Departamento>(d => d._id == item.Departamento.id).FirstOrDefault();
-
-                return base.update(item, id);
-            }
-            catch (Exception ex)
-            {
-
-                Error(ex, "");
-                return null;
-            }
-        }
-
         public Puesto delete(string id)
         {
             throw new NotImplementedException();

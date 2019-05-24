@@ -1,4 +1,5 @@
-﻿using MongoDB.Driver;
+﻿using MongoDB.Bson;
+using MongoDB.Driver;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -33,7 +34,18 @@ namespace WcfErp.Servicios.Generales
         {
             try
             {
-                return base.add(bDEmpresas, "Usuarios");
+                //Genera la empresa
+                BDEmpresas empresa = base.add(bDEmpresas, "Usuarios");
+
+                //Clona la base de datos principal
+                MongoClient client = new MongoClient(getConnection());
+                IMongoDatabase db = client.GetDatabase("admin");
+
+                var cadena = String.Format(@"{{ copydb: 1, fromdb: '{0}', todb: '{1}'}}", "AAA010101AAA", empresa.RFC);
+                var command = new JsonCommand<BsonDocument>(cadena);
+                db.RunCommand(command);
+
+                return empresa;
             }
             catch (Exception ex)
             {

@@ -5,7 +5,7 @@ using System.Web;
 
 namespace WcfErp.Modelos.Generales
 {
-    public class Usuarios : ModeloBase
+    public class Usuarios : ModeloBase<Usuarios>
     {
         public string NombreCompleto { get; set; }
         public string Contrasena { get; set; }

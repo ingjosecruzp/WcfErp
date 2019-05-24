@@ -5,7 +5,7 @@ using System.Web;
 
 namespace WcfErp.Modelos.Generales
 {
-    public class Moneda : ModeloBase
+    public class Moneda : ModeloBase<Moneda>
     {
     }
 }

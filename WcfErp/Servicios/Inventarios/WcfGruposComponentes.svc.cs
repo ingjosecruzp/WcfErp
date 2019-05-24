@@ -14,48 +14,6 @@ namespace WcfErp.Servicios.Inventarios
     // NOTE: In order to launch WCF Test Client for testing this service, please select WcfGruposComponentes.svc or WcfGruposComponentes.svc.cs at the Solution Explorer and start debugging.
     public class WcfGruposComponentes : ServiceBase<GrupoComponente>, IWcfGruposComponentes
     {
-
-        public override GrupoComponente add(GrupoComponente item)
-        {
-            try
-            {
-                MongoClient client = new MongoClient(getConnection());
-                IMongoDatabase db = client.GetDatabase(getKeyToken("empresa","token"));
-
-                IMongoCollection<TipoComponente> Collection = db.GetCollection<TipoComponente>("TipoComponente");
-
-                item.TipoComponente = Collection.Find<TipoComponente>(d => d._id == item.TipoComponente.id).FirstOrDefault();
-
-                return base.add(item);
-            }
-            catch (Exception ex)
-            {
-
-                Error(ex, "");
-                return null;
-            }
-        }
-        public override GrupoComponente update(GrupoComponente item, string id)
-        {
-            try
-            {
-                MongoClient client = new MongoClient(getConnection());
-                IMongoDatabase db = client.GetDatabase(getKeyToken("empresa","token"));
-
-                IMongoCollection<TipoComponente> Collection = db.GetCollection<TipoComponente>("TipoComponente");
-
-                item.TipoComponente = Collection.Find<TipoComponente>(d => d._id == item.TipoComponente.id).FirstOrDefault();
-
-                return base.update(item, id);
-            }
-            catch (Exception ex)
-            {
-
-                Error(ex, "");
-                return null;
-            }
-        }
-
         public GrupoComponente delete(string id)
         {
             throw new NotImplementedException();

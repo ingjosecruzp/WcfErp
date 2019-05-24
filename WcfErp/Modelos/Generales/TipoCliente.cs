@@ -5,7 +5,7 @@ using System.Web;
 
 namespace WcfErp.Modelos.Generales
 {
-    public class TipoCliente : ModeloBase
+    public class TipoCliente : ModeloBase<TipoCliente>
     {
     }
 }
