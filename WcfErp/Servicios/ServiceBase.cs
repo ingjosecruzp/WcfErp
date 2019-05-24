@@ -202,7 +202,7 @@ namespace WcfErp.Servicios
                 Modelo item = Collection.Find<Modelo>(d => d._id == id).FirstOrDefault();
                 //Modelo item = Collection.Find<Modelo>(d => d._id == id).FirstOrDefault();
 
-                bloquearDocumento(typeof(Modelo).Name,item._id);
+                //bloquearDocumento(typeof(Modelo).Name,item._id);
 
                 return item;
 
