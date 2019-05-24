@@ -5,7 +5,7 @@ using System.Web;
 
 namespace WcfErp.Modelos.Generales
 {
-    public class Vendedor : ModeloBase
+    public class Vendedor : ModeloBase<Vendedor>
     {
         
     }

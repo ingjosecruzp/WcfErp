@@ -5,7 +5,7 @@ using System.Web;
 
 namespace WcfErp.Modelos.Generales
 {
-    public class Marca : ModeloBase
+    public class Marca : ModeloBase<Marca>
     {
     }
 }

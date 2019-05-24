@@ -7,6 +7,7 @@ using System.Text;
 using WcfErp.Modelos.Generales;
 using MongoDB.Bson;
 using MongoDB.Driver;
+using WcfErp.Modelos;
 
 namespace WcfErp.Servicios.Inventarios
 {
@@ -14,49 +15,6 @@ namespace WcfErp.Servicios.Inventarios
     // NOTA: para iniciar el Cliente de prueba WCF para probar este servicio, seleccione WcfPureza.svc o WcfPureza.svc.cs en el Explorador de soluciones e inicie la depuración.
     public class WcfPureza : ServiceBase<Pureza>, IWcfPureza
     {
-
-        public override Pureza add(Pureza item)
-        {
-            try
-            {
-                MongoClient client = new MongoClient(getConnection());
-                IMongoDatabase db = client.GetDatabase(getKeyToken("empresa","token"));
-
-                IMongoCollection<GrupoComponente> Collection = db.GetCollection<GrupoComponente>("GrupoComponente");
-
-                item.GrupoComponente = Collection.Find<GrupoComponente>(d => d._id == item.GrupoComponente.id).FirstOrDefault();
-
-                return base.add(item);
-            }
-            catch (Exception ex)
-            {
-
-                Error(ex, "");
-                return null;
-            }
-        }
-
-        public override Pureza update(Pureza item, string id)
-        {
-            try
-            {
-                MongoClient client = new MongoClient(getConnection());
-                IMongoDatabase db = client.GetDatabase(getKeyToken("empresa","token"));
-
-                IMongoCollection<GrupoComponente> Collection = db.GetCollection<GrupoComponente>("GrupoComponente");
-
-                item.GrupoComponente = Collection.Find<GrupoComponente>(d => d._id == item.GrupoComponente.id).FirstOrDefault();
-
-                return base.update(item, id);
-            }
-            catch (Exception ex)
-            {
-
-                Error(ex, "");
-                return null;
-            }
-        }
-
 
         public Pureza delete(string id)
         {
@@ -72,7 +30,6 @@ namespace WcfErp.Servicios.Inventarios
 
                 IMongoCollection<Pureza> Collection = db.GetCollection<Pureza>(typeof(Pureza).Name);
 
-                //var filter = Builders<SubgrupoComponente>.Filter.Regex("Nombre", new BsonRegularExpression(busqueda, "i")) && ;
                 var builder = Builders<Pureza>.Filter;
                 var filter = builder.Regex("Nombre", new BsonRegularExpression(busqueda, "i")) & builder.Eq("Pureza._id", _id);
 
