@@ -176,6 +176,7 @@
     <Compile Include="Modelos\Inventarios\Procedencia.cs" />
     <Compile Include="Modelos\Inventarios\TipoConcepto.cs" />
     <Compile Include="Modelos\ModeloBase.cs" />
+    <Compile Include="Modelos\PVenta\Moneda.cs" />
     <Compile Include="Modelos\Reportes\Inventarios\DetallesKardexArticulos.cs" />
     <Compile Include="Modelos\Reportes\Inventarios\ExistenciaValorInventario.cs" />
     <Compile Include="Modelos\Reportes\Inventarios\KardexArticulos.cs" />
@@ -327,6 +328,7 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Servicios\Compras\" />
+    <Folder Include="Servicios\PVenta\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config">
