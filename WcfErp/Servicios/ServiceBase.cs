@@ -159,7 +159,7 @@ namespace WcfErp.Servicios
 
                 Modelo item = db.Set<Modelo>().get(id, db);
 
-                bloquearDocumento(typeof(Modelo).Name,item._id);
+                //bloquearDocumento(typeof(Modelo).Name,item._id);
 
                 return item;
 

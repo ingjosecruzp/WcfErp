@@ -119,6 +119,7 @@
     <Content Include="Servicios\Inventarios\WcfTipoComponente.svc" />
     <Content Include="Servicios\Inventarios\WcfTipoConceptos.svc" />
     <Content Include="Servicios\Inventarios\WcfUnidades.svc" />
+    <Content Include="Servicios\PVenta\WcfFormadeCobro.svc" />
     <Content Include="Servicios\Reportes\Inventarios\WcfExistenciaValorInventario.svc" />
     <Content Include="Servicios\Reportes\Inventarios\WcfKardexArticulos.svc" />
     <Content Include="Servicios\Ventas\WcfClientes.svc" />
@@ -176,6 +177,7 @@
     <Compile Include="Modelos\Inventarios\Procedencia.cs" />
     <Compile Include="Modelos\Inventarios\TipoConcepto.cs" />
     <Compile Include="Modelos\ModeloBase.cs" />
+    <Compile Include="Modelos\PVenta\FormadeCobro.cs" />
     <Compile Include="Modelos\Reportes\Inventarios\DetallesKardexArticulos.cs" />
     <Compile Include="Modelos\Reportes\Inventarios\ExistenciaValorInventario.cs" />
     <Compile Include="Modelos\Reportes\Inventarios\KardexArticulos.cs" />
@@ -307,6 +309,10 @@
       <DependentUpon>WcfUnidades.svc</DependentUpon>
     </Compile>
     <Compile Include="Servicios\IWSLogin.cs" />
+    <Compile Include="Servicios\PVenta\IWcfFormadeCobro.cs" />
+    <Compile Include="Servicios\PVenta\WcfFormadeCobro.svc.cs">
+      <DependentUpon>WcfFormadeCobro.svc</DependentUpon>
+    </Compile>
     <Compile Include="Servicios\Reportes\Inventarios\IWcfExistenciaValorInventario.cs" />
     <Compile Include="Servicios\Reportes\Inventarios\IWcfKardexArticulos.cs" />
     <Compile Include="Servicios\Reportes\Inventarios\WcfExistenciaValorInventario.svc.cs">
