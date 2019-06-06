@@ -41,7 +41,24 @@ namespace WcfErp.Modelos
         {
             
         }
-        public virtual Modelo add(Modelo item,EmpresaContext db)
+        public virtual void updateMany(IEnumerable<WriteModel<Modelo>> movs,EmpresaContext db, IClientSessionHandle session = null)
+        {
+            try
+            {
+                IMongoCollection<Modelo> Collection = dbMongo.GetCollection<Modelo>(typeof(Modelo).Name);
+
+                if (session == null)
+                    Collection.BulkWrite(movs);
+                else
+                    Collection.BulkWrite(session,movs);
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+        public virtual Modelo add(Modelo item,EmpresaContext db, IClientSessionHandle session = null)
         {
             try
             {
@@ -51,7 +68,10 @@ namespace WcfErp.Modelos
 
                 addIndex(Collection,db);
 
-                Collection.InsertOne(item);
+                if (session == null)
+                    Collection.InsertOne(item);
+                else
+                    Collection.InsertOne(session, item);
 
                 return item;
             }
@@ -78,7 +98,7 @@ namespace WcfErp.Modelos
                 throw;
             }
         }
-        public virtual Modelo update(Modelo item, string id,EmpresaContext db)
+        public virtual Modelo update(Modelo item, string id,EmpresaContext db, IClientSessionHandle session = null)
         {
             try
             {
@@ -88,7 +108,11 @@ namespace WcfErp.Modelos
 
                 IMongoCollection<Modelo> Collection = dbMongo.GetCollection<Modelo>(typeof(Modelo).Name);
 
-                var result = Collection.ReplaceOne(filter, item);
+
+                if (session == null)
+                    Collection.ReplaceOne(filter, item);
+                else
+                    Collection.ReplaceOne(session,filter, item);
 
                 return item;
             }
@@ -110,6 +134,74 @@ namespace WcfErp.Modelos
                 List<Modelo> Documentos = Collection.Find<Modelo>(filter).ToList();
 
                 return Documentos;
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+        }
+        public virtual List<Modelo> Filters(FilterDefinition<Modelo> filter,string cadena="")
+        {
+            try
+            {
+                IMongoCollection<Modelo> Collection = dbMongo.GetCollection<Modelo>(typeof(Modelo).Name);
+
+                List<Modelo> LstItems;
+
+                if(cadena == "")
+                {
+                    LstItems = Collection.Find(filter).ToList();
+                }
+                else
+                {
+                    JObject rss = cadenaTojObject(cadena);
+                    LstItems = Collection.Find(filter).Project<Modelo>(rss.ToString()).ToList();
+                }
+
+                return LstItems;
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+        private JObject cadenaTojObject(string cadena)
+        {
+            try
+            {
+                JObject rss = new JObject();
+
+                string[] fields = cadena.Split(',');
+
+                string campos = "{";
+
+                foreach (string f in fields)
+                {
+                    rss.Add(new JProperty(f, "1"));
+                }
+                Console.WriteLine(rss.ToString());
+                campos += "}";
+
+                return rss;
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+        public virtual Modelo getbyFields(string id,string cadena, EmpresaContext db)
+        {
+            try
+            {
+                JObject rss =cadenaTojObject(cadena);
+
+                IMongoCollection<Modelo> Collection = dbMongo.GetCollection<Modelo>(typeof(Modelo).Name);
+
+                Modelo item = Collection.Find<Modelo>(d => d._id== id).Project<Modelo>(rss.ToString()).FirstOrDefault();
+
+                return item;
             }
             catch (Exception ex)
             {

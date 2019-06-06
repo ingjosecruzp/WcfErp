@@ -25,7 +25,7 @@ namespace WcfErp.Modelos.Inventarios
         public List<ConfiguracionesAlmacen> ConfiguracionesAlmacen { get; set; }
 
         //Datos Particulares
-        public Pureza Pureza { get; set; }
+        public double Pureza { get; set; }
         public double Peso { get; set; }
         public Paises Paises { get; set; }
         public List<Imagen> Imagen { get; set; }
@@ -50,7 +50,7 @@ namespace WcfErp.Modelos.Inventarios
                 item.UnidadVenta = item.GrupoUnidad.GrupoUnidadDetalle.Where(i => i.UnidadEquivalente._id == item.UnidadVenta._id).Select(x => x.UnidadEquivalente).FirstOrDefault();
                 item.UnidadInventario = item.GrupoUnidad.GrupoUnidadDetalle.Where(i => i.UnidadEquivalente._id == item.UnidadInventario._id).Select(x => x.UnidadEquivalente).FirstOrDefault();
 
-                item.Pureza = item.Pureza.id == "" ? null : db.Pureza.get(item.Pureza._id, db);
+                //item.Pureza = item.Pureza.id == "" ? null : db.Pureza.get(item.Pureza._id, db);
                 item.Paises = item.Paises.id == "" ? null : db.Paises.get(item.Paises._id, db);
 
                 foreach (CodigosBarra codigo in item.CodigosBarra)

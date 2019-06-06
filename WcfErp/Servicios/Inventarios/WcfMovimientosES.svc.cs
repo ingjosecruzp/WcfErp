@@ -21,23 +21,16 @@ namespace WcfErp.Servicios.Inventarios
         
         public  override  MovimientosES add(MovimientosES item)
         {
-            MongoClient client = new MongoClient(getConnection());
-            //    var session = client.StartSession();//Create a session  transactions
-            var session = client.StartSession();
-
             try
             {
+                EmpresaContext db = new EmpresaContext();
 
-                //   session.StartTransaction();//Begin transaction
-                item.Almacen_Destino = new Almacen();
-                item.Almacen_Destino._id = "5bd259a71d28282c7ce19c38";
+                using (var session = db.client.StartSession())
+                {
+                    session.StartTransaction();
 
-
-                //IMongoDatabase db = client.GetDatabase(getKeyToken("empresa","token"));
-                IMongoDatabase db = session.Client.GetDatabase(getKeyToken("empresa", "token"));
-
-                session.StartTransaction();
-
+                    Inventarios documento = new Inventarios();
+                    documento.add(item, db, session);
 
                 IMongoCollection<MovimientosES> Documento = db.GetCollection<MovimientosES>("MovimientosES");// db.GetCollection<MovimientosES>("MovimientosES");
                 IMongoCollection<Concepto> Conceptos = db.GetCollection<Concepto>("Concepto");
@@ -46,7 +39,7 @@ namespace WcfErp.Servicios.Inventarios
                 IMongoCollection<InventariosSaldos> CollectionSaldos = db.GetCollection<InventariosSaldos>("InventariosSaldos");
                 IMongoCollection<InventariosCostos> CollectionCostos = db.GetCollection<InventariosCostos>("InventariosCostos");
 
-                item.Concepto = Conceptos.Find<Concepto>(d => d._id == item.Concepto.id).Project<Concepto>(Builders<Concepto>.Projection.Include(p => p._id).Include(p => p.Nombre).Include(p => p.Naturaleza).Include(p => p.CostoAutomatico).Include(p => p.FolioAutomatico).Include(p => p.Clave)).FirstOrDefault();
+                item.Concepto = Conceptos.Find<Concepto>(d => d._id == item.Concepto.id).Project<Concepto>(Builders<Concepto>.Projection.Include(p => p._id).Include(p => p.Nombre).Include(p => p.Naturaleza).Include(p => p.CostoAutomatico).Include(p => p.FolioAutomatico)).FirstOrDefault();
                 item.Almacen = Almacenes.Find<Almacen>(d => d._id == item.Almacen.id).Project<Almacen>(Builders<Almacen>.Projection.Include(p => p._id).Include(p => p.Nombre)).FirstOrDefault();
 
                 if (item.Concepto.FolioAutomatico == "SI"){
@@ -92,28 +85,11 @@ namespace WcfErp.Servicios.Inventarios
                         updatesSaldos.Add(new InsertOneModel<InventariosSaldos>(invsaldo));
                 }
 
-
-                CollectionCostos.BulkWrite(updatesCostos);
-                CollectionSaldos.BulkWrite(updatesSaldos);
-                Documento.InsertOne(item);
-                if (item.Concepto._id == "5c59c84f6886742388d9bbcc") // SI ES UN TRASPASO DE SALIDA VOLVEMOS A LLAMAR EL METODO ADD PARA DAR ENTRADA AL ALMACEN DE DESTINO
-                   {
-                    item._id = null;
-                    item.Concepto._id = "5c59d6c16886742450e4527f";
-                    item.Almacen._id = item.Almacen_Destino._id;
-                    item.Almacen_Destino = item.Almacen;
-                    add(item);
-
-                   }
-                    
-               session.CommitTransaction();//Made it here without error? Let's commit the transaction   
-                return  item;
+                    return  item;
             }
             catch (Exception ex)
             {
-                session.AbortTransaction();
-                Error(ex, "");
-                
+                Error(ex, "");   
                 return null;
             }
 
@@ -131,197 +107,6 @@ namespace WcfErp.Servicios.Inventarios
                 return null;
             }
         }
-
-        public InventariosSaldos LlenarObjetoInventartiosSaldos(MovimientosES item,Detalles_ES mov, List<Articulo> ArticuloCompletoServer, List<InventariosSaldos> InventariosSaldosCompletoServer)
-        {
-
-            
-                                                                       ////////////////////////////////////PARA LA TABLA SALDOS//////////////////////////////////////////////////////
-              try
-              {
-
-                InventariosSaldos Saldo = new InventariosSaldos();
-                InventariosSaldos SaldoActual = new InventariosSaldos();
-
-                mov.Articulo = ArticuloCompletoServer.Find(b => b._id == mov.Articulo._id);
-                SaldoActual = InventariosSaldosCompletoServer.Find(b => b.ArticuloId == mov.Articulo._id && b.AlmacenId==item.Almacen._id && b.Ano==item.Fecha.Year && b.Mes == item.Fecha.Month);
-
-                if (SaldoActual == null)
-                  {//SI ES UN NUEVO  REGITRO EN LA TABLA INVENTARIOS SALDOS, ES UNO POR CADA MES DEL AÑO EN LA COMBINACION ARTICULO ALMACEN
-                      Saldo.ArticuloId = mov.Articulo._id;
-                      Saldo.AlmacenId = item.Almacen._id;
-                      Saldo.Ano = item.Fecha.Year;
-                      Saldo.Mes = item.Fecha.Month;
-                      Saldo.UltimoDia = item.Fecha.Day;
-                    
-
-                      if (item.Concepto.Naturaleza == "ENTRADA")
-                      {
-                          Saldo.EntradaUnidades = mov.Cantidad;
-                          Saldo.EntradasCosto = mov.Costo * mov.Cantidad;
-                      }
-                      else if(item.Concepto.Naturaleza == "SALIDA")
-                      {
-                          Saldo.SalidasUnidades = mov.Cantidad;
-                          Saldo.SalidasCosto = mov.Costo * mov.Cantidad;
-                      }
-
-                      return Saldo;
-
-                  }
-                  else
-                  {
-                      
-                      if (item.Fecha.Day > SaldoActual.UltimoDia)
-                          SaldoActual.UltimoDia = item.Fecha.Day;
-
-
-
-                      if (item.Concepto.Naturaleza == "ENTRADA")
-                      {
-                          SaldoActual.EntradaUnidades += mov.Cantidad;
-                          SaldoActual.EntradasCosto += mov.Costo * mov.Cantidad;
-                      }
-                      else if (item.Concepto.Naturaleza == "SALIDA")
-                      {
-                          SaldoActual.SalidasUnidades += mov.Cantidad;
-                          SaldoActual.SalidasCosto += mov.Costo * mov.Cantidad;
-                      }
-                      return SaldoActual;
-                  }
-
-
-              }
-              catch (Exception ex)
-              {
-
-                  throw;
-          }
-          
-    
-        }
-
-        public InventariosCostos LlenarObjetoInventartiosCostos(MovimientosES item, Detalles_ES mov, List<Articulo> ArticuloCompletoServer, List<InventariosCostos> InventariosCostosCompletoServer)
-        {
-
-
-            
-                                                                           ////////////////////////////////////PARA LA TABLA INVENTARIOSCOSTOS/////////////////////////////////////////////
-                                                                                      /*------------------- PROMEDIO PONDERADO------------------------*/
-
-                 InventariosCostos Costo = new InventariosCostos();
-                 InventariosCostos CostoActual = new InventariosCostos();
-
-                 mov.Articulo = ArticuloCompletoServer.Find(b => b._id == mov.Articulo._id);
-                 CostoActual = InventariosCostosCompletoServer.Find(b => b.ArticuloId == mov.Articulo._id && b.AlmacenId == item.Almacen._id);
-                 Costo.ArticuloId = mov.Articulo._id;
-                 Costo.AlmacenId = item.Almacen._id;
-                 Costo.Fecha = item.Fecha;
-
-                  if (CostoActual == null) // SI ES LA PRIMERA ENTRADA X ARTICULO  Y ALMACEN,SI ES UN NUEVO  REGITRO EN LA TABLA INVENTARIOS COSTOS, 
-                     {
-
-
-                          if (item.Concepto.Naturaleza == "ENTRADA") //Revisar si es un documento de entrada o de salida
-                          {
-                                if (item.Concepto.CostoAutomatico == "NO") // SI NO ES COSTO AUTOMATICO: ya que es la primera entrada de costo se multiplica la cantidad de entrada del articulo * el costo que viene desde el cliente
-                                {
-                                    mov.CostoTotal = mov.Cantidad * mov.Costo;
-                                    Costo.ValorTotal = mov.CostoTotal;
-
-                                }
-                                else if (item.Concepto.CostoAutomatico == "SI") // SI ES COSTO AUTOMATICO:  YA QUE ES LA PRIMERA ENTRADA SE LE ASIGNA 0.00 YA QUE NO HAY REGISTRO DE COSTOS
-                                {
-                                    mov.CostoTotal = 0.00;
-                                    Costo.ValorTotal = mov.CostoTotal;
-
-                                }
-                                Costo.Existencia = mov.Cantidad;
-
-                                
-
-                          }
-                          else if (item.Concepto.Naturaleza == "SALIDA")
-                          {
-
-                                if (item.Concepto.CostoAutomatico == "NO") // SI NO ES COSTO AUTOMATICO: ya que es la primera entrada de costo se multiplica la cantidad de entrada del articulo * el costo que viene desde el cliente
-                                {
-                                    mov.CostoTotal = mov.Cantidad * mov.Costo;
-                                    Costo.ValorTotal -= mov.CostoTotal;
-
-                                }
-                                else if (item.Concepto.CostoAutomatico == "SI") // SI ES COSTO AUTOMATICO:  YA QUE ES LA PRIMERA ENTRADA SE LE ASIGNA 0.00 YA QUE NO HAY REGISTRO DE COSTOS
-                                {
-                                    mov.CostoTotal = 0.00;
-                                    Costo.ValorTotal -= mov.CostoTotal;
-
-                                }
-                                Costo.Existencia -= mov.Cantidad;
-
-                          }
-                          Costo.CapaAgotada = Costo.Existencia <= 0 ? "SI" : "NO";
-
-                          return Costo;
-
-                  }
-                else     // EN CASO DE QUE NO SEA EL PRIMER MOVIMIENTO EN LA TABLA INVENTARIOSCOSTOS
-                  {
-
-
-                      if (item.Concepto.Naturaleza == "ENTRADA")
-                      {
-
-                            if (item.Concepto.CostoAutomatico == "SI")// SI ES COSTO AUTOMATICO 
-                               {
-
-                                mov.CostoTotal = CostoActual.ValorTotal >  0 ? (CostoActual.ValorTotal / CostoActual.Existencia) * mov.Cantidad : 0.00;
-                                mov.Costo = CostoActual.ValorTotal >  0 ? (CostoActual.ValorTotal / CostoActual.Existencia): 0.00;
-                                CostoActual.Existencia = CostoActual.Existencia + mov.Cantidad;
-                                CostoActual.ValorTotal = CostoActual.ValorTotal + mov.CostoTotal;
-
-                               }
-                            else if (item.Concepto.CostoAutomatico == "NO")
-                               {
-                                mov.CostoTotal = mov.Cantidad * mov.Costo;
-                                CostoActual.Existencia = CostoActual.Existencia + mov.Cantidad;
-                                CostoActual.ValorTotal = CostoActual.ValorTotal + mov.CostoTotal;
-
-                                }
-
-
-                         CostoActual.CapaAgotada = CostoActual.Existencia <= 0 ? "SI" : "NO";
-
-                    }
-                    else if (item.Concepto.Naturaleza == "SALIDA")
-                      {
-
-
-                            if (item.Concepto.CostoAutomatico == "SI")// SI ES COSTO AUTOMATICO 
-                               {
-                                mov.CostoTotal = CostoActual.Existencia >  0 ? (CostoActual.ValorTotal / CostoActual.Existencia) * mov.Cantidad : 0.00; //SI EL VALOR TOTAL DE LA CAPA
-                                mov.Costo = CostoActual.Existencia >  0 ? (CostoActual.ValorTotal / CostoActual.Existencia): 0.00;
-                                CostoActual.Existencia = CostoActual.Existencia > 0 ? CostoActual.Existencia - mov.Cantidad : 0.00;
-                                CostoActual.ValorTotal = CostoActual.Existencia > 0 ? CostoActual.ValorTotal - mov.CostoTotal : 0.00;
-
-                                }
-                                else if (item.Concepto.CostoAutomatico == "NO")
-                                {
-                                 mov.CostoTotal = mov.Cantidad * mov.Costo;
-                                 CostoActual.Existencia =  CostoActual.Existencia - mov.Cantidad ;
-                                 CostoActual.ValorTotal =  CostoActual.ValorTotal - mov.CostoTotal;
-
-
-                                 }
-
-
-
-                           CostoActual.CapaAgotada = CostoActual.Existencia <= 0 ? "SI" : "NO";
-
-                      }
-                      return CostoActual;
-                  }
-
-          }
 
         public List<MovimientosES> obtenerES(string cadena,string tipoMovimiento)
         {

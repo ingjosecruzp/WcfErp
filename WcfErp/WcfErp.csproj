@@ -119,6 +119,7 @@
     <Content Include="Servicios\Inventarios\WcfTipoComponente.svc" />
     <Content Include="Servicios\Inventarios\WcfTipoConceptos.svc" />
     <Content Include="Servicios\Inventarios\WcfUnidades.svc" />
+    <Content Include="Servicios\PVenta\WcfFormadeCobro.svc" />
     <Content Include="Servicios\Reportes\Inventarios\WcfExistenciaValorInventario.svc" />
     <Content Include="Servicios\Reportes\Inventarios\WcfKardexArticulos.svc" />
     <Content Include="Servicios\Ventas\WcfClientes.svc" />
@@ -179,6 +180,7 @@
     <Compile Include="Modelos\PuntoVenta\Cajas.cs" />
     <Compile Include="Modelos\PuntoVenta\Cajeros.cs" />
     <Compile Include="Modelos\PuntoVenta\PuntoVenta_Documento.cs" />
+    <Compile Include="Modelos\PVenta\FormadeCobro.cs" />
     <Compile Include="Modelos\Reportes\Inventarios\DetallesKardexArticulos.cs" />
     <Compile Include="Modelos\Reportes\Inventarios\ExistenciaValorInventario.cs" />
     <Compile Include="Modelos\Reportes\Inventarios\KardexArticulos.cs" />
@@ -260,6 +262,7 @@
     <Compile Include="Servicios\Generales\WcfZonaCliente.svc.cs">
       <DependentUpon>WcfZonaCliente.svc</DependentUpon>
     </Compile>
+    <Compile Include="Servicios\Inventarios\Inventarios.cs" />
     <Compile Include="Servicios\Inventarios\IWcfAlmacenes.cs" />
     <Compile Include="Servicios\Inventarios\IWcfArticulos.cs" />
     <Compile Include="Servicios\Inventarios\IWcfConceptos.cs" />
@@ -309,6 +312,10 @@
       <DependentUpon>WcfUnidades.svc</DependentUpon>
     </Compile>
     <Compile Include="Servicios\IWSLogin.cs" />
+    <Compile Include="Servicios\PVenta\IWcfFormadeCobro.cs" />
+    <Compile Include="Servicios\PVenta\WcfFormadeCobro.svc.cs">
+      <DependentUpon>WcfFormadeCobro.svc</DependentUpon>
+    </Compile>
     <Compile Include="Servicios\Reportes\Inventarios\IWcfExistenciaValorInventario.cs" />
     <Compile Include="Servicios\Reportes\Inventarios\IWcfKardexArticulos.cs" />
     <Compile Include="Servicios\Reportes\Inventarios\WcfExistenciaValorInventario.svc.cs">

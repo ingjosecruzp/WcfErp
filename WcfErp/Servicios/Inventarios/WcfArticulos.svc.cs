@@ -8,6 +8,7 @@ using System.Text;
 using MongoDB.Driver;
 using WcfErp.Modelos.Inventarios;
 using WcfErp.Modelos.Generales;
+using WcfErp.Modelos;
 
 namespace WcfErp.Servicios.Inventarios
 {
@@ -19,14 +20,26 @@ namespace WcfErp.Servicios.Inventarios
         {
             try
             {
-                GrabarImagen(item);
+                EmpresaContext db = new EmpresaContext();
 
-                //Genera la clave del articulo
-                string ArticuloId = AutoIncrement("Articulos").ToString().PadLeft(5, '0');
+                using (var session = db.client.StartSession())
+                {
 
-                item.Clave = item.GrupoComponente.Clave + item.SubGrupoComponente.Clave + ArticuloId;
+                    session.StartTransaction();
+
+                    GrabarImagen(item);
+
+                    //Genera la clave del articulo
+                    string ArticuloId = AutoIncrement("Articulos",db.db,session).ToString().PadLeft(5, '0');
+
+                    item.Clave = item.GrupoComponente.Clave + item.SubGrupoComponente.Clave + ArticuloId;
+
+                    db.Articulo.add(item, db, session);
+
+                    session.CommitTransaction();
+                }
                 
-                return base.add(item);
+                return item;
             }
             catch (Exception ex)
             {

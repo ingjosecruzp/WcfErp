@@ -14,20 +14,20 @@ namespace WcfErp.Servicios.Reportes.Inventarios
     public interface IWcfKardexArticulos
     {
         [OperationContract]
+        [WebInvoke(UriTemplate = "?searchBy=RptKardex&FechaInicio={FechaInicio}&FechaFin={FechaFin}&AlmacenId={AlmacenId}&ArticuloId={ArticuloId}&GrupoId={GrupoId}&SubGrupoId={SubGrupoId}&Valoracion={Valoracion}",
+         BodyStyle = WebMessageBodyStyle.Bare,
+         ResponseFormat = WebMessageFormat.Json,
+         RequestFormat = WebMessageFormat.Json,
+         Method = "GET")]
+        List<KardexArticulos> KardexArticulo(string FechaInicio, string FechaFin, string AlmacenId, string ArticuloId, string GrupoId, string SubGrupoId, string Valoracion);
+
+        /*[OperationContract]
         [WebInvoke(UriTemplate = "?searchBy=RptExistencia",
          BodyStyle = WebMessageBodyStyle.Bare,
          ResponseFormat = WebMessageFormat.Json,
          RequestFormat = WebMessageFormat.Json,
          Method = "GET")]
-        List<KardexArticulos> KardexArticulo();
-
-        /*[OperationContract]
-        [WebInvoke(UriTemplate = "?searchBy=VerRptExistencia&almacenid={AlmacenId}&grupoid={GrupoId}",
-          BodyStyle = WebMessageBodyStyle.Bare,
-          ResponseFormat = WebMessageFormat.Json,
-          RequestFormat = WebMessageFormat.Json,
-          Method = "GET")]
-        string VerReporte(string AlmacenId, string GrupoId);*/
+        List<KardexArticulos> KardexArticulo();*/
 
         [OperationContract]
         [WebInvoke(UriTemplate = "",
