@@ -176,6 +176,9 @@
     <Compile Include="Modelos\Inventarios\Procedencia.cs" />
     <Compile Include="Modelos\Inventarios\TipoConcepto.cs" />
     <Compile Include="Modelos\ModeloBase.cs" />
+    <Compile Include="Modelos\PuntoVenta\Cajas.cs" />
+    <Compile Include="Modelos\PuntoVenta\Cajeros.cs" />
+    <Compile Include="Modelos\PuntoVenta\PuntoVenta_Documento.cs" />
     <Compile Include="Modelos\Reportes\Inventarios\DetallesKardexArticulos.cs" />
     <Compile Include="Modelos\Reportes\Inventarios\ExistenciaValorInventario.cs" />
     <Compile Include="Modelos\Reportes\Inventarios\KardexArticulos.cs" />

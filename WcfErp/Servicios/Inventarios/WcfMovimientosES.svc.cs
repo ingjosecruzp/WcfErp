@@ -46,7 +46,7 @@ namespace WcfErp.Servicios.Inventarios
                 IMongoCollection<InventariosSaldos> CollectionSaldos = db.GetCollection<InventariosSaldos>("InventariosSaldos");
                 IMongoCollection<InventariosCostos> CollectionCostos = db.GetCollection<InventariosCostos>("InventariosCostos");
 
-                item.Concepto = Conceptos.Find<Concepto>(d => d._id == item.Concepto.id).Project<Concepto>(Builders<Concepto>.Projection.Include(p => p._id).Include(p => p.Nombre).Include(p => p.Naturaleza).Include(p => p.CostoAutomatico).Include(p => p.FolioAutomatico)).FirstOrDefault();
+                item.Concepto = Conceptos.Find<Concepto>(d => d._id == item.Concepto.id).Project<Concepto>(Builders<Concepto>.Projection.Include(p => p._id).Include(p => p.Nombre).Include(p => p.Naturaleza).Include(p => p.CostoAutomatico).Include(p => p.FolioAutomatico).Include(p => p.Clave)).FirstOrDefault();
                 item.Almacen = Almacenes.Find<Almacen>(d => d._id == item.Almacen.id).Project<Almacen>(Builders<Almacen>.Projection.Include(p => p._id).Include(p => p.Nombre)).FirstOrDefault();
 
                 if (item.Concepto.FolioAutomatico == "SI"){
