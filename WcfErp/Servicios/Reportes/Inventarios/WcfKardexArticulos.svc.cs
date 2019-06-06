@@ -27,108 +27,122 @@ namespace WcfErp.Servicios.Reportes.Inventarios
         //  IMongoCollection<InventariosSaldos> CollectionSaldos;
 
 
-        public List<KardexArticulos> KardexArticulo()
+        public List<KardexArticulos> KardexArticulo(string FechaInicio, string FechaFin, string AlmacenId, string ArticuloId, string GrupoId,string SubGrupoId, string Valoracion)
         {
-            string FechaInicio="01/11/2018";
-            string FechaFin = "03/04/2019";
-            string AlmacenId= "5c9676d418cb1b38c0005846";
-            string ArticuloId= "5bda1dff68867432000f8e3b";
-            string GrupoId=null;
-            string SubGrupoId = null;
-            string Valoracion = null;
-            var builderMovimientos = Builders<MovimientosES>.Filter;
-            var builderMovimientos1 = Builders<MovimientosES>.Filter;
-            
-
-            string dateinicio = DateTime.Parse(FechaInicio).Subtract(TimeSpan.FromDays(1)).ToShortDateString();
-            string datefin = DateTime.Parse(FechaFin).ToShortDateString();
-   
-
-          //  KardexArticulos existencia = new KardexArticulos();
-            List<KardexArticulos> existenciaInventario = new List<KardexArticulos>();
-            List<ExistenciaValorInventario> ExistenciaFechaInicio = new WcfExistenciaValorInventario().Existencia(dateinicio, AlmacenId, ArticuloId, GrupoId, SubGrupoId, Valoracion);
-            List<ExistenciaValorInventario> ExistenciaFechaFin = new WcfExistenciaValorInventario().Existencia(datefin, AlmacenId, ArticuloId, GrupoId, SubGrupoId, Valoracion);
-
-
-            DateTime DateInicio = DateTime.Parse(FechaInicio);
-            int anoInicio = DateInicio.Year;
-            int mesInicio = DateInicio.Month;
-            int diaInicio = DateInicio.Day;
-            DateTime DateFin = DateTime.Parse(FechaFin);
-            int anoFin = DateFin.Year;
-            int mesFin = DateFin.Month;
-            int diaFin = DateFin.Day;
-            
-            client = new MongoClient(ConfigurationManager.AppSettings["pathMongo"]);
-            db = client.GetDatabase("PAMC861025DB7");
-            IMongoCollection<MovimientosES> CollectionMovimientosEs =db.GetCollection<MovimientosES>("MovimientosES");
-            List<MovimientosES> MovimientosEsCompletoServer = new List<MovimientosES>();
-            //    MovimientosEsCompletoServer = CollectionMovimientosEs.Find(builderMovimientos.Eq("Almacen._id", AlmacenId)  & builderMovimientos.
-            //                       Where((a => a.Ano >= anoInicio  && a.Mes >= mesInicio && a.Dia >= diaInicio)) & builderMovimientos1.
-            //                       Where((b => b.Ano <= anoFin && b.Mes <= mesFin && b.Dia <= diaFin))).ToList();
-
-           // MovimientosEsCompletoServer = CollectionMovimientosEs.Find(builderMovimientos.Eq("Almacen._id", AlmacenId) & builderMovimientos.
-           //                               Where((a => a.Ano >= anoInicio && a.Ano <= anoFin && a.Mes >= mesInicio && a.Dia >= diaInicio))).ToList();
-
-            var min = new DateTime(anoInicio, mesInicio, diaInicio);
-            var max = new DateTime(anoFin, mesFin, diaFin,23,59,59);
-            MovimientosEsCompletoServer = CollectionMovimientosEs.Find(x => x.Fecha >= min & x.Fecha <= max).ToList();
-
-            foreach (ExistenciaValorInventario exvini in ExistenciaFechaInicio)
+            try
             {
-                int i = 0;
-                ExistenciaValorInventario exvfin = ExistenciaFechaFin[i];
+                /*string FechaInicio="01/11/2018";
+                string FechaFin = "03/04/2019";
+                string AlmacenId= "5c9676d418cb1b38c0005846";
+                string ArticuloId= "5bda1dff68867432000f8e3b";
+                string GrupoId=null;
+                string SubGrupoId = null;
+                string Valoracion = null;*/
+                var builderMovimientos = Builders<MovimientosES>.Filter;
+                var builderMovimientos1 = Builders<MovimientosES>.Filter;
 
-                kardex = ExistenciaArticuloPeriodo(exvini, exvfin, MovimientosEsCompletoServer);
-                existenciaInventario.Add(kardex);
-                i++;
+
+                string dateinicio = DateTime.Parse(FechaInicio).Subtract(TimeSpan.FromDays(1)).ToShortDateString();
+                string datefin = DateTime.Parse(FechaFin).ToShortDateString();
+
+
+                //  KardexArticulos existencia = new KardexArticulos();
+                List<KardexArticulos> existenciaInventario = new List<KardexArticulos>();
+                List<ExistenciaValorInventario> ExistenciaFechaInicio = new WcfExistenciaValorInventario().Existencia(dateinicio, AlmacenId, ArticuloId, GrupoId, SubGrupoId, Valoracion);
+                List<ExistenciaValorInventario> ExistenciaFechaFin = new WcfExistenciaValorInventario().Existencia(datefin, AlmacenId, ArticuloId, GrupoId, SubGrupoId, Valoracion);
+
+
+                DateTime DateInicio = DateTime.Parse(FechaInicio);
+                int anoInicio = DateInicio.Year;
+                int mesInicio = DateInicio.Month;
+                int diaInicio = DateInicio.Day;
+                DateTime DateFin = DateTime.Parse(FechaFin);
+                int anoFin = DateFin.Year;
+                int mesFin = DateFin.Month;
+                int diaFin = DateFin.Day;
+
+                client = new MongoClient(ConfigurationManager.AppSettings["pathMongo"]);
+                db = client.GetDatabase("PAMC861025DB7");
+                IMongoCollection<MovimientosES> CollectionMovimientosEs = db.GetCollection<MovimientosES>("MovimientosES");
+                List<MovimientosES> MovimientosEsCompletoServer = new List<MovimientosES>();
+                //    MovimientosEsCompletoServer = CollectionMovimientosEs.Find(builderMovimientos.Eq("Almacen._id", AlmacenId)  & builderMovimientos.
+                //                       Where((a => a.Ano >= anoInicio  && a.Mes >= mesInicio && a.Dia >= diaInicio)) & builderMovimientos1.
+                //                       Where((b => b.Ano <= anoFin && b.Mes <= mesFin && b.Dia <= diaFin))).ToList();
+
+                // MovimientosEsCompletoServer = CollectionMovimientosEs.Find(builderMovimientos.Eq("Almacen._id", AlmacenId) & builderMovimientos.
+                //                               Where((a => a.Ano >= anoInicio && a.Ano <= anoFin && a.Mes >= mesInicio && a.Dia >= diaInicio))).ToList();
+
+                var min = new DateTime(anoInicio, mesInicio, diaInicio);
+                var max = new DateTime(anoFin, mesFin, diaFin, 23, 59, 59);
+                MovimientosEsCompletoServer = CollectionMovimientosEs.Find(x => x.Fecha >= min & x.Fecha <= max).ToList();
+
+                foreach (ExistenciaValorInventario exvini in ExistenciaFechaInicio)
+                {
+                    int i = 0;
+                    ExistenciaValorInventario exvfin = ExistenciaFechaFin[i];
+
+                    kardex = ExistenciaArticuloPeriodo(exvini, exvfin, MovimientosEsCompletoServer);
+                    existenciaInventario.Add(kardex);
+                    i++;
+                }
+
+
+                return existenciaInventario;
             }
+            catch (Exception ex)
+            {
 
-            
-            return existenciaInventario;
-
+                throw;
+            }
 
         }
         public KardexArticulos ExistenciaArticuloPeriodo(ExistenciaValorInventario ExistenciaFechaInicio, ExistenciaValorInventario ExistenciaFechaFin,List<MovimientosES> MovimientosEsCompletoServer)
         {
-            int i = 0;
-            
-            kardex.ExistenciaInicial = ExistenciaFechaInicio.Existencia;
-            kardex.ExistenciaFinal = ExistenciaFechaFin.Existencia;
-            kardex.TotalEntradas = ExistenciaFechaFin.TotalEntradas - ExistenciaFechaInicio.TotalEntradas;
-            kardex.TotalSalidas = ExistenciaFechaInicio.TotalSalidas + ExistenciaFechaFin.TotalSalidas;
-            var mz = MovimientosEsCompletoServer.SelectMany(l => l.Detalles_ES, (a,b) => new { a, b }).Where(p => p.b.Articulo._id == ExistenciaFechaInicio.Articulo._id).ToList();
-            List<MovimientosES> movimientos = mz.Select(a => a.a).ToList();
-            if (kardex.detalles == null)
+            try
             {
-                //It's null - create it
-                kardex.detalles = new List<DetallesKardexArticulos>();
-            }
+                int i = 0;
 
-            foreach (MovimientosES detalle in movimientos)
-            {
-                
-                DetallesKardexArticulos detallekardex = new DetallesKardexArticulos();
-                detallekardex.Fecha = detalle.Fecha.ToShortDateString();
-                detallekardex.Concepto = detalle.Concepto.Nombre;
-                detallekardex.Folio = detalle.Folio;
-                detallekardex.Costo = detalle.Detalles_ES.Where(a=>a.Articulo._id== ExistenciaFechaInicio.Articulo._id).Sum(b=>b.CostoTotal);
-                if(detalle.Concepto.Naturaleza=="ENTRADA")
-                detallekardex.TotalEntrada = detalle.Detalles_ES.Where(a => a.Articulo._id == ExistenciaFechaInicio.Articulo._id).Sum(b => b.Cantidad);
-                else
-                detallekardex.TotalSalida = detalle.Detalles_ES.Where(a => a.Articulo._id == ExistenciaFechaInicio.Articulo._id).Sum(b => b.Cantidad);
-                invfinal += detallekardex.TotalEntrada- detallekardex.TotalSalida;
-                detallekardex.InventarioFinal = invfinal;
+                kardex.ExistenciaInicial = ExistenciaFechaInicio.Existencia;
+                kardex.ExistenciaFinal = ExistenciaFechaFin.Existencia;
+                kardex.TotalEntradas = ExistenciaFechaFin.TotalEntradas - ExistenciaFechaInicio.TotalEntradas;
+                kardex.TotalSalidas = ExistenciaFechaInicio.TotalSalidas + ExistenciaFechaFin.TotalSalidas;
+                var mz = MovimientosEsCompletoServer.SelectMany(l => l.Detalles_ES, (a, b) => new { a, b }).Where(p => p.b.Articulo._id == ExistenciaFechaInicio.Articulo._id).ToList();
+                List<MovimientosES> movimientos = mz.Select(a => a.a).ToList();
+                if (kardex.detalles == null)
+                {
+                    //It's null - create it
+                    kardex.detalles = new List<DetallesKardexArticulos>();
+                }
 
-                kardex.detalles.Add(detallekardex);
+                foreach (MovimientosES detalle in movimientos)
+                {
 
-                i++;
-                
-              }
- 
-                kardex.detalles=kardex.detalles.OrderBy(a => Convert.ToDateTime(a.Fecha)).ToList(); 
+                    DetallesKardexArticulos detallekardex = new DetallesKardexArticulos();
+                    detallekardex.Fecha = detalle.Fecha.ToShortDateString();
+                    detallekardex.Concepto = detalle.Concepto.Nombre;
+                    detallekardex.Folio = detalle.Folio;
+                    detallekardex.Costo = detalle.Detalles_ES.Where(a => a.Articulo._id == ExistenciaFechaInicio.Articulo._id).Sum(b => b.CostoTotal);
+                    if (detalle.Concepto.Naturaleza == "ENTRADA")
+                        detallekardex.TotalEntrada = detalle.Detalles_ES.Where(a => a.Articulo._id == ExistenciaFechaInicio.Articulo._id).Sum(b => b.Cantidad);
+                    else
+                        detallekardex.TotalSalida = detalle.Detalles_ES.Where(a => a.Articulo._id == ExistenciaFechaInicio.Articulo._id).Sum(b => b.Cantidad);
+                    invfinal += detallekardex.TotalEntrada - detallekardex.TotalSalida;
+                    detallekardex.InventarioFinal = invfinal;
+
+                    kardex.detalles.Add(detallekardex);
+
+                    i++;
+
+                }
+
+                kardex.detalles = kardex.detalles.OrderBy(a => Convert.ToDateTime(a.Fecha)).ToList();
                 return kardex;
+            }
+            catch (Exception)
+            {
 
+                throw;
+            }
 
         }
         public string VerReporte(string parametros)

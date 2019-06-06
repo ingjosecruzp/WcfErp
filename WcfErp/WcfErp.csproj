@@ -257,6 +257,7 @@
     <Compile Include="Servicios\Generales\WcfZonaCliente.svc.cs">
       <DependentUpon>WcfZonaCliente.svc</DependentUpon>
     </Compile>
+    <Compile Include="Servicios\Inventarios\Inventarios.cs" />
     <Compile Include="Servicios\Inventarios\IWcfAlmacenes.cs" />
     <Compile Include="Servicios\Inventarios\IWcfArticulos.cs" />
     <Compile Include="Servicios\Inventarios\IWcfConceptos.cs" />
