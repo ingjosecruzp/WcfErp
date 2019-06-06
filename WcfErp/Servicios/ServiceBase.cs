@@ -407,13 +407,10 @@ namespace WcfErp.Servicios
                 throw;
             }
         }
-        public int AutoIncrement(string _id, IMongoDatabase db)
+        public int AutoIncrement(string _id, IMongoDatabase db,IClientSessionHandle session)
         {
             try
             {
-                //MongoClient client = new MongoClient(getConnection());
-                //IMongoDatabase db = client.GetDatabase(getKeyToken("empresa", "token"));
-
                 var collection = db.GetCollection<Counters>("Counters");
                 var filter = Builders<Counters>.Filter.Eq(x => x._id, _id);
                 var update = Builders<Counters>.Update.Inc(x => x.sequence_value, 1);
@@ -422,7 +419,7 @@ namespace WcfErp.Servicios
                     //Sort = Builders<Counters>.Sort.Ascending("Counters"),
                     ReturnDocument = ReturnDocument.After
                 };
-                Counters id = collection.FindOneAndUpdate(filter, update, options);
+                Counters id = collection.FindOneAndUpdate(session,filter, update, options);
 
                 return id.sequence_value;
             }
