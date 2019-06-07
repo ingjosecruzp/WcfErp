@@ -9,6 +9,7 @@ using System.ServiceModel.Channels;
 using System.Web;
 using WcfErp.Modelos.Generales;
 using WcfErp.Modelos.Inventarios;
+using WcfErp.Modelos.PVenta;
 
 namespace WcfErp.Modelos
 {
@@ -117,6 +118,13 @@ namespace WcfErp.Modelos
         public virtual TipoConcepto TipoConcepto { get; set; }
 
         //Fin Inventarios
-       
+
+        //Punto de Venta
+        public virtual FormadeCobro FormadeCobro { get; set; }
+
+        //Fin Punto de Venta
+
+
+
     }
 }
