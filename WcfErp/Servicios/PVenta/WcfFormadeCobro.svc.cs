@@ -1,4 +1,6 @@
-﻿using System;
+﻿using MongoDB.Bson;
+using MongoDB.Driver;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.Serialization;
@@ -16,5 +18,29 @@ namespace WcfErp.Servicios.PVenta
         {
             throw new NotImplementedException();
         }
+
+        public List<FormadeCobro> searchXGrupo(string busqueda, string _id)
+        {
+            try
+            {
+                MongoClient client = new MongoClient(getConnection());
+                IMongoDatabase db = client.GetDatabase(getKeyToken("empresa", "token"));
+
+                IMongoCollection<FormadeCobro> Collection = db.GetCollection<FormadeCobro>(typeof(FormadeCobro).Name);
+
+                var builder = Builders<FormadeCobro>.Filter;
+                var filter = builder.Regex("Nombre", new BsonRegularExpression(busqueda, "i")) & builder.Eq("Moneda._id", _id);
+
+                List<FormadeCobro> Documentos = Collection.Find<FormadeCobro>(filter).ToList();
+
+                return Documentos;
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+
     }
 }
