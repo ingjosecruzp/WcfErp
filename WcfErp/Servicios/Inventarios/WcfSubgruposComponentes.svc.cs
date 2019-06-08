@@ -6,6 +6,7 @@ using System.Linq;
 using System.Runtime.Serialization;
 using System.ServiceModel;
 using System.Text;
+using WcfErp.Modelos;
 using WcfErp.Modelos.Generales;
 
 namespace WcfErp.Servicios.Inventarios
@@ -23,15 +24,12 @@ namespace WcfErp.Servicios.Inventarios
         {
             try
             {
-                MongoClient client = new MongoClient(getConnection());
-                IMongoDatabase db = client.GetDatabase(getKeyToken("empresa","token"));
-
-                IMongoCollection<SubgrupoComponente> Collection = db.GetCollection<SubgrupoComponente>(typeof(SubgrupoComponente).Name);
+                EmpresaContext db = new EmpresaContext();
 
                 var builder = Builders<SubgrupoComponente>.Filter;
                 var filter = builder.Regex("Nombre", new BsonRegularExpression(busqueda, "i")) &  builder.Eq("GrupoComponente._id", _id);
 
-                List<SubgrupoComponente> Documentos = Collection.Find<SubgrupoComponente>(filter).ToList();
+                List<SubgrupoComponente> Documentos = db.SubgrupoComponente.Filters(filter);
 
                 return Documentos;
             }

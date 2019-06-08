@@ -1,4 +1,5 @@
-﻿using MongoDB.Driver;
+﻿using MongoDB.Bson.Serialization.Conventions;
+using MongoDB.Driver;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -20,6 +21,13 @@ namespace WcfErp.Modelos
         {
             client = new MongoClient(GetConnectionString());
             db = client.GetDatabase(getKeyToken("empresa", "token"));
+
+            var pack = new ConventionPack();
+            pack.Add(new IgnoreIfNullConvention(true));
+            ConventionRegistry.Register("ignore nulls",
+                            pack,
+                            t => true);
+
 
             foreach (PropertyInfo prop in typeof(EmpresaContext).GetProperties())
             {

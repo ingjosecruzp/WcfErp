@@ -84,13 +84,8 @@ namespace WcfErp.Servicios.Inventarios
 
                 List<MovimientosES> Lista;
 
-                /*if(campos != null)
-                    Lista = Collection.Find<Modelo>(null).Project<Modelo>(campos).ToList();
-                else
-                   Lista = Collection.AsQueryable().ToList();*/
                 var filter = Builders<MovimientosES>.Filter.Regex("Nombre", new BsonRegularExpression("", "i"));
 
-                //Lista = Collection.Find<Modelo>(filter).Project<Modelo>("{_id:1, Nombre:1,TipoConcepto.Nombre:1}").ToList();
                 Lista = Collection.Find<MovimientosES>(a => a.Concepto.Naturaleza == tipoMovimiento).Project<MovimientosES>(rss.ToString()).ToList();
 
                 return Lista;
