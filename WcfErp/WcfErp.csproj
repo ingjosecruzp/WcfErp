@@ -120,6 +120,7 @@
     <Content Include="Servicios\Inventarios\WcfTipoConceptos.svc" />
     <Content Include="Servicios\Inventarios\WcfUnidades.svc" />
     <Content Include="Servicios\PVenta\WcfFormadeCobro.svc" />
+    <Content Include="Servicios\PVenta\WcfTipodeCambio.svc" />
     <Content Include="Servicios\Reportes\Inventarios\WcfExistenciaValorInventario.svc" />
     <Content Include="Servicios\Reportes\Inventarios\WcfKardexArticulos.svc" />
     <Content Include="Servicios\Ventas\WcfClientes.svc" />
@@ -181,6 +182,7 @@
     <Compile Include="Modelos\PuntoVenta\Cajeros.cs" />
     <Compile Include="Modelos\PuntoVenta\PuntoVenta_Documento.cs" />
     <Compile Include="Modelos\PVenta\FormadeCobro.cs" />
+    <Compile Include="Modelos\PVenta\TipodeCambio.cs" />
     <Compile Include="Modelos\Reportes\Inventarios\DetallesKardexArticulos.cs" />
     <Compile Include="Modelos\Reportes\Inventarios\ExistenciaValorInventario.cs" />
     <Compile Include="Modelos\Reportes\Inventarios\KardexArticulos.cs" />
@@ -313,8 +315,12 @@
     </Compile>
     <Compile Include="Servicios\IWSLogin.cs" />
     <Compile Include="Servicios\PVenta\IWcfFormadeCobro.cs" />
+    <Compile Include="Servicios\PVenta\IWcfTipodeCambio.cs" />
     <Compile Include="Servicios\PVenta\WcfFormadeCobro.svc.cs">
       <DependentUpon>WcfFormadeCobro.svc</DependentUpon>
+    </Compile>
+    <Compile Include="Servicios\PVenta\WcfTipodeCambio.svc.cs">
+      <DependentUpon>WcfTipodeCambio.svc</DependentUpon>
     </Compile>
     <Compile Include="Servicios\Reportes\Inventarios\IWcfExistenciaValorInventario.cs" />
     <Compile Include="Servicios\Reportes\Inventarios\IWcfKardexArticulos.cs" />
