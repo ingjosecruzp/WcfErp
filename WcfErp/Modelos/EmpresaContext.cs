@@ -130,6 +130,7 @@ namespace WcfErp.Modelos
         //Punto de Venta
         public virtual FormadeCobro FormadeCobro { get; set; }
         public virtual TipodeCambio TipodeCambio { get; set; }
+        public virtual PoliticadeComisiones PoliticadeComisiones { get; set; }
 
         //Fin Punto de Venta
 
