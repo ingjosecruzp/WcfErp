@@ -122,6 +122,7 @@
     <Content Include="Servicios\PVenta\WcfFormadeCobro.svc" />
     <Content Include="Servicios\PVenta\WcfPoliticadeComisiones.svc" />
     <Content Include="Servicios\PVenta\WcfTipodeCambio.svc" />
+    <Content Include="Servicios\PVenta\WcfVendedor.svc" />
     <Content Include="Servicios\Reportes\Inventarios\WcfExistenciaValorInventario.svc" />
     <Content Include="Servicios\Reportes\Inventarios\WcfKardexArticulos.svc" />
     <Content Include="Servicios\Ventas\WcfClientes.svc" />
@@ -319,6 +320,7 @@
     <Compile Include="Servicios\PVenta\IWcfFormadeCobro.cs" />
     <Compile Include="Servicios\PVenta\IWcfPoliticadeComisiones.cs" />
     <Compile Include="Servicios\PVenta\IWcfTipodeCambio.cs" />
+    <Compile Include="Servicios\PVenta\IWcfVendedor.cs" />
     <Compile Include="Servicios\PVenta\WcfFormadeCobro.svc.cs">
       <DependentUpon>WcfFormadeCobro.svc</DependentUpon>
     </Compile>
@@ -327,6 +329,9 @@
     </Compile>
     <Compile Include="Servicios\PVenta\WcfTipodeCambio.svc.cs">
       <DependentUpon>WcfTipodeCambio.svc</DependentUpon>
+    </Compile>
+    <Compile Include="Servicios\PVenta\WcfVendedor.svc.cs">
+      <DependentUpon>WcfVendedor.svc</DependentUpon>
     </Compile>
     <Compile Include="Servicios\Reportes\Inventarios\IWcfExistenciaValorInventario.cs" />
     <Compile Include="Servicios\Reportes\Inventarios\IWcfKardexArticulos.cs" />
