@@ -140,6 +140,7 @@
     <Compile Include="Modelos\Administracion\Semaforo.cs" />
     <Compile Include="Modelos\Administracion\UsuarioRol.cs" />
     <Compile Include="Modelos\Administracion\Usuario.cs" />
+    <Compile Include="Modelos\Compras\Proveedor.cs" />
     <Compile Include="Modelos\Counters.cs" />
     <Compile Include="Modelos\EmpresaContext.cs" />
     <Compile Include="Modelos\Generales\Almacen.cs" />

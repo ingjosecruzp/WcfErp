@@ -140,7 +140,7 @@ namespace WcfErp.Modelos
                 throw;
             }
         }
-        public virtual List<Modelo> Filters(FilterDefinition<Modelo> filter,string cadena="")
+        public virtual List<Modelo> Filters(FilterDefinition<Modelo> filter,string cadena="",string skip=null)
         {
             try
             {
@@ -155,7 +155,13 @@ namespace WcfErp.Modelos
                 else
                 {
                     JObject rss = cadenaTojObject(cadena);
-                    LstItems = Collection.Find(filter).Project<Modelo>(rss.ToString()).ToList();
+                    if (skip == null)
+                        LstItems = Collection.Find(filter).Project<Modelo>(rss.ToString()).ToList();
+                    else
+                    {
+                        int skipInt = Int32.Parse(skip);
+                        LstItems = Collection.Find(filter).Project<Modelo>(rss.ToString()).Limit(50).Skip(skipInt).ToList();
+                    }
                 }
 
                 return LstItems;
@@ -208,7 +214,7 @@ namespace WcfErp.Modelos
                 throw;
             }
         }
-        public virtual List<Modelo> all(string cadena, EmpresaContext db)
+        public virtual List<Modelo> all(string cadena, EmpresaContext db,string skip=null)
         {
             try
             {
@@ -232,7 +238,13 @@ namespace WcfErp.Modelos
 
                 var filter = Builders<Modelo>.Filter.Regex("Nombre", new BsonRegularExpression("", "i"));
 
-                Lista = Collection.Find<Modelo>(filter).Project<Modelo>(rss.ToString()).ToList();
+                if(skip == null)
+                    Lista = Collection.Find<Modelo>(filter).Project<Modelo>(rss.ToString()).ToList();
+                else
+                {
+                    int skipInt = Int32.Parse(skip);
+                    Lista = Collection.Find<Modelo>(filter).Project<Modelo>(rss.ToString()).Limit(50).Skip(skipInt).ToList();
+                }
 
                 return Lista;
             }

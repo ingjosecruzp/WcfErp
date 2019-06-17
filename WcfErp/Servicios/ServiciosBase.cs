@@ -21,6 +21,22 @@ namespace WcfErp.Servicios
         List<Tipo> all(string campos);
 
         [OperationContract]
+        [WebInvoke(UriTemplate = "campos/{campos}/{skip}",
+         BodyStyle = WebMessageBodyStyle.Bare,
+         ResponseFormat = WebMessageFormat.Json,
+         RequestFormat = WebMessageFormat.Json,
+         Method = "GET")]
+        List<Tipo> lazyloading(string campos,string skip);
+
+        [OperationContract]
+        [WebInvoke(UriTemplate = "campos/{campos}/{skip}/{filters}",
+         BodyStyle = WebMessageBodyStyle.Bare,
+         ResponseFormat = WebMessageFormat.Json,
+         RequestFormat = WebMessageFormat.Json,
+         Method = "GET")]
+        List<Tipo> filters(string campos, string skip, string filters);
+
+        [OperationContract]
         [WebInvoke(UriTemplate = "{id}",
          BodyStyle = WebMessageBodyStyle.Bare,
          ResponseFormat = WebMessageFormat.Json,

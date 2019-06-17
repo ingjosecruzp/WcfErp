@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using WcfErp.Modelos.Compras;
 using WcfErp.Modelos.Generales;
 
 namespace WcfErp.Modelos.Inventarios
@@ -21,6 +22,7 @@ namespace WcfErp.Modelos.Inventarios
         public Unidad UnidadCompra { get; set; }
         public string Modelo { get; set; }
         public string NoParte { get; set; }
+        public Proveedor Proveedor { get; set; }
         public List<CodigosBarra> CodigosBarra { get; set; }
         public List<ConfiguracionesAlmacen> ConfiguracionesAlmacen { get; set; }
 

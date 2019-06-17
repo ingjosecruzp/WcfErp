@@ -111,6 +111,54 @@ namespace WcfErp.Servicios
                 return null;
             }
         }
+        public virtual List<Modelo> lazyloading(string cadena, string skip = null)
+        {
+            try
+            {
+                EmpresaContext db = new EmpresaContext();
+                List<Modelo> Lista = db.Set<Modelo>().all(cadena, db,skip);
+
+                return Lista;
+            }
+            catch (Exception ex)
+            {
+                Error(ex, "");
+                return null;
+            }
+        }
+
+        public virtual List<Modelo> filters(string cadena, string skip,string filters)
+        {
+            try
+            {
+                EmpresaContext db = new EmpresaContext();
+
+
+                string[] Filters = filters.Split(',');
+
+                FilterDefinition<Modelo> filter=null;
+
+                int index = 0;
+                foreach (string f in Filters)
+                {
+                    string[] filtro = f.Split('=');
+                    if (index == 0)
+                        filter = Builders<Modelo>.Filter.Regex(filtro[0], new BsonRegularExpression(filtro[1], "i"));
+                    else
+                        filter = filter & Builders<Modelo>.Filter.Regex(filtro[0], new BsonRegularExpression(filtro[1], "i"));
+                    index++;
+                }
+                
+                List<Modelo> Lista = db.Set<Modelo>().Filters(filter, cadena, skip);
+
+                return Lista;
+            }
+            catch (Exception ex)
+            {
+                Error(ex, "");
+                return null;
+            }
+        }
         public virtual List<Modelo> search(string busqueda)
         {
             try

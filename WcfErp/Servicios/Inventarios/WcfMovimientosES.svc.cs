@@ -34,7 +34,7 @@ namespace WcfErp.Servicios.Inventarios
 
 
                     session.CommitTransaction();
-
+                    
                     return item;
                 }
             }
