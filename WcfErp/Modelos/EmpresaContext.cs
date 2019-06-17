@@ -111,7 +111,6 @@ namespace WcfErp.Modelos
         public virtual TipoComponente TipoComponente { get; set; }
         public virtual Unidad Unidad { get; set; }
         public virtual Usuarios Usuarios { get; set; }  //Usuarios
-        public virtual Vendedor Vendedor { get; set; }
         public virtual ZonaCliente ZonaCliente { get; set; }
 
         //Fin Generales
@@ -124,11 +123,14 @@ namespace WcfErp.Modelos
         public virtual MovimientosES MovimientosES { get; set; }
         public virtual Procedencia Procedencia { get; set; }
         public virtual TipoConcepto TipoConcepto { get; set; }
+        public virtual Vendedor Vendedor { get; set; }
 
         //Fin Inventarios
 
         //Punto de Venta
         public virtual FormadeCobro FormadeCobro { get; set; }
+        public virtual TipodeCambio TipodeCambio { get; set; }
+        public virtual PoliticadeComisiones PoliticadeComisiones { get; set; }
 
         //Fin Punto de Venta
 
