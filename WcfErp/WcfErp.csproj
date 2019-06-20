@@ -149,6 +149,7 @@
     <Compile Include="Modelos\Generales\Almacen.cs" />
     <Compile Include="Modelos\Generales\BDEmpresas.cs" />
     <Compile Include="Modelos\Generales\Departamento.cs" />
+    <Compile Include="Modelos\Generales\Estado.cs" />
     <Compile Include="Modelos\Generales\GrupoUnidad.cs" />
     <Compile Include="Modelos\Generales\GrupoUnidadDetalle.cs" />
     <Compile Include="Modelos\Generales\Marca.cs" />
