@@ -112,6 +112,8 @@ namespace WcfErp.Modelos
         public virtual Unidad Unidad { get; set; }
         public virtual Usuarios Usuarios { get; set; }  //Usuarios
         public virtual ZonaCliente ZonaCliente { get; set; }
+        public virtual Municipio Municipio { get; set; }
+        public virtual Estado Estado { get; set; }
 
         //Fin Generales
 
