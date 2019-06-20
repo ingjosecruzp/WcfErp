@@ -8,6 +8,6 @@ namespace WcfErp.Modelos.Generales
 {
     public class Estado : ModeloBase<Estado>
     {
-        public Procedencia Procedencia { get; set; }
+        public Paises Paises { get; set; }
     }
 }
