@@ -103,6 +103,7 @@
     <Content Include="Servicios\Generales\WcfGrupoUnidades.svc" />
     <Content Include="Servicios\Generales\WcfMarcas.svc" />
     <Content Include="Servicios\Generales\WcfMoneda.svc" />
+    <Content Include="Servicios\Generales\WcfMunicipio.svc" />
     <Content Include="Servicios\Generales\WcfPaises.svc" />
     <Content Include="Servicios\Generales\WcfPuestos.svc" />
     <Content Include="Servicios\Generales\WcfTipoCliente.svc" />
@@ -231,6 +232,7 @@
     <Compile Include="Servicios\Generales\IWcfGrupoUnidades.cs" />
     <Compile Include="Servicios\Generales\IWcfMarcas.cs" />
     <Compile Include="Servicios\Generales\IWcfMoneda.cs" />
+    <Compile Include="Servicios\Generales\IWcfMunicipio.cs" />
     <Compile Include="Servicios\Generales\IWcfPaises.cs" />
     <Compile Include="Servicios\Generales\IWcfPuestos.cs" />
     <Compile Include="Servicios\Generales\IWcfTipoCliente.cs" />
@@ -259,6 +261,9 @@
     </Compile>
     <Compile Include="Servicios\Generales\WcfMoneda.svc.cs">
       <DependentUpon>WcfMoneda.svc</DependentUpon>
+    </Compile>
+    <Compile Include="Servicios\Generales\WcfMunicipio.svc.cs">
+      <DependentUpon>WcfMunicipio.svc</DependentUpon>
     </Compile>
     <Compile Include="Servicios\Generales\WcfPaises.svc.cs">
       <DependentUpon>WcfPaises.svc</DependentUpon>
