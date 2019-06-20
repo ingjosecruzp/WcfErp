@@ -9,6 +9,6 @@ namespace WcfErp.Modelos.Generales
     public class Municipio : ModeloBase<Municipio>
     {
         public Estado Estado { get; set; }
-        public Procedencia Procedencia { get; set; }
+        public Paises Paises { get; set; }
     }
 }
