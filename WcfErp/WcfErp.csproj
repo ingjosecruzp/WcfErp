@@ -155,6 +155,7 @@
     <Compile Include="Modelos\Generales\GrupoUnidadDetalle.cs" />
     <Compile Include="Modelos\Generales\Marca.cs" />
     <Compile Include="Modelos\Generales\GrupoComponente.cs" />
+    <Compile Include="Modelos\Generales\Municipio.cs" />
     <Compile Include="Modelos\Generales\Puesto.cs" />
     <Compile Include="Modelos\Generales\Pureza.cs" />
     <Compile Include="Modelos\Generales\Roles.cs" />
