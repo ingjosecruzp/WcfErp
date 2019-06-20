@@ -45,8 +45,15 @@ namespace WcfErp.Servicios
         Tipo get(string id);
 
         [OperationContract]
-        [WebInvoke(UriTemplate = "?searchBy=getXNombre&busqueda={busqueda}",
+        [WebInvoke(UriTemplate = "?searchBy=RptDocumento&id={id}",
+         BodyStyle = WebMessageBodyStyle.Bare,
+         ResponseFormat = WebMessageFormat.Json,
+         RequestFormat = WebMessageFormat.Json,
+         Method = "GET")]
+        Tipo RptDocumento(string id);
 
+        [OperationContract]
+        [WebInvoke(UriTemplate = "?searchBy=getXNombre&busqueda={busqueda}",
          BodyStyle = WebMessageBodyStyle.Bare,
          ResponseFormat = WebMessageFormat.Json,
          RequestFormat = WebMessageFormat.Json,

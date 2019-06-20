@@ -218,7 +218,24 @@ namespace WcfErp.Servicios
                 return null;
             }
         }
+        // Servicio para mandar mostrar el reporter indiviual por documento
+        public virtual Modelo RptDocumento(string id)
+        {
+            try
+            {
+                EmpresaContext db = new EmpresaContext();
 
+                Modelo item = db.Set<Modelo>().get(id, db);
+
+                return item;
+
+            }
+            catch (Exception ex)
+            {
+                Error(ex, "");
+                return null;
+            }
+        }
         public virtual Modelo get(string id, string bd)
         {
             try
