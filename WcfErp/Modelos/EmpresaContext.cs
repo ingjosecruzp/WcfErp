@@ -11,6 +11,7 @@ using System.Web;
 using WcfErp.Modelos.Generales;
 using WcfErp.Modelos.Inventarios;
 using WcfErp.Modelos.PVenta;
+using WcfErp.Modelos.PuntoVenta;
 
 namespace WcfErp.Modelos
 {
@@ -133,7 +134,7 @@ namespace WcfErp.Modelos
         public virtual FormadeCobro FormadeCobro { get; set; }
         public virtual TipodeCambio TipodeCambio { get; set; }
         public virtual PoliticadeComisiones PoliticadeComisiones { get; set; }
-
+        public virtual Cajas Cajas { get; set; }
         //Fin Punto de Venta
 
 
