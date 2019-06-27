@@ -9,10 +9,10 @@ namespace WcfErp.Modelos.PuntoVenta
     public class Cajas :  ModeloBase<Cajas>
     {
         public Almacen Almacen { get; set; }
-        public bool ModAlmacenVta { get; set; }
-        public bool ManejaVendCaja { get; set; }
-        public bool RecibeCobroCaja { get; set; }
-        public bool PausaCobro { get; set; }
+        public int ModAlmacenVta { get; set; }
+        public int ManejaVendCaja { get; set; }
+        public int RecibeCobroCaja { get; set; }
+        public int PausaCobro { get; set; }
         public string RegVtaApartir { get; set; }
         public string CobroPredet { get; set; }
 
