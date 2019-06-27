@@ -20,5 +20,13 @@ namespace WcfErp.Servicios.Inventarios
           RequestFormat = WebMessageFormat.Json,
           Method = "GET")]
         string path();
+
+        [OperationContract]
+        [WebInvoke(UriTemplate = "?searchBy=getXLimitIds&busqueda={busqueda}&ids={ids}",
+          BodyStyle = WebMessageBodyStyle.Bare,
+          ResponseFormat = WebMessageFormat.Json,
+          RequestFormat = WebMessageFormat.Json,
+          Method = "GET")]
+        List<Articulo> searchLimitIds(string busqueda,string ids);
     }
 }

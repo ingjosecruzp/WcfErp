@@ -45,14 +45,6 @@ namespace WcfErp.Servicios
         Tipo get(string id);
 
         [OperationContract]
-        [WebInvoke(UriTemplate = "?searchBy=RptDocumento&id={id}",
-         BodyStyle = WebMessageBodyStyle.Bare,
-         ResponseFormat = WebMessageFormat.Json,
-         RequestFormat = WebMessageFormat.Json,
-         Method = "GET")]
-        Tipo RptDocumento(string id);
-
-        [OperationContract]
         [WebInvoke(UriTemplate = "?searchBy=getXNombre&busqueda={busqueda}",
          BodyStyle = WebMessageBodyStyle.Bare,
          ResponseFormat = WebMessageFormat.Json,
@@ -83,6 +75,25 @@ namespace WcfErp.Servicios
          RequestFormat = WebMessageFormat.Json,
          Method = "DELETE")]
         Tipo delete(string id);
+
+        /***Servicios para reportes**/
+        //Este servicio solo se invoca del jaspersoft
+        [OperationContract]
+        [WebInvoke(UriTemplate = "?searchBy=RptDocumentoJasper&id={id}",
+         BodyStyle = WebMessageBodyStyle.Bare,
+         ResponseFormat = WebMessageFormat.Json,
+         RequestFormat = WebMessageFormat.Json,
+         Method = "GET")]
+         Tipo RptDocumentoJasper(string id);
+
+        [OperationContract]
+        [WebInvoke(UriTemplate = "?searchBy=RptDocumento&id={id}",
+             BodyStyle = WebMessageBodyStyle.Bare,
+             ResponseFormat = WebMessageFormat.Json,
+             RequestFormat = WebMessageFormat.Json,
+             Method = "GET")]
+        string RptDocumento(string id);
+        /****************************/
 
         //Servicio para dar respueta a als peticion OPTIONS que viene de CORS
         [OperationContract]

@@ -141,6 +141,36 @@ namespace WcfErp.Modelos
                 throw;
             }
         }
+        public virtual List<Modelo> searchLimitIds(string busqueda,string ids,string fieldExclude ,EmpresaContext db)
+        {
+            try
+            {
+               
+                List<string> Lstids = new List<string>(ids.Split(','));
+
+                IMongoCollection<Modelo> Collection = dbMongo.GetCollection<Modelo>(typeof(Modelo).Name);
+
+                List<Modelo> Documentos;
+
+                if (ids == "")
+                {
+                    var filter = Builders<Modelo>.Filter.Regex("Nombre", new BsonRegularExpression(busqueda, "i"));
+                    Documentos = Collection.Find<Modelo>(filter).ToList();
+                }
+                else
+                { 
+                    var filter = Builders<Modelo>.Filter.Regex("Nombre", new BsonRegularExpression(busqueda, "i")) & Builders<Modelo>.Filter.Nin(fieldExclude, Lstids);
+                    Documentos = Collection.Find<Modelo>(filter).ToList();
+                }
+
+
+                return Documentos;
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+        }
         public virtual List<Modelo> Filters(FilterDefinition<Modelo> filter,string cadena="",string skip=null)
         {
             try

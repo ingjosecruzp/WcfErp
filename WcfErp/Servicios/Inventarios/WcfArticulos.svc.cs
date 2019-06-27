@@ -47,6 +47,26 @@ namespace WcfErp.Servicios.Inventarios
                 return null;
             } 
         }
+        public List<Articulo> searchLimitIds(string busqueda, string ids)
+        {
+            try
+            {
+                /*Este metodo se usa en la el inventario fisico para descartar los elementos que 
+                 * ya fueron seleccionados  en el grid
+                */
+                EmpresaContext db = new EmpresaContext();
+
+                List<Articulo> LstArticulos=db.Articulo.searchLimitIds(busqueda, ids, "_id", db);
+
+
+                return LstArticulos;
+            }
+            catch (Exception ex)
+            {
+                Error(ex, "");
+                return null;
+            }
+        }
         public override Articulo update(Articulo item, string id)
         {
             try

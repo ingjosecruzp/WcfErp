@@ -171,7 +171,7 @@ namespace WcfErp.Servicios.Generales
                     if(roles != null)
                     {
                         BDEmpresas empresa = CollectionEmpresas.Find<BDEmpresas>(e => e._id == EmpresaId).FirstOrDefault();
-                        return updateToken(user._id, user.Nombre, empresa.RFC,db);
+                        return updateToken(user._id, user.Nombre, empresa,db);
                     }
                 }
 
@@ -184,7 +184,7 @@ namespace WcfErp.Servicios.Generales
                 return null;
             }
         }
-        public string updateToken(string id, string user, string empresa,IMongoDatabase db)
+        public string updateToken(string id, string user, BDEmpresas empresa,IMongoDatabase db)
         {
             try
             {
@@ -213,7 +213,7 @@ namespace WcfErp.Servicios.Generales
                 throw;
             }
         }
-        public string GenerarToken(string id, string user,string empresa)
+        public string GenerarToken(string id, string user, BDEmpresas empresa)
         {
             try
             {
@@ -221,7 +221,8 @@ namespace WcfErp.Servicios.Generales
                 {
                     { "id", id },
                     { "user", user },
-                    { "empresa", empresa },
+                    { "empresa", empresa.RFC },
+                    { "razonsocial", empresa.RazonSocial },
                     { "Fecha",DateTime.Now}
                 };
                 var secretKey = "pwjrnew";

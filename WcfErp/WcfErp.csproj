@@ -113,6 +113,7 @@
     <Content Include="Servicios\Inventarios\WcfArticulos.svc" />
     <Content Include="Servicios\Inventarios\WcfConceptos.svc" />
     <Content Include="Servicios\Inventarios\WcfGruposComponentes.svc" />
+    <Content Include="Servicios\Inventarios\WcfInventarioFisico.svc" />
     <Content Include="Servicios\Inventarios\WcfMovimientosES.svc" />
     <Content Include="Servicios\Inventarios\WcfPesos.svc" />
     <Content Include="Servicios\Inventarios\WcfProcedencias.svc" />
@@ -178,6 +179,8 @@
     <Compile Include="Modelos\Inventarios\ConfiguracionesAlmacen.cs" />
     <Compile Include="Modelos\Inventarios\Detalles_ES.cs" />
     <Compile Include="Modelos\Inventarios\Imagen.cs" />
+    <Compile Include="Modelos\Inventarios\InventarioFisico.cs" />
+    <Compile Include="Modelos\Inventarios\InventarioFisicoDetalle.cs" />
     <Compile Include="Modelos\Inventarios\InventariosCostos.cs" />
     <Compile Include="Modelos\Inventarios\InventariosSaldos.cs" />
     <Compile Include="Modelos\Inventarios\MovimientosES.cs" />
@@ -285,6 +288,7 @@
     <Compile Include="Servicios\Inventarios\IWcfArticulos.cs" />
     <Compile Include="Servicios\Inventarios\IWcfConceptos.cs" />
     <Compile Include="Servicios\Inventarios\IWcfGruposComponentes.cs" />
+    <Compile Include="Servicios\Inventarios\IWcfInventarioFisico.cs" />
     <Compile Include="Servicios\Inventarios\IWcfMovimientosES.cs" />
     <Compile Include="Servicios\Inventarios\IWcfPesos.cs" />
     <Compile Include="Servicios\Inventarios\IWcfProcedencias.cs" />
@@ -304,6 +308,9 @@
     </Compile>
     <Compile Include="Servicios\Inventarios\WcfGruposComponentes.svc.cs">
       <DependentUpon>WcfGruposComponentes.svc</DependentUpon>
+    </Compile>
+    <Compile Include="Servicios\Inventarios\WcfInventarioFisico.svc.cs">
+      <DependentUpon>WcfInventarioFisico.svc</DependentUpon>
     </Compile>
     <Compile Include="Servicios\Inventarios\WcfMovimientosES.svc.cs">
       <DependentUpon>WcfMovimientosES.svc</DependentUpon>

@@ -126,6 +126,7 @@ namespace WcfErp.Modelos
         public virtual Procedencia Procedencia { get; set; }
         public virtual TipoConcepto TipoConcepto { get; set; }
         public virtual Vendedor Vendedor { get; set; }
+        public virtual InventarioFisico InventarioFisico { get; set; }
 
         //Fin Inventarios
 

@@ -13,6 +13,7 @@ using System.ServiceModel;
 using System.ServiceModel.Channels;
 using WcfErp.Modelos.Administracion;
 using System.Configuration;
+using WcfErp.Reportes;
 
 namespace WcfErp.Servicios
 {
@@ -218,24 +219,6 @@ namespace WcfErp.Servicios
                 return null;
             }
         }
-        // Servicio para mandar mostrar el reporter indiviual por documento
-        public virtual Modelo RptDocumento(string id)
-        {
-            try
-            {
-                EmpresaContext db = new EmpresaContext();
-
-                Modelo item = db.Set<Modelo>().get(id, db);
-
-                return item;
-
-            }
-            catch (Exception ex)
-            {
-                Error(ex, "");
-                return null;
-            }
-        }
         public virtual Modelo get(string id, string bd)
         {
             try
@@ -345,7 +328,65 @@ namespace WcfErp.Servicios
             }
 
         }
+        /******Servicios para reportes********/
+        // Servicio para mandar mostrar el reporter indiviual por documento
+        public virtual Modelo RptDocumentoJasper(string id)
+        {
+            try
+            {
 
+                EmpresaContext db = new EmpresaContext();
+
+                Modelo item = db.Set<Modelo>().get(id, db);
+
+                return item;
+
+            }
+            catch (Exception ex)
+            {
+                return null;
+            }
+        }
+        public virtual string RptDocumento(string id)
+        {
+            try
+            {
+                //Los reportes en Jaspersoft se tienen que llama Rpt + "el nombre de la clase modelo"
+
+                List<reportParameter> JasperParametros = new List<reportParameter>();
+
+                reportParameter param1 = new reportParameter();
+                param1.name = "empresa";
+                param1.value.Add(getKeyToken("razonsocial", "token"));
+
+                reportParameter param2 = new reportParameter();
+                param2.name = "rfc";
+                param2.value.Add(getKeyToken("empresa", "token"));
+
+                reportParameter param3 = new reportParameter();
+                param3.name = "id";
+                param3.value.Add(id);
+
+                JasperParametros.Add(param1);
+                JasperParametros.Add(param2);
+                JasperParametros.Add(param3);
+
+                string Archivo = GetTimestamp(DateTime.Now);
+                string extension = "pdf";
+
+                string NombreReporte = "Rpt" + typeof(Modelo).Name;
+
+                ReportesPFD VmReporte = new ReportesPFD("/ERP/Documentos/" + NombreReporte, JasperParametros, extension, Archivo);
+
+                return Archivo + "." + extension;
+            }
+            catch (Exception ex)
+            {
+                Error(ex, "");
+                return null;
+            }
+        }
+        /*************************************/
         //Metodo para dar respuesta las peticiones OPTION CORS
         public void GetOptions()
         {
@@ -493,6 +534,10 @@ namespace WcfErp.Servicios
 
                 throw;
             }
+        }
+        public String GetTimestamp(DateTime value)
+        {
+            return value.ToString("yyyyMMddHHmmssffff");
         }
     }
 }
