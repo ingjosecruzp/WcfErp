@@ -5,7 +5,7 @@ using System.Web;
 
 namespace WcfErp.Modelos.Generales
 {
-    public class GrupoComponente: ModeloBase<GrupoComponente>
+    public class GrupoComponente: ModeloBase<GrupoComponente, EmpresaContext>
     {
         public string Clave { get; set; }
         public TipoComponente TipoComponente { get; set; }

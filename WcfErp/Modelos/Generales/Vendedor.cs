@@ -7,7 +7,7 @@ using WcfErp.Modelos.PVenta;
 
 namespace WcfErp.Modelos.Generales
 {
-    public class Vendedor : ModeloBase<Vendedor>
+    public class Vendedor : ModeloBase<Vendedor, EmpresaContext>
     {
         public PoliticadeComisiones PoliticadeComisiones { get; set; }
         protected override Vendedor addValues(Vendedor item, EmpresaContext db)

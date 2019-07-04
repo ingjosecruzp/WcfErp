@@ -5,7 +5,7 @@ using System.Web;
 
 namespace WcfErp.Modelos.Inventarios
 {
-    public class Procedencia : ModeloBase<Procedencia>
+    public class Procedencia : ModeloBase<Procedencia, EmpresaContext>
     {
 
     }

@@ -13,7 +13,7 @@ namespace WcfErp.Servicios.Inventarios
 {
     // NOTA: puede usar el comando "Rename" del menú "Refactorizar" para cambiar el nombre de clase "WcfPureza" en el código, en svc y en el archivo de configuración a la vez.
     // NOTA: para iniciar el Cliente de prueba WCF para probar este servicio, seleccione WcfPureza.svc o WcfPureza.svc.cs en el Explorador de soluciones e inicie la depuración.
-    public class WcfPureza : ServiceBase<Pureza>, IWcfPureza
+    public class WcfPureza : ServiceBase<Pureza, EmpresaContext>, IWcfPureza
     {
 
         public Pureza delete(string id)

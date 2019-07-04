@@ -6,7 +6,7 @@ using System.Web;
 
 namespace WcfErp.Modelos.Administracion
 {
-    public class UsuarioRol : ModeloBase<UsuarioRol>
+    public class UsuarioRol : ModeloBase<UsuarioRol,UsuarioContext>
     {
     
     }

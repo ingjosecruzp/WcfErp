@@ -7,7 +7,7 @@ using System.Web;
 
 namespace WcfErp.Modelos.Generales
 {
-    public class Paises : ModeloBase<Paises>
+    public class Paises : ModeloBase<Paises, EmpresaContext>
     {
         public string Abreviatura { get; set; }
     }

@@ -9,7 +9,7 @@ using WcfErp.Modelos.Generales;
 
 namespace WcfErp.Modelos.Ventas
 {
-    public class Clientes : ModeloBase<Clientes>
+    public class Clientes : ModeloBase<Clientes, EmpresaContext>
     {
 
         public string Rfc { get; set; }

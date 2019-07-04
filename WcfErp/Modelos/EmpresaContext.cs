@@ -15,7 +15,7 @@ using WcfErp.Modelos.PuntoVenta;
 
 namespace WcfErp.Modelos
 {
-    public class EmpresaContext
+    public class EmpresaContext : Context
     {
         public virtual MongoClient client { get; set; }
         public virtual IMongoDatabase db { get; set; }
@@ -46,50 +46,6 @@ namespace WcfErp.Modelos
                     prop.SetValue(this, instance, null);
 
                 }
-            }
-        }
-
-        public ModeloBase<TEntity> Set<TEntity>() where TEntity : ModeloBase<TEntity>
-        {
-
-            return (ModeloBase<TEntity>)this.GetType().GetProperty(typeof(TEntity).Name).GetValue(this, null);
-        }
-        public string GetConnectionString()
-        {
-            try
-            {
-                return ConfigurationManager.AppSettings["pathMongo"];
-            }
-            catch (Exception)
-            {
-
-                throw;
-            }
-        }
-
-        public string getKeyToken(string key, string Token)
-        {
-            try
-            {
-                OperationContext currentContext = OperationContext.Current;
-                HttpRequestMessageProperty reqMsg = currentContext.IncomingMessageProperties["httpRequest"] as HttpRequestMessageProperty;
-                string authToken = reqMsg.Headers[Token];
-                string value;
-                if (authToken != "")
-                {
-                    var payload = JWT.JsonWebToken.DecodeToObject(authToken, "pwjrnew") as IDictionary<string, object>;
-                    value = payload.ContainsKey(key) ? payload[key].ToString() : "";
-                }
-                else
-                {
-                    value = "";
-                }
-                return value;
-            }
-            catch (Exception)
-            {
-
-                throw;
             }
         }
 

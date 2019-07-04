@@ -8,7 +8,7 @@ using System.Web;
 namespace WcfErp.Modelos.Inventarios
 {
 
-    public class InventariosSaldos : ModeloBase<InventariosSaldos>
+    public class InventariosSaldos : ModeloBase<InventariosSaldos, EmpresaContext>
     {
         /*ARTICULO_ID 
         ALMACEN_ID        

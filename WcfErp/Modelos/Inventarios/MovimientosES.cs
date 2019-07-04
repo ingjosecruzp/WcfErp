@@ -6,7 +6,7 @@ using WcfErp.Modelos.Generales;
 
 namespace WcfErp.Modelos.Inventarios
 {
-    public class MovimientosES : ModeloBase<MovimientosES>
+    public class MovimientosES : ModeloBase<MovimientosES, EmpresaContext>
     {
 
         /*DOCTO_IN_ID *

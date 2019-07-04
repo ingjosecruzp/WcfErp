@@ -13,7 +13,7 @@ namespace WcfErp.Servicios.Inventarios
 {
     // NOTE: You can use the "Rename" command on the "Refactor" menu to change the class name "WcfSubgruposComponentes" in code, svc and config file together.
     // NOTE: In order to launch WCF Test Client for testing this service, please select WcfSubgruposComponentes.svc or WcfSubgruposComponentes.svc.cs at the Solution Explorer and start debugging.
-    public class WcfSubgruposComponentes : ServiceBase<SubgrupoComponente>, IWcfSubgruposComponentes
+    public class WcfSubgruposComponentes : ServiceBase<SubgrupoComponente, EmpresaContext>, IWcfSubgruposComponentes
     {
         public SubgrupoComponente delete(string id)
         {
@@ -33,10 +33,10 @@ namespace WcfErp.Servicios.Inventarios
 
                 return Documentos;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-
-                throw;
+                Error(ex, "");
+                return null;
             }
         }
 

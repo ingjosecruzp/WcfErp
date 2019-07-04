@@ -5,7 +5,7 @@ using System.Web;
 
 namespace WcfErp.Modelos.Compras
 {
-    public class Proveedor : ModeloBase<Proveedor>
+    public class Proveedor : ModeloBase<Proveedor, EmpresaContext>
     {
         public string Clave { get; set; }
         public string RFC { get; set; }

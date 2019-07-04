@@ -6,7 +6,7 @@ using WcfErp.Modelos.Ventas;
 
 namespace WcfErp.Modelos.PuntoVenta
 {
-    public class PuntoVenta_Documento : ModeloBase<PuntoVenta_Documento>
+    public class PuntoVenta_Documento : ModeloBase<PuntoVenta_Documento, EmpresaContext>
     {
         /*
             CREATE TABLE DOCTOS_PV (

@@ -6,11 +6,11 @@ using System.Web;
 
 namespace WcfErp.Modelos.Generales
 {
-    public class Unidad : ModeloBase<Unidad>
+    public class Unidad : ModeloBase<Unidad, EmpresaContext>
     {
         public string Abreviatura { get; set; }
 
-        protected override void addIndex(IMongoCollection<Unidad> Collection,EmpresaContext db)
+        protected override void addIndex(IMongoCollection<Unidad> Collection, EmpresaContext db)
         {
             try
             {

@@ -6,7 +6,7 @@ using System.Web;
 
 namespace WcfErp.Modelos.Generales
 {
-    public class Puesto : ModeloBase<Puesto>
+    public class Puesto : ModeloBase<Puesto, EmpresaContext>
     {
         [BsonRequired]
         public Departamento Departamento { get; set; }

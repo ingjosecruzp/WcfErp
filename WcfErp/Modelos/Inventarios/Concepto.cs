@@ -5,7 +5,7 @@ using System.Web;
 
 namespace WcfErp.Modelos.Inventarios
 {
-    public class Concepto : ModeloBase<Concepto>
+    public class Concepto : ModeloBase<Concepto, EmpresaContext>
     {
         
         public string Clave { get; set; }

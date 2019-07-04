@@ -7,7 +7,7 @@ using WcfErp.Modelos.Inventarios;
 
 namespace WcfErp.Modelos.Reportes.Inventarios
 {
-    public class ExistenciaValorInventario :ModeloBase<ExistenciaValorInventario>
+    public class ExistenciaValorInventario :ModeloBase<ExistenciaValorInventario,EmpresaContext>
     {
         public string Fecha { get; set; }
         public Almacen Almacen { get; set; }

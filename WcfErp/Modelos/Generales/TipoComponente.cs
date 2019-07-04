@@ -5,7 +5,7 @@ using System.Web;
 
 namespace WcfErp.Modelos.Generales
 {
-    public class TipoComponente : ModeloBase<TipoComponente>
+    public class TipoComponente : ModeloBase<TipoComponente, EmpresaContext>
     {
         
     }

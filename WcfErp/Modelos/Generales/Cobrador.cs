@@ -5,7 +5,7 @@ using System.Web;
 
 namespace WcfErp.Modelos.Generales
 {
-    public class Cobrador : ModeloBase<Cobrador>
+    public class Cobrador : ModeloBase<Cobrador, EmpresaContext>
     {
         
     }

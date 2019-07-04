@@ -6,7 +6,7 @@ using WcfErp.Modelos.Generales;
 
 namespace WcfErp.Modelos.PVenta
 {
-    public class FormadeCobro : ModeloBase<FormadeCobro>
+    public class FormadeCobro : ModeloBase<FormadeCobro, EmpresaContext>
     {
         public Moneda Moneda { get; set; }
         protected override FormadeCobro addValues(FormadeCobro item, EmpresaContext db)

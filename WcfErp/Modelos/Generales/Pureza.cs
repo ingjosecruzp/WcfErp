@@ -7,7 +7,7 @@ using MongoDB.Driver;
 
 namespace WcfErp.Modelos.Generales
 {
-    public class Pureza : ModeloBase<Pureza>
+    public class Pureza : ModeloBase<Pureza, EmpresaContext>
     {
     
     }

@@ -5,7 +5,7 @@ using System.Web;
 
 namespace WcfErp.Modelos.Generales
 {
-    public class Almacen: ModeloBase<Almacen>
+    public class Almacen: ModeloBase<Almacen, EmpresaContext>
     {
         public string Clave { get; set; }
         public string TipoAlmacen { get; set; }

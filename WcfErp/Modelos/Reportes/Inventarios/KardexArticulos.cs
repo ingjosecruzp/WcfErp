@@ -7,7 +7,7 @@ using WcfErp.Modelos.Inventarios;
 
 namespace WcfErp.Modelos.Reportes.Inventarios
 {
-    public class KardexArticulos : ModeloBase<KardexArticulos>
+    public class KardexArticulos : ModeloBase<KardexArticulos,EmpresaContext>
     {
         public string Fecha { get; set; }
         public Almacen Almacen { get; set; }

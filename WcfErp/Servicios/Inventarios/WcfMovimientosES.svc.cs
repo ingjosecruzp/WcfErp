@@ -16,7 +16,7 @@ namespace WcfErp.Servicios.Inventarios
 {
     // NOTE: You can use the "Rename" command on the "Refactor" menu to change the class name "WcfMovimientosES" in code, svc and config file together.
     // NOTE: In order to launch WCF Test Client for testing this service, please select WcfMovimientosES.svc or WcfMovimientosES.svc.cs at the Solution Explorer and start debugging.
-    public class WcfMovimientosES : ServiceBase<MovimientosES>, IWcfMovimientosES
+    public class WcfMovimientosES : ServiceBase<MovimientosES, EmpresaContext>, IWcfMovimientosES
     {
         
         public  override  MovimientosES add(MovimientosES item)

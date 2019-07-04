@@ -5,7 +5,7 @@ using System.Web;
 
 namespace WcfErp.Modelos.Generales
 {
-    public class Departamento : ModeloBase<Departamento>
+    public class Departamento : ModeloBase<Departamento, EmpresaContext>
     {
     }
 }

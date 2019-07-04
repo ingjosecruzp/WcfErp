@@ -5,7 +5,7 @@ using System.Web;
 
 namespace WcfErp.Modelos.Generales
 {
-    public class ZonaCliente : ModeloBase<ZonaCliente>
+    public class ZonaCliente : ModeloBase<ZonaCliente, EmpresaContext>
     {
         
     }

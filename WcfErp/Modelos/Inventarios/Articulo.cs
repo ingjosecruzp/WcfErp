@@ -7,7 +7,7 @@ using WcfErp.Modelos.Generales;
 
 namespace WcfErp.Modelos.Inventarios
 {
-    public class Articulo : ModeloBase<Articulo>
+    public class Articulo : ModeloBase<Articulo, EmpresaContext>
     {
         public string Clave { get; set; }
         public GrupoUnidad GrupoUnidad { get; set; }
@@ -27,16 +27,16 @@ namespace WcfErp.Modelos.Inventarios
         public List<ConfiguracionesAlmacen> ConfiguracionesAlmacen { get; set; }
 
         //Datos Particulares
-        public double Pureza { get; set; }
-        public double Peso { get; set; }
+        public Nullable<double> Pureza { get; set; }
+        public Nullable<double> Peso { get; set; }
         public Paises Paises { get; set; }
         public List<Imagen> Imagen { get; set; }
 
         public Articulo()
         {
-            this.CodigosBarra = new List<CodigosBarra>();
+            /*this.CodigosBarra = new List<CodigosBarra>();
             this.ConfiguracionesAlmacen = new List<ConfiguracionesAlmacen>();
-            this.Imagen = new List<Imagen>();
+            this.Imagen = new List<Imagen>();*/
         }
 
         protected override Articulo addValues(Articulo item, EmpresaContext db)

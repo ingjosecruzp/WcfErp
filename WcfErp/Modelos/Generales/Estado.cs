@@ -6,7 +6,7 @@ using WcfErp.Modelos.Inventarios;
 
 namespace WcfErp.Modelos.Generales
 {
-    public class Estado : ModeloBase<Estado>
+    public class Estado : ModeloBase<Estado, EmpresaContext>
     {
         public Paises Paises { get; set; }
     }

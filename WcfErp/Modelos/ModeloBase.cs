@@ -7,7 +7,8 @@ using System.Collections.Generic;
 
 namespace WcfErp.Modelos
 {
-    public class ModeloBase<Modelo> where Modelo : ModeloBase<Modelo>
+    public class ModeloBase<Modelo, TContext> where Modelo : ModeloBase<Modelo,TContext>
+                                              where TContext : Context
     {
         [BsonIgnore]
         public virtual IMongoDatabase dbMongo { get; set; }
@@ -34,15 +35,19 @@ namespace WcfErp.Modelos
                 return this.Nombre;
             }
         }
-        protected virtual Modelo addValues(Modelo item,EmpresaContext db)
+        protected virtual Modelo addValues(Modelo item, TContext db)
         {
             return null;
         }
-        protected virtual void addIndex(IMongoCollection<Modelo> Collection,EmpresaContext db)
+        protected virtual void addIndex(IMongoCollection<Modelo> Collection, TContext db)
         {
             
         }
-        public virtual void updateMany(IEnumerable<WriteModel<Modelo>> movs,EmpresaContext db, IClientSessionHandle session = null)
+        protected virtual void validateModel(Modelo item, TContext db)
+        {
+
+        }
+        public virtual void updateMany(IEnumerable<WriteModel<Modelo>> movs, TContext db, IClientSessionHandle session = null)
         {
             try
             {
@@ -59,11 +64,12 @@ namespace WcfErp.Modelos
                 throw;
             }
         }
-        public virtual Modelo add(Modelo item,EmpresaContext db, IClientSessionHandle session = null)
+        public virtual Modelo add(Modelo item,TContext db, IClientSessionHandle session = null)
         {
             try
             {
                 addValues(item, db);
+                validateModel(item, db);
 
                 IMongoCollection<Modelo> Collection = dbMongo.GetCollection<Modelo>(typeof(Modelo).Name);
 
@@ -82,7 +88,7 @@ namespace WcfErp.Modelos
                 throw;
             }
         }
-        public virtual Modelo get(string id, EmpresaContext db)
+        public virtual Modelo get(string id, TContext db)
         {
             try
             {
@@ -99,11 +105,65 @@ namespace WcfErp.Modelos
                 throw;
             }
         }
-        public virtual Modelo update(Modelo item, string id,EmpresaContext db, IClientSessionHandle session = null)
+        public virtual List<Modelo> find(FilterDefinition<Modelo> filter, TContext db)
+        {
+            try
+            {
+
+                IMongoCollection<Modelo> Collection = dbMongo.GetCollection<Modelo>(typeof(Modelo).Name);
+
+                List<Modelo> item = Collection.Find<Modelo>(filter).ToList();
+
+                return item;
+
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+        }
+        public virtual List<Modelo> find(FilterDefinition<Modelo> filter,string campos, TContext db)
+        {
+            try
+            {
+                JObject rss = cadenaTojObject(campos);
+
+                IMongoCollection<Modelo> Collection = dbMongo.GetCollection<Modelo>(typeof(Modelo).Name);
+
+                List<Modelo> item = Collection.Find<Modelo>(filter).Project<Modelo>(rss.ToString()).ToList();
+
+                return item;
+
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+        }
+        public virtual Modelo get(string id,string campos, TContext db)
+        {
+            try
+            {
+                JObject rss = cadenaTojObject(campos);
+
+                IMongoCollection<Modelo> Collection = dbMongo.GetCollection<Modelo>(typeof(Modelo).Name);
+
+
+                Modelo item = Collection.Find<Modelo>(d => d._id == id).Project<Modelo>(rss.ToString()).FirstOrDefault();
+                return item;
+
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+        }
+        public virtual Modelo update(Modelo item, string id, TContext db, IClientSessionHandle session = null)
         {
             try
             {
                 addValues(item, db);
+                validateModel(item, db);
 
                 var filter = Builders<Modelo>.Filter.Eq(s => s._id, id);
 
@@ -123,7 +183,7 @@ namespace WcfErp.Modelos
                 throw;
             }
         }
-        public virtual List<Modelo> search(string busqueda, EmpresaContext db)
+        public virtual List<Modelo> search(string busqueda, TContext db)
         {
             try
             {
@@ -141,7 +201,7 @@ namespace WcfErp.Modelos
                 throw;
             }
         }
-        public virtual List<Modelo> searchLimitIds(string busqueda,string ids,string fieldExclude ,EmpresaContext db)
+        public virtual List<Modelo> searchLimitIds(string busqueda,string ids,string fieldExclude , TContext db)
         {
             try
             {
@@ -165,6 +225,21 @@ namespace WcfErp.Modelos
 
 
                 return Documentos;
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+        }
+        public virtual Modelo delete(string id, TContext db)
+        {
+            try
+            {
+                IMongoCollection<Modelo> Collection = dbMongo.GetCollection<Modelo>(typeof(Modelo).Name);
+
+                Collection.DeleteOne(d => d._id == id);
+
+                return null;
             }
             catch (Exception ex)
             {
@@ -228,7 +303,7 @@ namespace WcfErp.Modelos
                 throw;
             }
         }
-        public virtual Modelo getbyFields(string id,string cadena, EmpresaContext db)
+        public virtual Modelo getbyFields(string id,string cadena, TContext db)
         {
             try
             {
@@ -245,7 +320,7 @@ namespace WcfErp.Modelos
                 throw;
             }
         }
-        public virtual List<Modelo> all(string cadena, EmpresaContext db,string skip=null)
+        public virtual List<Modelo> all(string cadena, Context db,string skip=null)
         {
             try
             {
@@ -266,15 +341,13 @@ namespace WcfErp.Modelos
                 IMongoCollection<Modelo> Collection = dbMongo.GetCollection<Modelo>(typeof(Modelo).Name);
 
                 List<Modelo> Lista;
-
-                var filter = Builders<Modelo>.Filter.Regex("Nombre", new BsonRegularExpression("", "i"));
-
-                if(skip == null)
-                    Lista = Collection.Find<Modelo>(filter).Project<Modelo>(rss.ToString()).ToList();
+                
+                if (skip == null)
+                    Lista = Collection.Find<Modelo>(_ => true).Project<Modelo>(rss.ToString()).ToList();
                 else
                 {
                     int skipInt = Int32.Parse(skip);
-                    Lista = Collection.Find<Modelo>(filter).Project<Modelo>(rss.ToString()).Limit(50).Skip(skipInt).ToList();
+                    Lista = Collection.Find<Modelo>(_ => true).Project<Modelo>(rss.ToString()).Limit(50).Skip(skipInt).ToList();
                 }
 
                 return Lista;

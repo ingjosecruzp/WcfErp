@@ -223,7 +223,7 @@ namespace WcfErp.Servicios.Reportes.Inventarios
             catch (Exception)
             {
 
-                throw;
+                return null;
             }
         }
 

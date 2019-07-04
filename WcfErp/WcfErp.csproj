@@ -148,6 +148,7 @@
     <Compile Include="Modelos\Administracion\UsuarioRol.cs" />
     <Compile Include="Modelos\Administracion\Usuario.cs" />
     <Compile Include="Modelos\Compras\Proveedor.cs" />
+    <Compile Include="Modelos\Context.cs" />
     <Compile Include="Modelos\Counters.cs" />
     <Compile Include="Modelos\EmpresaContext.cs" />
     <Compile Include="Modelos\Generales\Almacen.cs" />
@@ -199,6 +200,7 @@
     <Compile Include="Modelos\Reportes\Inventarios\ExistenciaValorInventario.cs" />
     <Compile Include="Modelos\Reportes\Inventarios\KardexArticulos.cs" />
     <Compile Include="Modelos\tokens.cs" />
+    <Compile Include="Modelos\UsuarioContext.cs" />
     <Compile Include="Modelos\Ventas\Clientes.cs" />
     <Compile Include="Reportes\exports.cs" />
     <Compile Include="Reportes\outputResource.cs" />

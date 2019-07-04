@@ -6,7 +6,7 @@ using System.Web;
 
 namespace WcfErp.Modelos.Generales
 {
-    public class SubgrupoComponente : ModeloBase<SubgrupoComponente>
+    public class SubgrupoComponente : ModeloBase<SubgrupoComponente, EmpresaContext>
     {
         public string Clave { get; set; }
         //[BsonRequired]

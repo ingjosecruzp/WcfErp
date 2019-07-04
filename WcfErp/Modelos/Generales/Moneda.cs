@@ -5,7 +5,7 @@ using System.Web;
 
 namespace WcfErp.Modelos.Generales
 {
-    public class Moneda : ModeloBase<Moneda>
+    public class Moneda : ModeloBase<Moneda,EmpresaContext>
     {
         public string TextoImporte { get; set; }
         public string Simbolo { get; set; }

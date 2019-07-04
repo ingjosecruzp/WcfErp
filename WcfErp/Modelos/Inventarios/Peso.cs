@@ -5,7 +5,7 @@ using System.Web;
 
 namespace WcfErp.Modelos.Inventarios
 {
-    public class Peso : ModeloBase<Peso>
+    public class Peso : ModeloBase<Peso, EmpresaContext>
     {
     }
 }

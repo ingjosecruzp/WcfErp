@@ -6,7 +6,7 @@ using WcfErp.Modelos.Generales;
 
 namespace WcfErp.Modelos.PuntoVenta
 {
-    public class Cajas :  ModeloBase<Cajas>
+    public class Cajas :  ModeloBase<Cajas, EmpresaContext>
     {
         public Almacen Almacen { get; set; }
         public int ModAlmacenVta { get; set; }

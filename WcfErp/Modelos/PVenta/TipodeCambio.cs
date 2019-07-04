@@ -6,14 +6,14 @@ using WcfErp.Modelos.Generales;
 
 namespace WcfErp.Modelos.PVenta
 {
-    public class TipodeCambio : ModeloBase<TipodeCambio>
+    public class TipodeCambio : ModeloBase<TipodeCambio,EmpresaContext>
     {
-        public Moneda Moneda { get; set; }
-        protected override TipodeCambio addValues(TipodeCambio item, EmpresaContext db)
+        protected override TipodeCambio addValues(TipodeCambio item, EmpresaContext db) 
         {
             try
             {
                 item.Moneda = db.Moneda.get(item.Moneda._id, db);
+                
                 return item;
             }
             catch (Exception)
@@ -21,7 +21,7 @@ namespace WcfErp.Modelos.PVenta
                 throw;
             }
         }
-
+        public Moneda Moneda { get; set; }
         public string Fecha { get; set; }
         public string TipoCambio { get; set; }
         public string EnCobros { get; set; }

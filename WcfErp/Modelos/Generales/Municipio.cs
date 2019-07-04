@@ -6,7 +6,7 @@ using System.Web;
 
 namespace WcfErp.Modelos.Generales
 {
-    public class Municipio : ModeloBase<Municipio>
+    public class Municipio : ModeloBase<Municipio, EmpresaContext>
     {
         public Estado Estado { get; set; }
         public Paises Paises { get; set; }

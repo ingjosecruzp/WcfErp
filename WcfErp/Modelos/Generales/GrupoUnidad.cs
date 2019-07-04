@@ -5,7 +5,7 @@ using System.Web;
 
 namespace WcfErp.Modelos.Generales
 {
-    public class GrupoUnidad : ModeloBase<GrupoUnidad>
+    public class GrupoUnidad : ModeloBase<GrupoUnidad, EmpresaContext>
     {
         public List<GrupoUnidadDetalle> GrupoUnidadDetalle { get; set; }
     }

@@ -17,15 +17,16 @@ using WcfErp.Reportes;
 
 namespace WcfErp.Servicios
 {
-    public class ServiceBase<Modelo> where Modelo : ModeloBase<Modelo>
+    public class ServiceBase<Modelo,TContext> where Modelo : ModeloBase<Modelo, TContext>
+                                              where TContext : Context, new()
     {
         public virtual Modelo add(Modelo item)
         {
             try
             {
 
-                EmpresaContext db = new EmpresaContext();
-                db.Set<Modelo>().add(item,db);
+                TContext db = new TContext();
+                db.Set<Modelo,TContext>().add(item,db);
 
                 return item;
             }
@@ -36,73 +37,12 @@ namespace WcfErp.Servicios
             }
         }
 
-        public virtual Modelo add(Modelo item, string bd)
-        {
-            try
-            {
-                MongoClient client = new MongoClient(getConnection());
-                IMongoDatabase db = client.GetDatabase(bd);
-
-                IMongoCollection<Modelo> Collection = db.GetCollection<Modelo>(typeof(Modelo).Name);
-
-                Collection.InsertOne(item);
-                
-                return item;
-            }
-            catch (Exception ex)
-            {
-                Error(ex, "");
-                return null;
-            }
-        }
-
-        public virtual List<Modelo> all(string cadena,string bd)
-        {
-            try
-            {
-                JObject rss = new JObject();
-
-                string[] fields = cadena.Split(',');
-
-                string campos = "{";
-
-                foreach (string f in fields)
-                {
-                    rss.Add(new JProperty(f, "1"));
-                }
-                Console.WriteLine(rss.ToString());
-                campos += "}";
-
-                MongoClient client = new MongoClient(getConnection());
-                IMongoDatabase db = client.GetDatabase(bd);
-
-                IMongoCollection<Modelo> Collection = db.GetCollection<Modelo>(typeof(Modelo).Name);
-
-                List<Modelo> Lista;
-
-                /*if(campos != null)
-                    Lista = Collection.Find<Modelo>(null).Project<Modelo>(campos).ToList();
-                else
-                   Lista = Collection.AsQueryable().ToList();*/
-                var filter = Builders<Modelo>.Filter.Regex("Nombre", new BsonRegularExpression("", "i"));
-
-                //Lista = Collection.Find<Modelo>(filter).Project<Modelo>("{_id:1, Nombre:1,TipoConcepto.Nombre:1}").ToList();
-                Lista = Collection.Find<Modelo>(filter).Project<Modelo>(rss.ToString()).ToList();
-
-                return Lista;
-            }
-            catch (Exception ex)
-            {
-                Error(ex, "");
-                return null;
-            }
-        }
         public virtual List<Modelo> all(string cadena)
         {
             try
             {
-                EmpresaContext db = new EmpresaContext();
-                List<Modelo> Lista=db.Set<Modelo>().all(cadena, db);
+                TContext db = new TContext();
+                List<Modelo> Lista=db.Set<Modelo, TContext>().all(cadena, db);
 
                 return Lista;
             }
@@ -116,8 +56,8 @@ namespace WcfErp.Servicios
         {
             try
             {
-                EmpresaContext db = new EmpresaContext();
-                List<Modelo> Lista = db.Set<Modelo>().all(cadena, db,skip);
+                TContext db = new TContext();
+                List<Modelo> Lista = db.Set<Modelo, TContext>().all(cadena, db,skip);
 
                 return Lista;
             }
@@ -132,7 +72,7 @@ namespace WcfErp.Servicios
         {
             try
             {
-                EmpresaContext db = new EmpresaContext();
+                TContext db = new TContext();
 
 
                 string[] Filters = filters.Split(',');
@@ -150,7 +90,7 @@ namespace WcfErp.Servicios
                     index++;
                 }
                 
-                List<Modelo> Lista = db.Set<Modelo>().Filters(filter, cadena, skip);
+                List<Modelo> Lista = db.Set<Modelo, TContext>().Filters(filter, cadena, skip);
 
                 return Lista;
             }
@@ -164,31 +104,9 @@ namespace WcfErp.Servicios
         {
             try
             {
-                EmpresaContext db = new EmpresaContext();
-                List<Modelo> Documentos= db.Set<Modelo>().search(busqueda, db);
+                TContext db = new TContext();
+                List<Modelo> Documentos= db.Set<Modelo, TContext>().search(busqueda, db);
                     
-                return Documentos;
-            }
-            catch (Exception ex)
-            {
-                Error(ex, "");
-                return null;
-            }
-        }
-
-        public virtual List<Modelo> search(string busqueda, string bd)
-        {
-            try
-            {
-                MongoClient client = new MongoClient(getConnection());
-                IMongoDatabase db = client.GetDatabase(bd);
-
-                IMongoCollection<Modelo> Collection = db.GetCollection<Modelo>(typeof(Modelo).Name);
-
-                var filter = Builders<Modelo>.Filter.Regex("Nombre", new BsonRegularExpression(busqueda, "i"));
-
-                List<Modelo> Documentos = Collection.Find<Modelo>(filter).ToList();
-
                 return Documentos;
             }
             catch (Exception ex)
@@ -204,35 +122,11 @@ namespace WcfErp.Servicios
             {
                 DisponibilidadDocumento(typeof(Modelo).Name,id);
 
-                EmpresaContext db = new EmpresaContext();
+                TContext db = new TContext();
 
-                Modelo item = db.Set<Modelo>().get(id, db);
+                Modelo item = db.Set<Modelo, TContext>().get(id, db);
 
                 //bloquearDocumento(typeof(Modelo).Name,item._id);
-
-                return item;
-
-            }
-            catch (Exception ex)
-            {
-                Error(ex, "");
-                return null;
-            }
-        }
-        public virtual Modelo get(string id, string bd)
-        {
-            try
-            {
-                //ObjectId ClienteId = ObjectId.Parse(id);
-                MongoClient client = new MongoClient(getConnection());
-                IMongoDatabase db = client.GetDatabase(bd);
-
-                IMongoCollection<Modelo> Collection = db.GetCollection<Modelo>(typeof(Modelo).Name);
-
-                //var filter = Builders<Clientes>.Filter.Eq(x => x.name, "system")
-
-                Modelo item = Collection.Find<Modelo>(d => d._id == id).FirstOrDefault();
-                //Modelo item = Collection.Find<Modelo>(d => d._id == id).FirstOrDefault();
 
                 return item;
 
@@ -248,32 +142,8 @@ namespace WcfErp.Servicios
         {
             try
             {
-                MongoClient client = new MongoClient(getConnection());
-                IMongoDatabase db = client.GetDatabase(getKeyToken("empresa","token"));
-
-                IMongoCollection<Modelo> Collection = db.GetCollection<Modelo>(typeof(Modelo).Name);
-
-                Collection.DeleteOne(d => d._id == id);
-
-                return null;
-            }
-            catch (Exception ex)
-            {
-                Error(ex, "");
-                return null;
-            }
-        }
-
-        public virtual Modelo delete(string id, string bd)
-        {
-            try
-            {
-                MongoClient client = new MongoClient(getConnection());
-                IMongoDatabase db = client.GetDatabase(bd);
-
-                IMongoCollection<Modelo> Collection = db.GetCollection<Modelo>(typeof(Modelo).Name);
-
-                Collection.DeleteOne(d => d._id == id);
+                TContext db = new TContext();
+                db.Set<Modelo, TContext>().delete(id, db);
 
                 return null;
             }
@@ -288,36 +158,9 @@ namespace WcfErp.Servicios
         {
             try
             {
-                EmpresaContext db = new EmpresaContext();
+                TContext db = new TContext();
 
-                db.Set<Modelo>().update(item,id,db);
-
-                return item;
-            }
-            catch (Exception ex)
-            {
-                Error(ex, "");
-                return null;
-            }
-
-        }
-
-        public virtual Modelo update(Modelo item, string id, string bd)
-        {
-            try
-            {
-                //ObjectId ClienteId = ObjectId.Parse(id);
-
-                //item._id = ClienteId;
-
-                MongoClient client = new MongoClient(getConnection());
-                IMongoDatabase db = client.GetDatabase(bd);
-
-                IMongoCollection<Modelo> CollectionClientes = db.GetCollection<Modelo>(typeof(Modelo).Name);
-
-                var filter = Builders<Modelo>.Filter.Eq(s => s._id, id);
-
-                var result = CollectionClientes.ReplaceOne(filter, item);
+                db.Set<Modelo, TContext>().update(item,id,db);
 
                 return item;
             }
@@ -328,6 +171,8 @@ namespace WcfErp.Servicios
             }
 
         }
+
+
         /******Servicios para reportes********/
         // Servicio para mandar mostrar el reporter indiviual por documento
         public virtual Modelo RptDocumentoJasper(string id)
@@ -335,9 +180,9 @@ namespace WcfErp.Servicios
             try
             {
 
-                EmpresaContext db = new EmpresaContext();
+                TContext db = new TContext();
 
-                Modelo item = db.Set<Modelo>().get(id, db);
+                Modelo item = db.Set<Modelo,TContext>().get(id, db);
 
                 return item;
 

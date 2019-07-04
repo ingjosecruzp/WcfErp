@@ -5,7 +5,7 @@ using System.Web;
 
 namespace WcfErp.Modelos.PuntoVenta
 {
-    public class Cajeros : ModeloBase<Cajeros>
+    public class Cajeros : ModeloBase<Cajeros, EmpresaContext>
     {
 
     }
