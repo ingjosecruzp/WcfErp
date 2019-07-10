@@ -6,7 +6,9 @@ using System.Configuration;
 using System.Linq;
 using System.Runtime.Serialization;
 using System.ServiceModel;
+using System.ServiceModel.Channels;
 using System.Text;
+using WcfErp.Modelos;
 using WcfErp.Modelos.Generales;
 using WcfErp.Modelos.Inventarios;
 using WcfErp.Modelos.Reportes.Inventarios;
@@ -18,15 +20,6 @@ namespace WcfErp.Servicios.Reportes.Inventarios
     // NOTE: In order to launch WCF Test Client for testing this service, please select WcfKardexArticulos.svc or WcfKardexArticulos.svc.cs at the Solution Explorer and start debugging.
     public class WcfKardexArticulos : IWcfKardexArticulos
     {
-
-        MongoClient client;
-        IMongoDatabase db;
-        KardexArticulos kardex = new KardexArticulos();
-        double invfinal;
-
-        //  IMongoCollection<InventariosSaldos> CollectionSaldos;
-
-
         public List<KardexArticulos> KardexArticulo(string FechaInicio, string FechaFin, string AlmacenId, string ArticuloId, string GrupoId,string SubGrupoId, string Valoracion)
         {
             try
@@ -38,68 +31,212 @@ namespace WcfErp.Servicios.Reportes.Inventarios
                 string GrupoId=null;
                 string SubGrupoId = null;
                 string Valoracion = null;*/
-                var builderMovimientos = Builders<MovimientosES>.Filter;
-                var builderMovimientos1 = Builders<MovimientosES>.Filter;
-
 
                 string dateinicio = DateTime.Parse(FechaInicio).Subtract(TimeSpan.FromDays(1)).ToShortDateString();
                 string datefin = DateTime.Parse(FechaFin).ToShortDateString();
-
-
-                //  KardexArticulos existencia = new KardexArticulos();
-                List<KardexArticulos> existenciaInventario = new List<KardexArticulos>();
-                List<ExistenciaValorInventario> ExistenciaFechaInicio = new WcfExistenciaValorInventario().Existencia(dateinicio, AlmacenId, ArticuloId, GrupoId, SubGrupoId, Valoracion);
-                List<ExistenciaValorInventario> ExistenciaFechaFin = new WcfExistenciaValorInventario().Existencia(datefin, AlmacenId, ArticuloId, GrupoId, SubGrupoId, Valoracion);
 
 
                 DateTime DateInicio = DateTime.Parse(FechaInicio);
                 int anoInicio = DateInicio.Year;
                 int mesInicio = DateInicio.Month;
                 int diaInicio = DateInicio.Day;
+
                 DateTime DateFin = DateTime.Parse(FechaFin);
                 int anoFin = DateFin.Year;
                 int mesFin = DateFin.Month;
                 int diaFin = DateFin.Day;
 
-                client = new MongoClient(ConfigurationManager.AppSettings["pathMongo"]);
-                db = client.GetDatabase("PAMC861025DB7");
-                IMongoCollection<MovimientosES> CollectionMovimientosEs = db.GetCollection<MovimientosES>("MovimientosES");
-                List<MovimientosES> MovimientosEsCompletoServer = new List<MovimientosES>();
-                //    MovimientosEsCompletoServer = CollectionMovimientosEs.Find(builderMovimientos.Eq("Almacen._id", AlmacenId)  & builderMovimientos.
-                //                       Where((a => a.Ano >= anoInicio  && a.Mes >= mesInicio && a.Dia >= diaInicio)) & builderMovimientos1.
-                //                       Where((b => b.Ano <= anoFin && b.Mes <= mesFin && b.Dia <= diaFin))).ToList();
+                EmpresaContext db = new EmpresaContext();
 
-                // MovimientosEsCompletoServer = CollectionMovimientosEs.Find(builderMovimientos.Eq("Almacen._id", AlmacenId) & builderMovimientos.
-                //                               Where((a => a.Ano >= anoInicio && a.Ano <= anoFin && a.Mes >= mesInicio && a.Dia >= diaInicio))).ToList();
 
                 var min = new DateTime(anoInicio, mesInicio, diaInicio);
                 var max = new DateTime(anoFin, mesFin, diaFin, 23, 59, 59);
-                MovimientosEsCompletoServer = CollectionMovimientosEs.Find(x => x.Fecha >= min & x.Fecha <= max).ToList();
 
-                foreach (ExistenciaValorInventario exvini in ExistenciaFechaInicio)
+                //var builderSaldos = Builders<MovimientosES>.Filter.Eq(x => x.Fecha >= min & x.Fecha <= max & x.Almacen.id == AlmacenId);
+                //MovimientosEsCompletoServer = CollectionMovimientosEs.Find(x => x.Fecha >= min & x.Fecha <= max & x.Almacen.id == AlmacenId).ToList();
+
+                FilterDefinition<MovimientosES> builderMovs;
+                FilterDefinition<InventariosSaldos> builderSaldos;
+                List<MovimientosES> MovimientosEsCompletoServer;
+
+                //Selecciono el filtro articulo
+                if (ArticuloId != null && ArticuloId != "")
+                { 
+                    //Filtramos todos los documentos donde se encuntra ese articulo
+                    builderMovs = Builders<MovimientosES>.Filter.Gte(x => x.Fecha, min) & Builders<MovimientosES>.Filter.Lt(x => x.Fecha, max)
+                               & Builders<MovimientosES>.Filter.Eq(x => x.Almacen._id, AlmacenId) & Builders<MovimientosES>.Filter.ElemMatch(l => l.Detalles_ES, l2 => l2.Articulo._id == ArticuloId);
+
+                    //Filtros para seleccioanr solo los movimientos del articulo seleccionado en invetariosaldos
+                    builderSaldos = Builders<InventariosSaldos>.Filter.Eq("AlmacenId", AlmacenId) & Builders<InventariosSaldos>.Filter.Eq("ArticuloId", ArticuloId);
+
+                    MovimientosEsCompletoServer = db.MovimientosES.find(builderMovs, db);
+
+                    //Elimina los articulos que no estan includios en el filtros
+                    MovimientosEsCompletoServer.ForEach(a =>
+                    {
+                        a.Detalles_ES.RemoveAll(d => d.Articulo._id != ArticuloId);
+                    });
+                }
+                //Selecciono el filtro Sugrupo
+                else if (SubGrupoId != null && SubGrupoId != "")
                 {
-                    int i = 0;
-                    ExistenciaValorInventario exvfin = ExistenciaFechaFin[i];
+                    //Filtramos todos los documentos donde se encuentran articulos que pertenecen al subgrupo seleccionado
+                    builderMovs = Builders<MovimientosES>.Filter.Gte(x => x.Fecha, min) & Builders<MovimientosES>.Filter.Lt(x => x.Fecha, max)
+                               & Builders<MovimientosES>.Filter.Eq(x => x.Almacen._id, AlmacenId) & Builders<MovimientosES>.Filter.ElemMatch(l => l.Detalles_ES, l2 => l2.Articulo.SubGrupoComponente._id == SubGrupoId);
 
-                    kardex = ExistenciaArticuloPeriodo(exvini, exvfin, MovimientosEsCompletoServer);
-                    existenciaInventario.Add(kardex);
-                    i++;
+                    //Filtro todo los movimientos por alamcen
+                    builderSaldos = Builders<InventariosSaldos>.Filter.Eq("AlmacenId", AlmacenId);
+
+                    MovimientosEsCompletoServer = db.MovimientosES.find(builderMovs, db);
+
+                    //Elimina los articulos que no pertenecen al subgrupo seleccionado
+                    MovimientosEsCompletoServer.ForEach(a =>
+                    {
+                        a.Detalles_ES.RemoveAll(d => d.Articulo.SubGrupoComponente._id != SubGrupoId);
+                    });
+                }
+                //Selecciono el filtro Grupo
+                else if (GrupoId != null && GrupoId != "")
+                {
+                    //Filtramos todos los documentos donde se encuentran articulos que pertenecen al subgrupo seleccionado
+                    builderMovs = Builders<MovimientosES>.Filter.Gte(x => x.Fecha, min) & Builders<MovimientosES>.Filter.Lt(x => x.Fecha, max)
+                               & Builders<MovimientosES>.Filter.Eq(x => x.Almacen._id, AlmacenId) & Builders<MovimientosES>.Filter.ElemMatch(l => l.Detalles_ES, l2 => l2.Articulo.SubGrupoComponente.GrupoComponente._id == GrupoId);
+
+                    //Filtro todo los movimientos por alamcen
+                    builderSaldos = Builders<InventariosSaldos>.Filter.Eq("AlmacenId", AlmacenId);
+
+                    MovimientosEsCompletoServer = db.MovimientosES.find(builderMovs, db);
+
+                    //Elimina los articulos que no pertenecen al grupo seleccionado
+                    MovimientosEsCompletoServer.ForEach(a =>
+                    {
+                        a.Detalles_ES.RemoveAll(d => d.Articulo.SubGrupoComponente.GrupoComponente._id != GrupoId);
+                    });
+                }
+                else
+                {
+                    builderMovs = Builders<MovimientosES>.Filter.Gte(x => x.Fecha, min) & Builders<MovimientosES>.Filter.Lt(x => x.Fecha, max) & Builders<MovimientosES>.Filter.Eq(x => x.Almacen._id, AlmacenId);
+
+                    //Filtro todo los movimientos por alamcen
+                    builderSaldos = Builders<InventariosSaldos>.Filter.Eq("AlmacenId", AlmacenId);
+
+                    MovimientosEsCompletoServer = db.MovimientosES.find(builderMovs, db);
                 }
 
 
-                return existenciaInventario;
+                //Consultamos la coleccion de invetariosaldos para saber el saldo inicial en una fecha especifica de cada articulo
+                List<InventariosSaldos> InventariosSaldosCompletoServer = db.InventariosSaldos.find(builderSaldos, db);
+
+                List<KardexArticulos> KardexInventario = new List<KardexArticulos>();
+
+                foreach (MovimientosES mov in MovimientosEsCompletoServer.OrderBy(a => a.Fecha).ToList())
+                {
+                    foreach(Detalles_ES detalle in mov.Detalles_ES)
+                    {
+
+                        KardexArticulos articulo = new KardexArticulos();
+
+                        /*Verifica si dentro del kardex ya existen al menos uno movimiento del articulo, si no 
+                         * es asi agrega el saldo inicial el cual se basa de la existencia.
+                         */
+                        if (KardexInventario.Where(a => a.Articulo._id == detalle.Articulo._id).Count() == 0)
+                        {
+                            KardexArticulos articuloSaldoInicial = new KardexArticulos();
+
+                            articuloSaldoInicial = saldoInicial(articuloSaldoInicial, DateInicio, InventariosSaldosCompletoServer,mov, detalle,diaInicio,mesInicio,anoInicio, db);
+                            KardexInventario.Add(articuloSaldoInicial);
+                        }
+
+                        articulo.Almacen = mov.Almacen;
+                        articulo.Folio = mov.Folio;
+                        articulo.Fecha = mov.Fecha.ToShortDateString().ToString();
+                        articulo.Concepto = mov.Concepto;
+
+                        //Caracteristicas del articulo
+                        articulo.Articulo = detalle.Articulo;
+                        articulo.SubgrupoComponente = detalle.Articulo.SubGrupoComponente;
+                        articulo.GrupoComponente = detalle.Articulo.SubGrupoComponente.GrupoComponente;
+
+                        KardexArticulos articuloAnterior = new KardexArticulos();
+                        articuloAnterior = KardexInventario.Where(x => x.Articulo._id == detalle.Articulo._id).Last();
+
+                        if (articulo.Concepto.Naturaleza == "ENTRADA")
+                        {
+                            articulo.EntradaUnidad = detalle.Cantidad;
+                            articulo.EntradaCostoUnitario = detalle.Costo;
+                            articulo.EntradaCostoTotal = detalle.CostoTotal;
+
+                            articulo.ExistenciaUnidades = articuloAnterior.ExistenciaUnidades + detalle.Cantidad;
+                            articulo.ExistenciaCostoTotal = articuloAnterior.ExistenciaCostoTotal + detalle.CostoTotal;
+                        }
+                        else if (articulo.Concepto.Naturaleza == "SALIDA")
+                        {
+                            articulo.SalidaUnidad = detalle.Cantidad;
+                            articulo.SalidaCostoUnitario = detalle.Costo;
+                            articulo.SalidaCostoTotal = detalle.CostoTotal;
+
+                            articulo.ExistenciaUnidades = articuloAnterior.ExistenciaUnidades - detalle.Cantidad;
+                            articulo.ExistenciaCostoTotal = articuloAnterior.ExistenciaCostoTotal - detalle.CostoTotal;
+                        }
+
+
+                        KardexInventario.Add(articulo);
+                    }
+                }
+
+
+                return KardexInventario.OrderBy(a => a.Almacen.Nombre).OrderBy(a => a.SubgrupoComponente.Nombre).OrderBy(a => a.Articulo.Nombre).ToList();
             }
             catch (Exception ex)
             {
 
-                throw;
+                return null;
             }
 
         }
-        public KardexArticulos ExistenciaArticuloPeriodo(ExistenciaValorInventario ExistenciaFechaInicio, ExistenciaValorInventario ExistenciaFechaFin,List<MovimientosES> MovimientosEsCompletoServer)
+        public KardexArticulos saldoInicial (KardexArticulos articulo,DateTime FechaInicio,List<InventariosSaldos> InventariosSaldosCompletoServer, MovimientosES mov, Detalles_ES detalle,int dia,int mes,int ano,EmpresaContext db)
         {
             try
             {
+                //Se declaro asi por un conflico de nombre
+                Servicios.Inventarios.Inventarios inventario = new Servicios.Inventarios.Inventarios();
+
+                articulo.Almacen = mov.Almacen;
+                articulo.Folio = "";
+                articulo.Concepto = new Concepto
+                {
+                    Nombre="SI - SALDO INICIAL"
+                };
+
+                //Caracteristicas del articulo
+                articulo.Articulo = detalle.Articulo;
+                articulo.SubgrupoComponente = detalle.Articulo.SubGrupoComponente;
+                articulo.GrupoComponente = detalle.Articulo.SubGrupoComponente.GrupoComponente;
+
+                ExistenciaValorInventario existencia = inventario.ExistenciaArticulo(detalle.Articulo._id,articulo.Almacen.id, FechaInicio, InventariosSaldosCompletoServer, detalle.Articulo, dia, mes, ano, db);
+
+                articulo.EntradaUnidad = existencia.Existencia;
+                articulo.EntradaCostoUnitario = 0.0;
+                articulo.EntradaCostoTotal = existencia.CostoUnitario * existencia.Existencia;
+
+                articulo.ExistenciaUnidades = existencia.Existencia;
+                articulo.ExistenciaCostoTotal = articulo.EntradaCostoTotal;
+
+                return articulo;
+
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+        /*public KardexArticulos ExistenciaArticuloPeriodo(ExistenciaValorInventario ExistenciaFechaInicio, ExistenciaValorInventario ExistenciaFechaFin,List<MovimientosES> MovimientosEsCompletoServer)
+        {
+            try
+            {
+                KardexArticulos kardex = new KardexArticulos();
+
                 int i = 0;
 
                 kardex.ExistenciaInicial = ExistenciaFechaInicio.Existencia;
@@ -144,7 +281,7 @@ namespace WcfErp.Servicios.Reportes.Inventarios
                 throw;
             }
 
-        }
+        }*/
         public string VerReporte(string parametros)
         {
             try
@@ -164,10 +301,27 @@ namespace WcfErp.Servicios.Reportes.Inventarios
                     JasperParametros.Add(param);
                 }
 
+                //Agrega token
+                reportParameter paramToken = new reportParameter();
+                paramToken.name = "Token";
+
+                OperationContext currentContext = OperationContext.Current;
+                HttpRequestMessageProperty reqMsg = currentContext.IncomingMessageProperties["httpRequest"] as HttpRequestMessageProperty;
+                string authToken = reqMsg.Headers["Token"];
+
+                paramToken.value.Add(authToken);
+                JasperParametros.Add(paramToken);
+
+                reportParameter param1 = new reportParameter();
+                param1.name = "empresa";
+                param1.value.Add(getKeyToken("razonsocial", "token"));
+
+                JasperParametros.Add(param1);
+
                 string Archivo = GetTimestamp(DateTime.Now);
                 string extension = "pdf";
 
-                ReportesPFD VmReporte = new ReportesPFD("/ERP/Existencias", JasperParametros, extension, Archivo);
+                ReportesPFD VmReporte = new ReportesPFD("/ERP/Kardex", JasperParametros, extension, Archivo);
 
                 return Archivo + "." + extension;
 
@@ -187,6 +341,31 @@ namespace WcfErp.Servicios.Reportes.Inventarios
         //Metodo para dar respuesta las peticiones OPTION CORS
         public void GetOptions()
         {
+        }
+        public string getKeyToken(string key, string Token)
+        {
+            try
+            {
+                OperationContext currentContext = OperationContext.Current;
+                HttpRequestMessageProperty reqMsg = currentContext.IncomingMessageProperties["httpRequest"] as HttpRequestMessageProperty;
+                string authToken = reqMsg.Headers[Token];
+                string value;
+                if (authToken != "")
+                {
+                    var payload = JWT.JsonWebToken.DecodeToObject(authToken, "pwjrnew") as IDictionary<string, object>;
+                    value = payload.ContainsKey(key) ? payload[key].ToString() : "";
+                }
+                else
+                {
+                    value = "";
+                }
+                return value;
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
         }
     }
 }

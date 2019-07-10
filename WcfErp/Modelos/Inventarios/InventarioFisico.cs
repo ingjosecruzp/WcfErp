@@ -41,14 +41,14 @@ namespace WcfErp.Modelos.Inventarios
                 throw;
             }
         }
-        protected override void validateModel(InventarioFisico item, EmpresaContext db)
+        public override void validateModel(InventarioFisico item, EmpresaContext db)
         {
             try
             {
-                /*if (item._id != null && item.Estado == "APLICADO")
-                    throw new Exception("Esta toma de inventario no se puede modificar porque ya encuentra aplicada, no es posible continuar.");
+                if (item._id != null && item.Estado == "APLICADO")
+                    throw new Exception("Esta toma de inventario no se puede modificar porque ya se encuentra aplicada, no es posible continuar.");
                 else if(item.InventarioFisicoDetalle.Where(x => x.ExistenciaFisica < 0).ToList().Count > 0)
-                    throw new Exception("No se permiten número negativos en las tomas de inventarios.");*/
+                    throw new Exception("No se permiten número negativos en las tomas de inventarios.");
             }
             catch (Exception)
             {

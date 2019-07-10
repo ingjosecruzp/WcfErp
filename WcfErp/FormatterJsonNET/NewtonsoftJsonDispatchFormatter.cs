@@ -97,8 +97,8 @@ namespace WcfErp.FormatterJsonNET
 
                 Newtonsoft.Json.JsonSerializerSettings microsoftDateFormatSettings = new Newtonsoft.Json.JsonSerializerSettings
                  {
-                     ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore,
-                     PreserveReferencesHandling=Newtonsoft.Json.PreserveReferencesHandling.Objects,
+                     //ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore,
+                     //PreserveReferencesHandling=Newtonsoft.Json.PreserveReferencesHandling.Objects,
                      NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore,
                      DateFormatHandling = Newtonsoft.Json.DateFormatHandling.MicrosoftDateFormat,
                  };

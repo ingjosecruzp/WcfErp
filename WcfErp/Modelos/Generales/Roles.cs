@@ -15,7 +15,7 @@ namespace WcfErp.Modelos.Generales
             this.BDEmpresas = new List<BDEmpresas>();
         }
 
-        protected override void validateModel(Roles item, UsuarioContext db)
+        public override void validateModel(Roles item, UsuarioContext db)
         {
             try
             {

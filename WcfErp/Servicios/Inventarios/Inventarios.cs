@@ -37,7 +37,7 @@ namespace WcfErp.Servicios.Inventarios
                 var filter = Builders<Articulo>.Filter.In(myClass => myClass._id, Ids);   //creamos un filtro con la clapsula In
 
                 //Realizamos una sola query a la bd obteniendo solo datos necesarios (en este caso solo el nombre,id y unidad de inventario) para hacerla lo mas liviana 
-                List<Articulo> ArticuloCompletoServer = db.Articulo.Filters(filter, "Nombre,UnidadInventario.Abreviatura");
+                List<Articulo> ArticuloCompletoServer = db.Articulo.Filters(filter, "Nombre,Clave,UnidadInventario.Abreviatura,SubGrupoComponente");
 
                 List<InventariosSaldos> InventariosSaldosCompletoServer = db.InventariosSaldos.Filters(builderSaldos.In("ArticuloId", Ids) & builderSaldos.Eq("AlmacenId", item.Almacen._id));
                 List<InventariosCostos> InventariosCostosCompletoServer = db.InventariosCostos.Filters(builderCostos.In("ArticuloId", Ids) & builderCostos.Eq("AlmacenId", item.Almacen._id));
@@ -328,7 +328,6 @@ namespace WcfErp.Servicios.Inventarios
                         var builderMovimientos = Builders<MovimientosES>.Filter.Eq("Almacen._id", almacenId) & Builders<MovimientosES>.Filter.Where(a => a.Ano <= ano && a.Mes <= mes && a.Dia <= dia);
                         //MovimientosEsCompletoServer = CollectionMovimientosEs.Find(builderMovimientos).ToList();
                         MovimientosEsCompletoServer = db.MovimientosES.find(builderMovimientos,db);
-
                     }
                     else //si, si hay movimiento en meses anteriores
                     {
