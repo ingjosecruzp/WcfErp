@@ -33,7 +33,7 @@ namespace WcfErp.Servicios.Generales
 
                 //Filtra los objetos del tipo unidades en memoria
                 List<Unidad> LstUnidades = GrupoUnidad.GrupoUnidadDetalle.Where(i => i.UnidadEquivalente.Abreviatura.Contains(busqueda)).Select( x => x.UnidadEquivalente).ToList();
-
+                
                 return LstUnidades;
                 
                 //var builder = Builders<GrupoUnidad>.Filter;
@@ -53,3 +53,4 @@ namespace WcfErp.Servicios.Generales
         }
     }
 }
+

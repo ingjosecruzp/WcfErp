@@ -124,8 +124,10 @@
     <Content Include="Servicios\Inventarios\WcfUnidades.svc" />
     <Content Include="Servicios\PVenta\WcfCajas.svc" />
     <Content Include="Servicios\PVenta\WcfFormadeCobro.svc" />
+    <Content Include="Servicios\PVenta\WcfImpuestos.svc" />
     <Content Include="Servicios\PVenta\WcfPoliticadeComisiones.svc" />
     <Content Include="Servicios\PVenta\WcfTipodeCambio.svc" />
+    <Content Include="Servicios\PVenta\WcfTipoImpuesto.svc" />
     <Content Include="Servicios\PVenta\WcfVendedor.svc" />
     <Content Include="Servicios\Reportes\Inventarios\WcfExistenciaValorInventario.svc" />
     <Content Include="Servicios\Reportes\Inventarios\WcfKardexArticulos.svc" />
@@ -192,7 +194,10 @@
     <Compile Include="Modelos\ModeloBase.cs" />
     <Compile Include="Modelos\PuntoVenta\Cajas.cs" />
     <Compile Include="Modelos\PuntoVenta\Cajeros.cs" />
+    <Compile Include="Modelos\PuntoVenta\Impuestos.cs" />
     <Compile Include="Modelos\PuntoVenta\PuntoVenta_Documento.cs" />
+    <Compile Include="Modelos\PuntoVenta\TipoImpuesto.cs" />
+    <Compile Include="Modelos\PuntoVenta\TiposGravan.cs" />
     <Compile Include="Modelos\PVenta\FormadeCobro.cs" />
     <Compile Include="Modelos\PVenta\PoliticadeComisiones.cs" />
     <Compile Include="Modelos\PVenta\TipodeCambio.cs" />
@@ -342,8 +347,10 @@
     <Compile Include="Servicios\IWSLogin.cs" />
     <Compile Include="Servicios\PVenta\IWcfCajas.cs" />
     <Compile Include="Servicios\PVenta\IWcfFormadeCobro.cs" />
+    <Compile Include="Servicios\PVenta\IWcfImpuestos.cs" />
     <Compile Include="Servicios\PVenta\IWcfPoliticadeComisiones.cs" />
     <Compile Include="Servicios\PVenta\IWcfTipodeCambio.cs" />
+    <Compile Include="Servicios\PVenta\IWcfTipoImpuesto.cs" />
     <Compile Include="Servicios\PVenta\IWcfVendedor.cs" />
     <Compile Include="Servicios\PVenta\WcfCajas.svc.cs">
       <DependentUpon>WcfCajas.svc</DependentUpon>
@@ -351,11 +358,17 @@
     <Compile Include="Servicios\PVenta\WcfFormadeCobro.svc.cs">
       <DependentUpon>WcfFormadeCobro.svc</DependentUpon>
     </Compile>
+    <Compile Include="Servicios\PVenta\WcfImpuestos.svc.cs">
+      <DependentUpon>WcfImpuestos.svc</DependentUpon>
+    </Compile>
     <Compile Include="Servicios\PVenta\WcfPoliticadeComisiones.svc.cs">
       <DependentUpon>WcfPoliticadeComisiones.svc</DependentUpon>
     </Compile>
     <Compile Include="Servicios\PVenta\WcfTipodeCambio.svc.cs">
       <DependentUpon>WcfTipodeCambio.svc</DependentUpon>
+    </Compile>
+    <Compile Include="Servicios\PVenta\WcfTipoImpuesto.svc.cs">
+      <DependentUpon>WcfTipoImpuesto.svc</DependentUpon>
     </Compile>
     <Compile Include="Servicios\PVenta\WcfVendedor.svc.cs">
       <DependentUpon>WcfVendedor.svc</DependentUpon>

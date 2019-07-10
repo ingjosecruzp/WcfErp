@@ -92,6 +92,8 @@ namespace WcfErp.Modelos
         public virtual TipodeCambio TipodeCambio { get; set; }
         public virtual PoliticadeComisiones PoliticadeComisiones { get; set; }
         public virtual Cajas Cajas { get; set; }
+        public virtual TipoImpuesto TipoImpuesto { get; set; }
+        public virtual Impuestos Impuestos { get; set; }
         //Fin Punto de Venta
 
 
