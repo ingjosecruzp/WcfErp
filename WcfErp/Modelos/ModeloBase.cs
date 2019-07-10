@@ -43,7 +43,7 @@ namespace WcfErp.Modelos
         {
             
         }
-        protected virtual void validateModel(Modelo item, TContext db)
+        public virtual void validateModel(Modelo item, TContext db)
         {
 
         }
@@ -163,7 +163,6 @@ namespace WcfErp.Modelos
             try
             {
                 addValues(item, db);
-                validateModel(item, db);
 
                 var filter = Builders<Modelo>.Filter.Eq(s => s._id, id);
 

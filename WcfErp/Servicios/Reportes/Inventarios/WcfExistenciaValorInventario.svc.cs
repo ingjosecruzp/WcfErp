@@ -63,14 +63,17 @@ namespace WcfErp.Servicios.Reportes.Inventarios
                 int dia = date.Day;
                 List<Articulo> ArticulosCompletoServer = new List<Articulo>();
 
-
-                if((subgrupo._id != null || subgrupo._id != "") && (grupo._id != null || grupo._id != "") && (articulo._id != null || articulo._id != ""))
+                //Ningun filtro seleccionado
+                if ((subgrupo._id == null || subgrupo._id == "") && (grupo._id == null || grupo._id == "") && (articulo._id == null || articulo._id == ""))
                     ArticulosCompletoServer = Articulos.Find<Articulo>(_ => true).Project<Articulo>(Builders<Articulo>.Projection.Include(p => p._id).Include(o => o.Nombre).Include(i => i.SubGrupoComponente).Include(y => y.GrupoComponente).Include(l => l.UnidadInventario)).ToList();
-                if (subgrupo._id != null && subgrupo._id != "")
+                //Selecciono el filtro subgrupo
+                else if (subgrupo._id != null && subgrupo._id != "")
                     ArticulosCompletoServer = Articulos.Find<Articulo>(d => d.SubGrupoComponente._id == subgrupo._id).Project<Articulo>(Builders<Articulo>.Projection.Include(p => p._id).Include(o => o.Nombre).Include(i => i.SubGrupoComponente).Include(l => l.UnidadInventario)).ToList();
-                if (grupo._id != null && grupo._id != "")
+                //Selecciono el filtro grupo
+                else if (grupo._id != null && grupo._id != "")
                     ArticulosCompletoServer = Articulos.Find<Articulo>(d => d.GrupoComponente._id == grupo._id).Project<Articulo>(Builders<Articulo>.Projection.Include(p => p._id).Include(o => o.Nombre).Include(i => i.SubGrupoComponente).Include(l => l.UnidadInventario)).ToList();
-                if (articulo._id != null && articulo._id != "")
+                //Selecciono el filtro articulo
+                else if (articulo._id != null && articulo._id != "")
                     ArticulosCompletoServer = Articulos.Find<Articulo>(d => d._id == articulo._id).Project<Articulo>(Builders<Articulo>.Projection.Include(p => p._id).Include(o => o.Nombre).Include(i => i.SubGrupoComponente).Include(l => l.UnidadInventario)).ToList();
 
                 var Ids = (from an in ArticulosCompletoServer select an._id).ToList(); //recolectamos en una lista los ids que nos manda el cliente
@@ -143,6 +146,7 @@ namespace WcfErp.Servicios.Reportes.Inventarios
 
                         var me = MovimientosEsCompletoServer.Where(i => i.Concepto.Naturaleza == "ENTRADA").SelectMany(l => l.Detalles_ES).Where(p => p.Articulo._id == Art._id);
                         var ms = MovimientosEsCompletoServer.Where(i => i.Concepto.Naturaleza == "SALIDA").SelectMany(l => l.Detalles_ES).Where(p => p.Articulo._id == Art._id);
+
                         Entradas = me.Sum(o => o.Cantidad);
                         EntradasCostos = me.Sum(o => o.CostoTotal);
                         Salidas = ms.Sum(o => o.Cantidad);

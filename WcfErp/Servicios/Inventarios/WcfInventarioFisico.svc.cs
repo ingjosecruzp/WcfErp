@@ -80,6 +80,7 @@ namespace WcfErp.Servicios.Inventarios
                     if (DocumentoInventario.Estado == "APLICADO")
                         throw new Exception("Esta toma de inventario ya se encuentra aplicada,no es posible continuar");
 
+
                     MovimientosES documentoentrada = new MovimientosES();
                     documentoentrada.Concepto = db.Concepto.get("5d19676ba9c67230a05ebe7b", db); ////Concepto de entrada por toma de inventatario fisico
                     documentoentrada.Almacen  = DocumentoInventario.Almacen;
@@ -92,7 +93,7 @@ namespace WcfErp.Servicios.Inventarios
                     documentosalida.Concepto = db.Concepto.get("5d196788a9c67230a05ebe7c", db); ////Concepto de entrada por toma de inventatario fisico
                     documentosalida.Almacen = DocumentoInventario.Almacen;
                     documentosalida.Fecha = DocumentoInventario.Fecha;
-                    documentosalida.Descripcion = "Toma de inventario con el Folio" + DocumentoInventario.Folio;
+                    documentosalida.Descripcion = "Toma de inventario con el Folio " + DocumentoInventario.Folio;
                     documentosalida.Sistema_Origen = "IF";
                     documentosalida.Cancelado = "NO";
 
@@ -124,9 +125,9 @@ namespace WcfErp.Servicios.Inventarios
                     var builderSaldos = Builders<InventariosSaldos>.Filter.Eq("AlmacenId", DocumentoInventario.Almacen._id);
                     List<InventariosSaldos> InventariosSaldosCompletoServer = db.InventariosSaldos.find(builderSaldos, db);
 
+                    //var List = InventariosSaldosCompletoServer.GroupBy(a => a.ArticuloId).Select(a => a.ToList().First()).ToList();
 
-
-                    foreach(InventariosSaldos saldo in InventariosSaldosCompletoServer)
+                    foreach (InventariosSaldos saldo in InventariosSaldosCompletoServer.GroupBy(a => a.ArticuloId).Select(a => a.ToList().First()).ToList())
                     {
                         bool ArticuloIncluido = true; //Controla si articulo venia capturado por el usuario
                         InventarioFisicoDetalle detalle = DocumentoInventario.InventarioFisicoDetalle.Where(a => a.Articulo._id == saldo.ArticuloId).SingleOrDefault();
@@ -142,7 +143,7 @@ namespace WcfErp.Servicios.Inventarios
                         ExistenciaValorInventario exitencia = inv.ExistenciaArticulo(detalle.Articulo._id, DocumentoInventario.Almacen.id, DocumentoInventario.Fecha, InventariosSaldosCompletoServer, detalle.Articulo, dia, mes, ano, db);
                         detalle.ExistenciaTeorica = exitencia.Existencia;
 
-                        if (detalle.ExistenciaTeorica != 0.0)
+                        if (detalle.ExistenciaTeorica != 0.0 && detalle.ExistenciaFisica != 0)
                         {
                             if (ArticuloIncluido == false)
                             {

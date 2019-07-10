@@ -160,6 +160,7 @@ namespace WcfErp.Servicios
             {
                 TContext db = new TContext();
 
+                item.validateModel(item, db);
                 db.Set<Modelo, TContext>().update(item,id,db);
 
                 return item;
