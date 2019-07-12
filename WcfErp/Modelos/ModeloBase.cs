@@ -68,8 +68,8 @@ namespace WcfErp.Modelos
         {
             try
             {
-                addValues(item, db);
                 validateModel(item, db);
+                addValues(item, db);                
 
                 IMongoCollection<Modelo> Collection = dbMongo.GetCollection<Modelo>(typeof(Modelo).Name);
 
