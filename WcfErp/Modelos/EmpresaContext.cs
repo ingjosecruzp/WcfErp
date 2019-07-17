@@ -94,6 +94,7 @@ namespace WcfErp.Modelos
         public virtual Cajas Cajas { get; set; }
         public virtual TipoImpuesto TipoImpuesto { get; set; }
         public virtual Impuestos Impuestos { get; set; }
+        public virtual Cajeros Cajeros { get; set; }
         //Fin Punto de Venta
 
 

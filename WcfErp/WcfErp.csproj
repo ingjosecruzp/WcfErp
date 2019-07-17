@@ -123,6 +123,7 @@
     <Content Include="Servicios\Inventarios\WcfTipoConceptos.svc" />
     <Content Include="Servicios\Inventarios\WcfUnidades.svc" />
     <Content Include="Servicios\PVenta\WcfCajas.svc" />
+    <Content Include="Servicios\PVenta\WcfCajeros.svc" />
     <Content Include="Servicios\PVenta\WcfFormadeCobro.svc" />
     <Content Include="Servicios\PVenta\WcfImpuestos.svc" />
     <Content Include="Servicios\PVenta\WcfPoliticadeComisiones.svc" />
@@ -194,6 +195,8 @@
     <Compile Include="Modelos\ModeloBase.cs" />
     <Compile Include="Modelos\PuntoVenta\Cajas.cs" />
     <Compile Include="Modelos\PuntoVenta\Cajeros.cs" />
+    <Compile Include="Modelos\PuntoVenta\CajerosCajas.cs" />
+    <Compile Include="Modelos\PuntoVenta\CajerosCajasAbrir.cs" />
     <Compile Include="Modelos\PuntoVenta\Impuestos.cs" />
     <Compile Include="Modelos\PuntoVenta\PuntoVenta_Documento.cs" />
     <Compile Include="Modelos\PuntoVenta\TipoImpuesto.cs" />
@@ -346,6 +349,7 @@
     </Compile>
     <Compile Include="Servicios\IWSLogin.cs" />
     <Compile Include="Servicios\PVenta\IWcfCajas.cs" />
+    <Compile Include="Servicios\PVenta\IWcfCajeros.cs" />
     <Compile Include="Servicios\PVenta\IWcfFormadeCobro.cs" />
     <Compile Include="Servicios\PVenta\IWcfImpuestos.cs" />
     <Compile Include="Servicios\PVenta\IWcfPoliticadeComisiones.cs" />
@@ -354,6 +358,9 @@
     <Compile Include="Servicios\PVenta\IWcfVendedor.cs" />
     <Compile Include="Servicios\PVenta\WcfCajas.svc.cs">
       <DependentUpon>WcfCajas.svc</DependentUpon>
+    </Compile>
+    <Compile Include="Servicios\PVenta\WcfCajeros.svc.cs">
+      <DependentUpon>WcfCajeros.svc</DependentUpon>
     </Compile>
     <Compile Include="Servicios\PVenta\WcfFormadeCobro.svc.cs">
       <DependentUpon>WcfFormadeCobro.svc</DependentUpon>
