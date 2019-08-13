@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using WcfErp.Modelos.Compras;
 using WcfErp.Modelos.Generales;
+using WcfErp.Modelos.PuntoVenta;
 
 namespace WcfErp.Modelos.Inventarios
 {
@@ -31,6 +32,9 @@ namespace WcfErp.Modelos.Inventarios
         public Nullable<double> Peso { get; set; }
         public Paises Paises { get; set; }
         public List<Imagen> Imagen { get; set; }
+        public Nullable<double> PrecioLista { get; set; }
+        public Nullable<double> PrecioMinimo { get; set; }
+        public Impuestos Impuestos { get; set; }
 
         public Articulo()
         {
@@ -68,5 +72,6 @@ namespace WcfErp.Modelos.Inventarios
                 throw;
             }
         }
+
     }
 }

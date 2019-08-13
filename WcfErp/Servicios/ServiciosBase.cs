@@ -53,6 +53,14 @@ namespace WcfErp.Servicios
         List<Tipo> search(string busqueda);
 
         [OperationContract]
+        [WebInvoke(UriTemplate = "?searchBy=getXCampo&campo={campo}&busqueda={busqueda}",
+         BodyStyle = WebMessageBodyStyle.Bare,
+         ResponseFormat = WebMessageFormat.Json,
+         RequestFormat = WebMessageFormat.Json,
+         Method = "GET")]
+        List<Tipo> searchCampo(string campo,string busqueda);
+
+        [OperationContract]
         [WebInvoke(UriTemplate = "",
          BodyStyle = WebMessageBodyStyle.Bare,
          ResponseFormat = WebMessageFormat.Json,

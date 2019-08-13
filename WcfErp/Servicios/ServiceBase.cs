@@ -116,6 +116,22 @@ namespace WcfErp.Servicios
             }
         }
 
+        public virtual List<Modelo> searchCampo(string campo,string busqueda)
+        {
+            try
+            {
+                TContext db = new TContext();
+                List<Modelo> Documentos = db.Set<Modelo, TContext>().searchCampo(campo,busqueda, db);
+
+                return Documentos;
+            }
+            catch (Exception ex)
+            {
+                Error(ex, "");
+                return null;
+            }
+        }
+
         public virtual Modelo get(string id)
         {
             try
