@@ -95,6 +95,7 @@
     <Content Include="Servicios\Administracion\WcfUsuarios.svc" />
     <Content Include="Servicios\Administracion\WcfUsuariosRoles.svc" />
     <Content Include="Servicios\Especiales\WcfLogin.svc" />
+    <Content Include="Servicios\Generales\WcfClientes.svc" />
     <Content Include="Servicios\Generales\WcfCobrador.svc" />
     <Content Include="Servicios\Generales\WcfCondicionesDePago.svc" />
     <Content Include="Servicios\Generales\WcfDepartamentos.svc" />
@@ -156,6 +157,7 @@
     <Compile Include="Modelos\EmpresaContext.cs" />
     <Compile Include="Modelos\Generales\Almacen.cs" />
     <Compile Include="Modelos\Generales\BDEmpresas.cs" />
+    <Compile Include="Modelos\Generales\Clientes.cs" />
     <Compile Include="Modelos\Generales\Departamento.cs" />
     <Compile Include="Modelos\Generales\Estado.cs" />
     <Compile Include="Modelos\Generales\GrupoUnidad.cs" />
@@ -238,6 +240,7 @@
     <Compile Include="Servicios\Especiales\WcfLogin.svc.cs">
       <DependentUpon>WcfLogin.svc</DependentUpon>
     </Compile>
+    <Compile Include="Servicios\Generales\IWcfClientes.cs" />
     <Compile Include="Servicios\Generales\IWcfCobrador.cs" />
     <Compile Include="Servicios\Generales\IWcfCondicionesDePago.cs" />
     <Compile Include="Servicios\Generales\IWcfDepartamentos.cs" />
@@ -252,6 +255,9 @@
     <Compile Include="Servicios\Generales\IWcfTipoCliente.cs" />
     <Compile Include="Servicios\Generales\IWcfVendedor.cs" />
     <Compile Include="Servicios\Generales\IWcfZonaCliente.cs" />
+    <Compile Include="Servicios\Generales\WcfClientes.svc.cs">
+      <DependentUpon>WcfClientes.svc</DependentUpon>
+    </Compile>
     <Compile Include="Servicios\Generales\WcfCobrador.svc.cs">
       <DependentUpon>WcfCobrador.svc</DependentUpon>
     </Compile>
