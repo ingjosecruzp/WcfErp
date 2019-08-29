@@ -15,6 +15,7 @@ namespace WcfErp.Servicios.Generales
     {
         public Cobrador add(Cobrador item)
         {
+            string user =getKeyToken("user", "token");
             throw new NotImplementedException();
         }
 
