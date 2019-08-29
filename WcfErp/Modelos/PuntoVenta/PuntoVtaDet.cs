@@ -6,7 +6,7 @@ using WcfErp.Modelos.Inventarios;
 
 namespace WcfErp.Modelos.PuntoVenta
 {
-    public class PuntoVtaDet
+    public class PuntoVtaDet : ModeloBase<PuntoVtaDet, EmpresaContext>
     {
         public Articulo Articulo { get; set; }
         public decimal Cantidad { get; set; }
@@ -15,9 +15,9 @@ namespace WcfErp.Modelos.PuntoVenta
         public decimal ImpuestoPorUnidad { get; set; }
         public decimal PorcentajeDescto { get; set; }
         public decimal PrecioTotalNeto { get; set; }
-        public char PrecioModificado { get; set; }
+        public string PrecioModificado { get; set; }
         public decimal PorcentajeComision { get; set; }
-        public char Rol { get; set; }
+        public string Rol { get; set; }
         //public string Notas { get; set; }
         //public char EsTranElect { get; set; }
         //public int EstatusTranElect { get; set; }

@@ -19,7 +19,7 @@ namespace WcfErp.Modelos.PuntoVenta
         //public int Mes { get; set; }
         //public int Dia { get; set; }
         //public DateTime Hora { get; set; }
-        //public Cajeros Cajero { get; set; }
+        public Cajeros Cajero { get; set; }
         public Clientes Cliente { get; set; }
         public Almacen Almacen { get; set; }
         //public int LugarExpedicion { get; set; } //esta nulo
@@ -66,9 +66,9 @@ namespace WcfErp.Modelos.PuntoVenta
         public int PartidaAjusteId { get; set; }
         public decimal PrecioOrigPartidaAjuste { get; set; }*/
 
-        /*public PuntoVtaDet PuntoVtaDet { get; set; }
-         public PuntoVtaCobros PuntoVtaCobros { get; set; }
-         public PuntoVtaImpuestos PuntoVtaImpuestos { get; set; }*/
+        public List<PuntoVtaDet> PuntoVtaDet { get; set; }
+        public List<PuntoVtaCobros> PuntoVtaCobros { get; set; }
+        public List<PuntoVtaImpuestos> PuntoVtaImpuestos { get; set; }        
 
         protected override PuntoVenta_Documento addValues(PuntoVenta_Documento item, EmpresaContext db)
         {
@@ -76,7 +76,12 @@ namespace WcfErp.Modelos.PuntoVenta
             {
                 item.Almacen = db.Almacen.get(item.Almacen._id, "_id,Nombre", db);
                 item.Caja = db.Cajas.get(item.Caja._id, "_id,Nombre", db);
+                item.Cajero = db.Cajeros.get(item.Cajero._id, "_id,Nombre", db);
                 //item.Cliente = db.Clientes.get(item.Cliente._id,db); //db.Clientes.get(item.Cliente._id, "_id,Nombre", db);
+                foreach (PuntoVtaDet det in item.PuntoVtaDet)
+                {
+                    det.Articulo = db.Articulo.get(det.Articulo._id, "_id,Clave,Nombre", db);
+                }
 
                 return item;
             }

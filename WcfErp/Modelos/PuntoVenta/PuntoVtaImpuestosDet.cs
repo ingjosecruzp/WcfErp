@@ -9,8 +9,8 @@ namespace WcfErp.Modelos.PuntoVenta
     public class PuntoVtaImpuestosDet
     {
         //public Impuestos Impuesto { get; set; }
-        public char IdInternoTipoImpuesto { get; set; }
-        public char TipoCalc { get; set; }
+        public string IdInternoTipoImpuesto { get; set; }
+        public string TipoCalc { get; set; }
         public decimal ImporteImpuestoBruto { get; set; }
         public decimal VentaNeta { get; set; }
         public decimal VentaBruta { get; set; }
