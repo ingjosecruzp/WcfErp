@@ -36,7 +36,7 @@ namespace WcfErp.Modelos.PuntoVenta
         public decimal TotalVenta { get; set; }
         public decimal ImporteDonativo { get; set; }
         //public decimal TotalFPGC { get; set; }
-        //public char TicketEmitido { get; set; }  //default N
+        public string TicketEmitido { get; set; }  //default N
         //public char FormaGlobalEmitida { get; set; }
         //public char FormaEmitida { get; set; }
         //public char Contabilizado { get; set; }
