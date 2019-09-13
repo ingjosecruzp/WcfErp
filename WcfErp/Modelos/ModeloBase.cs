@@ -220,6 +220,26 @@ namespace WcfErp.Modelos
             }
         }
 
+        public virtual List<Modelo> searchCampoCodigo(string campo, string busqueda, TContext db)
+        {
+            try
+            {
+
+                IMongoCollection<Modelo> Collection = dbMongo.GetCollection<Modelo>(typeof(Modelo).Name);
+
+                //var filter = Builders<Modelo>.Filter.Regex(campo, new BsonRegularExpression(busqueda, "i"));
+                var filter = Builders<Modelo>.Filter.Eq(campo, busqueda);
+
+                List<Modelo> Documentos = Collection.Find<Modelo>(filter).ToList();
+
+                return Documentos;
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+        }
+
         public virtual List<Modelo> searchLimitIds(string busqueda,string ids,string fieldExclude , TContext db)
         {
             try

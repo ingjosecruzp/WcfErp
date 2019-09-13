@@ -52,12 +52,15 @@ namespace WcfErp.Servicios.Inventarios
             try
             {
                 EmpresaContext db = new EmpresaContext();
+                    
 
-                List<Articulo> LstArticulos = db.Articulo.searchCampo("Clave", busqueda, db);
+                List<Articulo> LstArticulos = db.Articulo.searchCampoCodigo("Clave", busqueda, db);
 
                 Articulo articulo = null;
                 if (LstArticulos.Count > 0)
                     articulo = LstArticulos[0];
+                else
+                    throw new Exception("Artículo no encontrado");
 
 
                 return articulo;
