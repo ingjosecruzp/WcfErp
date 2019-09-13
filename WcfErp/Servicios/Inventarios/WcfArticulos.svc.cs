@@ -47,6 +47,28 @@ namespace WcfErp.Servicios.Inventarios
                 return null;
             } 
         }
+        public Articulo searchArticulo(string busqueda)
+        {
+            try
+            {
+                EmpresaContext db = new EmpresaContext();
+
+                List<Articulo> LstArticulos = db.Articulo.searchCampo("Clave", busqueda, db);
+
+                Articulo articulo = null;
+                if (LstArticulos.Count > 0)
+                    articulo = LstArticulos[0];
+
+
+                return articulo;
+            }
+            catch (Exception ex)
+            {
+
+                Error(ex, "");
+                return null;
+            }
+        }
         public List<Articulo> searchLimitIds(string busqueda, string ids)
         {
             try
@@ -173,5 +195,7 @@ namespace WcfErp.Servicios.Inventarios
                 return null;
             }
         }
+
+
     }
 }

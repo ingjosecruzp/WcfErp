@@ -28,5 +28,13 @@ namespace WcfErp.Servicios.Inventarios
           RequestFormat = WebMessageFormat.Json,
           Method = "GET")]
         List<Articulo> searchLimitIds(string busqueda,string ids);
+
+        [OperationContract]
+        [WebInvoke(UriTemplate = "?searchBy=getXCodigo&busqueda={busqueda}",
+          BodyStyle = WebMessageBodyStyle.Bare,
+          ResponseFormat = WebMessageFormat.Json,
+          RequestFormat = WebMessageFormat.Json,
+          Method = "GET")]
+        Articulo searchArticulo(string busqueda);
     }
 }
