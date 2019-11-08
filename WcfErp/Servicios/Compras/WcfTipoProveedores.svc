@@ -1,1 +1,1 @@
-﻿<%@ ServiceHost Language="C#" Debug="true" Service="WcfErp.Servicios.Compras.WcfTipoPoveedores" CodeBehind="WcfTipoProveedores.svc.cs" %>
+﻿<%@ ServiceHost Language="C#" Debug="true" Service="WcfErp.Servicios.Compras.WcfTipoProveedores" CodeBehind="WcfTipoProveedores.svc.cs" %>
