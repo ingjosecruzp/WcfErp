@@ -94,6 +94,7 @@
     <Content Include="Servicios\Administracion\WcfRoles.svc" />
     <Content Include="Servicios\Administracion\WcfUsuarios.svc" />
     <Content Include="Servicios\Administracion\WcfUsuariosRoles.svc" />
+    <Content Include="Servicios\Compras\WcfTipoProveedor.svc" />
     <Content Include="Servicios\Compras\WcfTipoProveedores.svc" />
     <Content Include="Servicios\Especiales\WcfLogin.svc" />
     <Content Include="Servicios\Generales\WcfCobrador.svc" />
@@ -243,7 +244,11 @@
     <Compile Include="Servicios\Administracion\WcfUsuariosRoles.svc.cs">
       <DependentUpon>WcfUsuariosRoles.svc</DependentUpon>
     </Compile>
+    <Compile Include="Servicios\Compras\IWcfTipoProveedor.cs" />
     <Compile Include="Servicios\Compras\IWcfTipoProveedores.cs" />
+    <Compile Include="Servicios\Compras\WcfTipoProveedor.svc.cs">
+      <DependentUpon>WcfTipoProveedor.svc</DependentUpon>
+    </Compile>
     <Compile Include="Servicios\Compras\WcfTipoProveedores.svc.cs">
       <DependentUpon>WcfTipoProveedores.svc</DependentUpon>
     </Compile>
