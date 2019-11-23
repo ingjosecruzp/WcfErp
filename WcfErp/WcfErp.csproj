@@ -125,8 +125,10 @@
     <Content Include="Servicios\Inventarios\WcfTipoComponente.svc" />
     <Content Include="Servicios\Inventarios\WcfTipoConceptos.svc" />
     <Content Include="Servicios\Inventarios\WcfUnidades.svc" />
+    <Content Include="Servicios\PVenta\WcfAperturaCajas.svc" />
     <Content Include="Servicios\PVenta\WcfCajas.svc" />
     <Content Include="Servicios\PVenta\WcfCajeros.svc" />
+    <Content Include="Servicios\PVenta\WcfCierreCaja.svc" />
     <Content Include="Servicios\PVenta\WcfFormadeCobro.svc" />
     <Content Include="Servicios\PVenta\WcfImpuestos.svc" />
     <Content Include="Servicios\PVenta\WcfPoliticadeComisiones.svc" />
@@ -212,6 +214,7 @@
     <Compile Include="Modelos\PuntoVenta\TipoImpuesto.cs" />
     <Compile Include="Modelos\PuntoVenta\TiposGravan.cs" />
     <Compile Include="Modelos\PVenta\FormadeCobro.cs" />
+    <Compile Include="Modelos\PVenta\Movtos_Cajas.cs" />
     <Compile Include="Modelos\PVenta\PoliticadeComisiones.cs" />
     <Compile Include="Modelos\PVenta\TipodeCambio.cs" />
     <Compile Include="Modelos\Reportes\Inventarios\DetallesKardexArticulos.cs" />
@@ -371,8 +374,10 @@
       <DependentUpon>WcfUnidades.svc</DependentUpon>
     </Compile>
     <Compile Include="Servicios\IWSLogin.cs" />
+    <Compile Include="Servicios\PVenta\IWcfAperturaCajas.cs" />
     <Compile Include="Servicios\PVenta\IWcfCajas.cs" />
     <Compile Include="Servicios\PVenta\IWcfCajeros.cs" />
+    <Compile Include="Servicios\PVenta\IWcfCierreCaja.cs" />
     <Compile Include="Servicios\PVenta\IWcfFormadeCobro.cs" />
     <Compile Include="Servicios\PVenta\IWcfImpuestos.cs" />
     <Compile Include="Servicios\PVenta\IWcfPoliticadeComisiones.cs" />
@@ -380,11 +385,17 @@
     <Compile Include="Servicios\PVenta\IWcfTipodeCambio.cs" />
     <Compile Include="Servicios\PVenta\IWcfTipoImpuesto.cs" />
     <Compile Include="Servicios\PVenta\IWcfVendedor.cs" />
+    <Compile Include="Servicios\PVenta\WcfAperturaCajas.svc.cs">
+      <DependentUpon>WcfAperturaCajas.svc</DependentUpon>
+    </Compile>
     <Compile Include="Servicios\PVenta\WcfCajas.svc.cs">
       <DependentUpon>WcfCajas.svc</DependentUpon>
     </Compile>
     <Compile Include="Servicios\PVenta\WcfCajeros.svc.cs">
       <DependentUpon>WcfCajeros.svc</DependentUpon>
+    </Compile>
+    <Compile Include="Servicios\PVenta\WcfCierreCaja.svc.cs">
+      <DependentUpon>WcfCierreCaja.svc</DependentUpon>
     </Compile>
     <Compile Include="Servicios\PVenta\WcfFormadeCobro.svc.cs">
       <DependentUpon>WcfFormadeCobro.svc</DependentUpon>
