@@ -12,6 +12,7 @@ using WcfErp.Modelos.Generales;
 using WcfErp.Modelos.Inventarios;
 using WcfErp.Modelos.PVenta;
 using WcfErp.Modelos.PuntoVenta;
+using WcfErp.Modelos.Compras;
 
 namespace WcfErp.Modelos
 {
@@ -99,7 +100,11 @@ namespace WcfErp.Modelos
         public virtual PuntoVenta_Documento PuntoVenta_Documento { get; set; }
         //Fin Punto de Venta
 
-
+        //Punto de Compras
+        public virtual TipoProveedor TipoProveedor { get; set; }
+        public virtual Proveedor Proveedor { get; set; }
+        //Fin Punto de Compras
 
     }
 }
+        
