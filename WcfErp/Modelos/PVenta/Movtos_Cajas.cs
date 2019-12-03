@@ -16,5 +16,21 @@ namespace WcfErp.Modelos.PVenta
         public FormadeCobro FormaCobro { get; set; }
         public float Importe { get; set; }
 
+        protected override Movtos_Cajas addValues(Movtos_Cajas item, EmpresaContext db)
+        {
+            try
+            {
+                item.Cajas = db.Cajas.get(item.Cajas._id, db);
+                item.Cajeros = db.Cajeros.get(item.Cajeros._id, db);
+                item.FormaCobro = db.FormadeCobro.get(item.FormaCobro._id, db);
+                return item;
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+
+        }
     }
 }
