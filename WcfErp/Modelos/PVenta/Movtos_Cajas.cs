@@ -23,7 +23,6 @@ namespace WcfErp.Modelos.PVenta
                 item.Cajas = db.Cajas.get(item.Cajas._id, db);
                 item.Cajeros = db.Cajeros.get(item.Cajeros._id, db);
                 item.FormaCobro = db.FormadeCobro.get(item.FormaCobro._id, db);
-                item.Fecha = DateTime.Now;
                 return item;
             }
             catch (Exception)
