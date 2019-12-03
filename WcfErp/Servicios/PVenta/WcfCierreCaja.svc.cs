@@ -13,6 +13,18 @@ namespace WcfErp.Servicios.PVenta
     // NOTA: para iniciar el Cliente de prueba WCF para probar este servicio, seleccione WcfCierreCaja.svc o WcfCierreCaja.svc.cs en el Explorador de soluciones e inicie la depuración.
     public class WcfCierreCaja : ServiceBase<Movtos_Cajas, EmpresaContext>, IWcfCierreCaja
     {
-      
+        public override Movtos_Cajas add(Movtos_Cajas item)
+        {
+            try
+            {
+                item.TipoMovto = "Cierre";
+                return base.add(item);
+            }
+            catch (Exception ex)
+            {
+                Error(ex, "");
+                return null;
+            }
+        }
     }
 }
