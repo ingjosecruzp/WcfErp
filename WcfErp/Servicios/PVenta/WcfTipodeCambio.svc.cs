@@ -15,10 +15,7 @@ namespace WcfErp.Servicios.PVenta
     // NOTA: para iniciar el Cliente de prueba WCF para probar este servicio, seleccione WcfTipodeCambio.svc o WcfTipodeCambio.svc.cs en el Explorador de soluciones e inicie la depuración.
     public class WcfTipodeCambio : ServiceBase<TipodeCambio, EmpresaContext>, IWcfTipodeCambio
     {
-        public TipodeCambio delete(string id)
-        {
-            throw new NotImplementedException();
-        }
+       
 
         public List<TipodeCambio> searchXGrupo(string busqueda, string _id)
         {
