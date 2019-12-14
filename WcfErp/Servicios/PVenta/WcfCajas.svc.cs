@@ -33,19 +33,7 @@ namespace WcfErp.Servicios.PVenta
         public void CambiarEstadoCaja(String item, string estado, IClientSessionHandle session = null)
         {
             EmpresaContext db = new EmpresaContext();
-            //conexion
-            /*MongoClient client = new MongoClient(getConnection());
-            IMongoDatabase db = client.GetDatabase(getKeyToken("empresa", "token"));
-            IMongoCollection<Cajas> Collection = db.GetCollection<Cajas>(typeof(Cajas).Name);*/
-
-            //filtros
-            /*var builder = Builders<Cajas>.Filter;
-            var filter = builder.Eq("_id", item._id);*/
-            //select * from cajas where id
-
             Cajas caja = db.Cajas.get(item, db);
-
-            //Cajas caja = Collection.Find(filter).FirstOrDefault();
 
             caja.Estado = estado;
             db.Cajas.update(caja,item, db, session);
@@ -56,15 +44,6 @@ namespace WcfErp.Servicios.PVenta
 
             try
             {
-
-
-                //  EmpresaContext db = new EmpresaContext();
-                /*   EmpresaContext db = new EmpresaContext();
-                  Cajas caja = new Cajas();
-                     caja._id = item.Cajas._id;
-                     caja.Estado = "ABIERTA";
-                     db.Cajas.update(caja, item.Cajas._id, db);*/
-
 
 
                 MongoClient client = new MongoClient(getConnection());

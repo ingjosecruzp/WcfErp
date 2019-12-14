@@ -14,12 +14,6 @@ namespace WcfErp.Servicios.PVenta
     [ServiceContract]
     public interface IWcfAperturaCajas : ServiciosBase<Movtos_Cajas>
     {
-        [OperationContract]
-        [WebInvoke(UriTemplate = "?searchBy=getXCajasAbiertas&Nombrebusqueda={busqueda}&tipoMovimiento={tipoMovimiento}",
-         BodyStyle = WebMessageBodyStyle.Bare,
-         ResponseFormat = WebMessageFormat.Json,
-         RequestFormat = WebMessageFormat.Json,
-         Method = "GET")]
-        List<Cajas> searchXCajasAbiertas(string busqueda, string tipoMovimiento);
+       
     }
 }

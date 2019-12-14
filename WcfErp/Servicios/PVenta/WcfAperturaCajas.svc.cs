@@ -21,20 +21,7 @@ namespace WcfErp.Servicios.PVenta
         {
             try
             {
-                /*  EmpresaContext dbempresa = new EmpresaContext();
-                  //conexion
-                  MongoClient client = new MongoClient(getConnection());
-                  IMongoDatabase db = client.GetDatabase(getKeyToken("empresa", "token"));
-                  IMongoCollection<Cajas> Collection = db.GetCollection<Cajas>(typeof(Cajas).Name);
 
-                  //filtros
-                  var builder = Builders<Cajas>.Filter;
-                  var filter = builder.Eq("_id", item.Cajas._id);
-                  //select * from cajas where id
-                  Cajas caja = Collection.Find(filter).FirstOrDefault();
-
-                  caja.Estado = "ABIERTA";
-                  dbempresa.Cajas.update(caja, item.Cajas._id, dbempresa);*/
                 EmpresaContext db = new EmpresaContext();
 
                 using (var session = db.client.StartSession())
@@ -45,42 +32,6 @@ namespace WcfErp.Servicios.PVenta
                     item.TipoMovto = "Apertura";
                     return base.add(item);
                 }
-            }
-            catch (Exception ex)
-            {
-                Error(ex, "");
-                return null;
-            }
-        }
-
-        public List<Cajas> searchXCajasAbiertas(string busqueda, string tipoMovimiento)
-        {
-
-            try
-            {
-
-
-                //  EmpresaContext db = new EmpresaContext();
-                /*   EmpresaContext db = new EmpresaContext();
-                  Cajas caja = new Cajas();
-                     caja._id = item.Cajas._id;
-                     caja.Estado = "ABIERTA";
-                     db.Cajas.update(caja, item.Cajas._id, db);*/
-
-
-
-                MongoClient client = new MongoClient(getConnection());
-
-                IMongoDatabase db = client.GetDatabase(getKeyToken("empresa", "token"));
-
-                IMongoCollection<Cajas> Collection = db.GetCollection<Cajas>(typeof(Cajas).Name);
-
-                var builder = Builders<Cajas>.Filter;
-                var filter =  builder.Eq("Estado", "CERRADA");
-
-                List<Cajas> Documentos = Collection.Find<Cajas>(filter).ToList();
-
-                return Documentos;
             }
             catch (Exception ex)
             {
