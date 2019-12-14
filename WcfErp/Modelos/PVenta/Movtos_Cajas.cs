@@ -39,8 +39,6 @@ namespace WcfErp.Modelos.PVenta
             try
             {
 
-                if (item.Detalles_ES.Count == 0)//sin detalles
-                    throw new Exception("No ha realizado ningun movimiento, no es posible guardar");
             }
             catch (Exception)
             {
