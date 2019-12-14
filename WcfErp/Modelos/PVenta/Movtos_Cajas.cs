@@ -33,5 +33,23 @@ namespace WcfErp.Modelos.PVenta
             }
 
         }
+
+        public void ValidarModel(Movtos_Cajas item, string Movimiento)
+        {
+            try
+            {
+
+                if (item.Detalles_ES.Count == 0)//sin detalles
+                    throw new Exception("No ha realizado ningun movimiento, no es posible guardar");
+            }
+            catch (Exception)
+            {
+                throw;
+
+            }
+        }
+
+
     }
+
 }
