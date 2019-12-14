@@ -51,5 +51,42 @@ namespace WcfErp.Servicios.PVenta
             db.Cajas.update(caja,item, db, session);
         }
 
+        public List<Cajas> searchXCajasAbiertas(string busqueda, string tipoMovimiento)
+        {
+
+            try
+            {
+
+
+                //  EmpresaContext db = new EmpresaContext();
+                /*   EmpresaContext db = new EmpresaContext();
+                  Cajas caja = new Cajas();
+                     caja._id = item.Cajas._id;
+                     caja.Estado = "ABIERTA";
+                     db.Cajas.update(caja, item.Cajas._id, db);*/
+
+
+
+                MongoClient client = new MongoClient(getConnection());
+
+                IMongoDatabase db = client.GetDatabase(getKeyToken("empresa", "token"));
+
+                IMongoCollection<Cajas> Collection = db.GetCollection<Cajas>(typeof(Cajas).Name);
+
+                var builder = Builders<Cajas>.Filter;
+                var filter = builder.Eq("Estado", "CERRADA");
+
+                List<Cajas> Documentos = Collection.Find<Cajas>(filter).ToList();
+
+                return Documentos;
+            }
+            catch (Exception ex)
+            {
+                Error(ex, "");
+                return null;
+            }
+        }
+
+
     }
 }
