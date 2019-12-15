@@ -44,8 +44,6 @@ namespace WcfErp.Servicios.PVenta
 
             try
             {
-
-
                 MongoClient client = new MongoClient(getConnection());
 
                 IMongoDatabase db = client.GetDatabase(getKeyToken("empresa", "token"));
@@ -54,6 +52,31 @@ namespace WcfErp.Servicios.PVenta
 
                 var builder = Builders<Cajas>.Filter;
                 var filter = builder.Eq("Estado", "CERRADA");
+
+                List<Cajas> Documentos = Collection.Find<Cajas>(filter).ToList();
+
+                return Documentos;
+            }
+            catch (Exception ex)
+            {
+                Error(ex, "");
+                return null;
+            }
+        }
+
+        public List<Cajas> searchXCajasCerradas(string busqueda, string tipoMovimiento)
+        {
+
+            try
+            {
+                MongoClient client = new MongoClient(getConnection());
+
+                IMongoDatabase db = client.GetDatabase(getKeyToken("empresa", "token"));
+
+                IMongoCollection<Cajas> Collection = db.GetCollection<Cajas>(typeof(Cajas).Name);
+
+                var builder = Builders<Cajas>.Filter;
+                var filter = builder.Eq("Estado", "ABIERTA");
 
                 List<Cajas> Documentos = Collection.Find<Cajas>(filter).ToList();
 

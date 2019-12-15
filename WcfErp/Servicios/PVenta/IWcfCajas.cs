@@ -22,5 +22,14 @@ namespace WcfErp.Servicios.PVenta
         Method = "GET")]
         List<Cajas> searchXCajasAbiertas(string busqueda, string tipoMovimiento);
 
+        [OperationContract]
+        [WebInvoke(UriTemplate = "?searchBy=getXCajasCerradas&Nombrebusqueda={busqueda}&tipoMovimiento={tipoMovimiento}",
+        BodyStyle = WebMessageBodyStyle.Bare,
+        ResponseFormat = WebMessageFormat.Json,
+        RequestFormat = WebMessageFormat.Json,
+        Method = "GET")]
+        List<Cajas> searchXCajasCerradas(string busqueda, string tipoMovimiento);
+
+
     }
 }
