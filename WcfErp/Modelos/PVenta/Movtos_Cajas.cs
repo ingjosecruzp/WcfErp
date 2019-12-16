@@ -33,5 +33,21 @@ namespace WcfErp.Modelos.PVenta
             }
 
         }
+
+        public void ValidarModel(Movtos_Cajas item, string Movimiento)
+        {
+            try
+            {
+
+            }
+            catch (Exception)
+            {
+                throw;
+
+            }
+        }
+
+
     }
+
 }

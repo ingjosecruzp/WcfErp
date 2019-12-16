@@ -18,8 +18,17 @@ namespace WcfErp.Servicios.PVenta
         {
             try
             {
-                item.TipoMovto = "Cierre";
-                return base.add(item);
+
+                EmpresaContext db = new EmpresaContext();
+
+                using (var session = db.client.StartSession())
+                {
+                    WcfCajas caja = new WcfCajas();
+                    caja.CambiarEstadoCaja(item.Cajas._id, "CERRADA", session);
+
+                    item.TipoMovto = "CIERRE";
+                    return base.add(item);
+                }
             }
             catch (Exception ex)
             {
