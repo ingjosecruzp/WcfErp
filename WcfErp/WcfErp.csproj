@@ -135,6 +135,7 @@
     <Content Include="Servicios\Reportes\Inventarios\WcfExistenciaValorInventario.svc" />
     <Content Include="Servicios\Reportes\Inventarios\WcfKardexArticulos.svc" />
     <Content Include="Servicios\Reportes\PuntoVenta\WcfCodigoBarras.svc" />
+    <Content Include="Servicios\Reportes\PuntoVenta\WcfCorteCaja.svc" />
     <Content Include="Servicios\Ventas\WcfClientes.svc" />
     <Content Include="Servicios\WSLogin.svc" />
     <Content Include="Web.config">
@@ -216,6 +217,8 @@
     <Compile Include="Modelos\Reportes\Inventarios\DetallesKardexArticulos.cs" />
     <Compile Include="Modelos\Reportes\Inventarios\ExistenciaValorInventario.cs" />
     <Compile Include="Modelos\Reportes\Inventarios\KardexArticulos.cs" />
+    <Compile Include="Modelos\Reportes\PuntoVenta\CorteCaja.cs" />
+    <Compile Include="Modelos\Reportes\PuntoVenta\PVentas.cs" />
     <Compile Include="Modelos\Reportes\PuntoVenta\CodigoBarra.cs" />
     <Compile Include="Modelos\tokens.cs" />
     <Compile Include="Modelos\UsuarioContext.cs" />
@@ -423,8 +426,12 @@
       <DependentUpon>WcfKardexArticulos.svc</DependentUpon>
     </Compile>
     <Compile Include="Servicios\Reportes\PuntoVenta\IWcfCodigoBarras.cs" />
+    <Compile Include="Servicios\Reportes\PuntoVenta\IWcfCorteCaja.cs" />
     <Compile Include="Servicios\Reportes\PuntoVenta\WcfCodigoBarras.svc.cs">
       <DependentUpon>WcfCodigoBarras.svc</DependentUpon>
+    </Compile>
+    <Compile Include="Servicios\Reportes\PuntoVenta\WcfCorteCaja.svc.cs">
+      <DependentUpon>WcfCorteCaja.svc</DependentUpon>
     </Compile>
     <Compile Include="Servicios\ServiceBase.cs" />
     <Compile Include="Servicios\ServiciosBase.cs" />
