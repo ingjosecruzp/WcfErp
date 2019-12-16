@@ -41,7 +41,7 @@ namespace WcfErp.Modelos.PuntoVenta
         //public char FormaEmitida { get; set; }
         //public char Contabilizado { get; set; }
         public string SistemaOrigen { get; set; }
-        //public Vendedor Vendedor { get; set; }
+        public Vendedor Vendedor { get; set; }
         /*public char CargarSun { get; set; }
         public string Persona { get; set; }
         public char TipoGenFac { get; set; }
@@ -77,6 +77,7 @@ namespace WcfErp.Modelos.PuntoVenta
                 item.Almacen = db.Almacen.get(item.Almacen._id, "_id,Nombre", db);
                 item.Caja = db.Cajas.get(item.Caja._id, "_id,Nombre", db);
                 item.Cajero = db.Cajeros.get(item.Cajero._id, "_id,Nombre", db);
+                item.Vendedor = db.Vendedor.get(item.Vendedor._id, "_id,Nombre", db);
                 //item.Cliente = db.Clientes.get(item.Cliente._id,db); //db.Clientes.get(item.Cliente._id, "_id,Nombre", db);
                 foreach (PuntoVtaDet det in item.PuntoVtaDet)
                 {

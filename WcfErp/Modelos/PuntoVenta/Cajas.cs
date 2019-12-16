@@ -15,6 +15,7 @@ namespace WcfErp.Modelos.PuntoVenta
         public Nullable<int> PausaCobro { get; set; }
         public string RegVtaApartir { get; set; }
         public string CobroPredet { get; set; }
+        public string Estado { get; set; }
 
         protected override Cajas addValues(Cajas item, EmpresaContext db)
         {

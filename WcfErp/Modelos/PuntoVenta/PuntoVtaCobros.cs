@@ -11,7 +11,7 @@ namespace WcfErp.Modelos.PuntoVenta
         public string Tipo { get; set; }
         //public FormadeCobro FormadeCobro { get; set; }
         public decimal Importe { get; set; }
-        //public TipodeCambio TipodeCambio { get; set; }
+        public TipodeCambio TipodeCambio { get; set; }
         public decimal ImporteMonedaDoc { get; set; }
     }
 }
