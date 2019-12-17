@@ -12,8 +12,12 @@ namespace WcfErp.Modelos.Reportes.PuntoVenta
         public DateTime Fecha { get; set; }
         public decimal TipoCambio { get; set; }
         public decimal Fondo { get; set; }
-        public decimal Efectivo { get; set; }
-        public decimal Tajetas { get; set; }
+        public decimal TajetasUSD { get; set; }
+        public decimal TajetasMXN { get; set; }
+        public decimal TotalMXN { get; set; }
+        public decimal TotalUSD { get; set; }
+        public decimal EfectivoMXN { get; set; }
+        public decimal EfectivoUSD { get; set; }
         public List<PuntoVtaDet> VtaDetalle { get; set; }
         public List<PuntoVtaCobros> VtaCobros { get; set; }
     }

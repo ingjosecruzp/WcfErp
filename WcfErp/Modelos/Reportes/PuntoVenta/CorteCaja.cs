@@ -8,11 +8,12 @@ namespace WcfErp.Modelos.Reportes.PuntoVenta
     public class CorteCaja
     {
         public decimal Fondo { get; set; }
-        public decimal Tajetas { get; set; }
-        public decimal TotalMXP { get; set; }
+        public decimal TajetasUSD { get; set; }
+        public decimal TajetasMXN { get; set; }
+        public decimal TotalMXN { get; set; }
         public decimal TotalUSD { get; set; }
-        public decimal TotalEfectivoMXP { get; set; }
-        public decimal TotalEfectivoUSD { get; set; }
+        public decimal EfectivoMXN { get; set; }
+        public decimal EfectivoUSD { get; set; }
         public List<PVentas> LstVentas { get; set; }
     }
 }

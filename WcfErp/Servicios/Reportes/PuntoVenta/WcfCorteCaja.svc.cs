@@ -2,8 +2,10 @@
 using System;
 using System.Collections.Generic;
 using WcfErp.Modelos;
+using WcfErp.Modelos.Generales;
 using WcfErp.Modelos.Inventarios;
 using WcfErp.Modelos.PuntoVenta;
+using WcfErp.Modelos.PVenta;
 using WcfErp.Modelos.Reportes.PuntoVenta;
 
 namespace WcfErp.Servicios.Reportes.PuntoVenta
@@ -26,10 +28,12 @@ namespace WcfErp.Servicios.Reportes.PuntoVenta
 
                 CorteCaja PvCorteCaja = new CorteCaja();
                 PvCorteCaja.LstVentas = new List<PVentas>();
-                decimal TotalMXP = 0;
+                decimal TotalMXN = 0;
                 decimal TotalUSD = 0;
-                decimal TotalEfectivoMXP = 0;
+                decimal TotalEfectivoMXN = 0;
                 decimal TotalEfectivoUSD = 0;
+                decimal TotalTarjetasMXN = 0;
+                decimal TotalTarjetasUSD = 0;
 
                 List<PVentas> LstPVentas = new List<PVentas>();
 
@@ -50,8 +54,6 @@ namespace WcfErp.Servicios.Reportes.PuntoVenta
                         PvArticulo.Nombre = VentaDet.Articulo.Nombre;
                         PvArticulo.Clave = VentaDet.Articulo.Clave;
                         PvDet.Articulo = PvArticulo;
-                       // PvDet.Articulo.Nombre = VentaDet.Articulo.Nombre;
-                        //PvDet.Articulo.Clave = VentaDet.Articulo.Clave;
                         PvDet.Cantidad = VentaDet.Cantidad;
                         PvDet.PrecioUnitario = VentaDet.PrecioUnitario;
                         PvDet.ImpuestoPorUnidad = VentaDet.ImpuestoPorUnidad;
@@ -63,31 +65,59 @@ namespace WcfErp.Servicios.Reportes.PuntoVenta
                         LVenta.VtaDetalle.Add(PvDet);
                     }
                     LVenta.VtaCobros = new List<PuntoVtaCobros>();
-                    decimal tarjetas = 0;
-                    decimal efectivo = 0;
+                    decimal tarjetasusd = 0;
+                    decimal tarjetasmxn = 0;
+                    decimal efectivousd = 0;
+                    decimal efectivomxn = 0;
                     foreach (PuntoVtaCobros VentaCobro in Venta.PuntoVtaCobros)
                     {
                         PuntoVtaCobros PvCobro = new PuntoVtaCobros();
-                        PvCobro.Tipo = VentaCobro.Tipo;
-                        if (VentaCobro.Tipo == "TARJETA") { tarjetas = tarjetas + VentaCobro.Importe; }
-                        if (VentaCobro.Tipo == "EFECTIVO") { efectivo = efectivo + VentaCobro.Importe; }
+                        if (VentaCobro.TipodeCambio.Moneda.Simbolo == "MXN")
+                        {
+                            if (VentaCobro.Tipo == "TARJETA") { tarjetasmxn = tarjetasmxn + VentaCobro.Importe; }
+                            if (VentaCobro.Tipo == "EFECTIVO") { efectivomxn = efectivomxn + VentaCobro.Importe; }
+                        }
+                        else
+                        {
+                            if (VentaCobro.Tipo == "TARJETA") { tarjetasusd = tarjetasusd + VentaCobro.Importe; }
+                            if (VentaCobro.Tipo == "EFECTIVO") { efectivousd = efectivousd + VentaCobro.Importe; }
+                        }
+                        PvCobro.TipodeCambio = new TipodeCambio();
+                        PvCobro.TipodeCambio.Moneda = new Moneda();
+                        PvCobro.TipodeCambio.Moneda.Simbolo = VentaCobro.TipodeCambio.Moneda.Simbolo;
+                        PvCobro.TipodeCambio.TipoCambio = VentaCobro.TipodeCambio.TipoCambio;
+                        
                         PvCobro.Importe = VentaCobro.Importe;
                         PvCobro.ImporteMonedaDoc = VentaCobro.ImporteMonedaDoc;
                         
                         LVenta.VtaCobros.Add(PvCobro);
                     }
-                    LVenta.Efectivo =efectivo;
-                    LVenta.Tajetas = tarjetas;
-                    
+
+                    LVenta.EfectivoMXN = efectivomxn;
+                    LVenta.TajetasMXN = tarjetasmxn;
+                    LVenta.EfectivoUSD = efectivousd;
+                    LVenta.TajetasUSD = tarjetasusd;
+                    LVenta.TotalMXN = efectivomxn + tarjetasmxn;
+                    LVenta.TotalUSD = efectivousd + tarjetasusd;
+                    TotalEfectivoMXN = TotalEfectivoMXN + efectivomxn;
+                    TotalEfectivoUSD = TotalEfectivoUSD + efectivousd;
+                    TotalTarjetasMXN = TotalTarjetasMXN + tarjetasmxn;
+                    TotalTarjetasUSD = TotalTarjetasUSD + tarjetasusd;
+                    TotalMXN = TotalMXN+LVenta.TotalMXN;
+                    TotalUSD = TotalUSD+LVenta.TotalUSD;
+
                     LstPVentas.Add(LVenta);
                     PvCorteCaja.LstVentas.Add(LVenta);
                 }
-                PvCorteCaja.TotalMXP = TotalMXP;
+
+                PvCorteCaja.TotalMXN = TotalMXN;
                 PvCorteCaja.TotalUSD = TotalUSD;
-                PvCorteCaja.TotalEfectivoMXP = 0;
-                PvCorteCaja.TotalEfectivoUSD = 0;
-                PvCorteCaja.Tajetas = 0;
+                PvCorteCaja.EfectivoMXN = TotalEfectivoMXN;
+                PvCorteCaja.EfectivoUSD = TotalEfectivoUSD;
+                PvCorteCaja.TajetasUSD = TotalTarjetasUSD;
+                PvCorteCaja.TajetasMXN = TotalTarjetasMXN;
                 PvCorteCaja.Fondo = 0;
+                
                 return PvCorteCaja;
             }
             catch (Exception)
