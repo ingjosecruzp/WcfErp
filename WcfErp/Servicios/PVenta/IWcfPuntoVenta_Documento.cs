@@ -6,6 +6,7 @@ using System.ServiceModel;
 using System.ServiceModel.Web;
 using System.Text;
 using WcfErp.Modelos.PuntoVenta;
+using WcfErp.Modelos.PVenta;
 
 namespace WcfErp.Servicios.PVenta
 {
@@ -13,6 +14,12 @@ namespace WcfErp.Servicios.PVenta
     [ServiceContract]
     public interface IWcfPuntoVenta_Documento : ServiciosBase<PuntoVenta_Documento>
     {
-
+        [OperationContract]
+        [WebInvoke(UriTemplate = "?searchBy=validarApertura",
+         BodyStyle = WebMessageBodyStyle.Bare,
+         ResponseFormat = WebMessageFormat.Json,
+         RequestFormat = WebMessageFormat.Json,
+         Method = "GET")]
+         Movtos_Cajas validarApertura();
     }
 }

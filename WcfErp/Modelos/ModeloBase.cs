@@ -140,6 +140,23 @@ namespace WcfErp.Modelos
                 throw;
             }
         }
+        public virtual List<Modelo> find(FilterDefinition<Modelo> filter, int limit, TContext db)
+        {
+            try
+            {
+
+                IMongoCollection<Modelo> Collection = dbMongo.GetCollection<Modelo>(typeof(Modelo).Name);
+
+                List<Modelo> item = Collection.Find<Modelo>(filter).Limit(limit).ToList();
+
+                return item;
+
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+        }
         public virtual Modelo get(string id,string campos, TContext db)
         {
             try
@@ -349,7 +366,7 @@ namespace WcfErp.Modelos
                 throw;
             }
         }
-        private JObject cadenaTojObject(string cadena)
+        public JObject cadenaTojObject(string cadena)
         {
             try
             {

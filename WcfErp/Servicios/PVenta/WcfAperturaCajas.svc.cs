@@ -40,6 +40,24 @@ namespace WcfErp.Servicios.PVenta
             }
         }
 
+        public override List<Movtos_Cajas> lazyloading(string cadena, string skip = null)
+        {
+            try
+            {
+                EmpresaContext db = new EmpresaContext();
 
+                var builder_Mtocajas = Builders<Movtos_Cajas>.Filter;
+                var filter_Mtocajas = builder_Mtocajas.Eq("TipoMovto", "Apertura");
+
+                List<Movtos_Cajas> Lista = db.Movtos_Cajas.Filters(filter_Mtocajas, cadena, skip);
+
+                return Lista;
+            }
+            catch (Exception ex)
+            {
+                Error(ex, "");
+                return null;
+            }
+        }
     }
 }
