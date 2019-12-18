@@ -10,7 +10,6 @@ namespace WcfErp.Modelos.Reportes.PuntoVenta
         public string Vendedor { get; set; }
         public decimal NumVentas { get; set; }
         public decimal NumPiezas { get; set; }
-        public decimal TotalMXP { get; set; }
-        public decimal TotalUSD { get; set; }
+        public decimal TotalVentas { get; set; }
     }
 }

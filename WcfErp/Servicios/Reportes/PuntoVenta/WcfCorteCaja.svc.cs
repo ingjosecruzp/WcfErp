@@ -116,32 +116,28 @@ namespace WcfErp.Servicios.Reportes.PuntoVenta
                 }
 
                 //VENTAS POR VENDEDOR
-                VtasVendedor PV_VtasVendedor = new VtasVendedor();
-
-                //var filter2 = Builders<PuntoVenta_Documento>.Filter.Eq("Vendedor.Nombre", "Gerardo Martinez");
-                //LstVentas = db.PuntoVenta_Documento.Filters(filter2, "");
-
-                //IMongoCollection<PuntoVenta_Documento> CollectionVenta = db.PuntoVenta_Documento.dbMongo.GetCollection<PuntoVenta_Documento>("PuntoVenta_Documento");
-
-                //var x =
-                //    CollectionVenta.Aggregate().Group(
-                //            doc => doc.,
-                //            group => new
-                //            {
-                //                clientId = group.Key,
-                //                Total = group.Sum(y => y.TotalVenta)
-                //            }
-                //    ).ToList().FirstOrDefault(c => c.clientId == 2).Total;
-                //var x = CollectionVenta.Aggregate().Group()
-
-
-                var summaryApproach1 = LstVentas.GroupBy(t => t.Vendedor._id)
-                           .Select(t => new
+                List<VtasVendedor> VentasPorVendedor = LstVentas.GroupBy(t => t.Vendedor._id)
+                           .Select(t => new VtasVendedor
                            {
-                               Id = t.Key,
-                               Total = t.Sum(ta => ta.TotalVenta),
+                               //Id = t.Key,0
+                               Vendedor = t.FirstOrDefault().Vendedor.Nombre,
+                               NumVentas = t.Count(),
+                               NumPiezas = t.Sum(ta => ta.PuntoVtaDet.ToList().Sum( a => a.Cantidad)),
+                               //TotalMXP = t.Sum(ta => ta.PuntoVtaCobros.ToList().Where(a => a.TipodeCambio.Moneda.Simbolo=="MXN").Sum(a => a.Importe)),
+                               //TotalUSD = t.Sum(ta => ta.PuntoVtaCobros.ToList().Where(a => a.TipodeCambio.Moneda.Simbolo == "USD").Sum(a => a.Importe)),
+                               TotalVentas = t.Sum(ta => ta.TotalVenta)
                            }).ToList();
+                PvCorteCaja.LstVtasVendedor = new List<VtasVendedor>();
+                foreach (VtasVendedor PvVentasVendedor in VentasPorVendedor)
+                {
+                    VtasVendedor VentasVendedor = new VtasVendedor();
+                    VentasVendedor.Vendedor = PvVentasVendedor.Vendedor;
+                    VentasVendedor.NumVentas = PvVentasVendedor.NumVentas;
+                    VentasVendedor.NumPiezas = PvVentasVendedor.NumPiezas;
+                    VentasVendedor.TotalVentas = PvVentasVendedor.TotalVentas;
 
+                    PvCorteCaja.LstVtasVendedor.Add(VentasVendedor);
+                }
 
                 PvCorteCaja.TotalMXN = TotalMXN;
                 PvCorteCaja.TotalUSD = TotalUSD;
