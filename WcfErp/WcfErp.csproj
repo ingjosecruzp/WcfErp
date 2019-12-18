@@ -209,6 +209,7 @@
     <Compile Include="Modelos\PuntoVenta\PuntoVtaImpuestosDet.cs" />
     <Compile Include="Modelos\PuntoVenta\TipoImpuesto.cs" />
     <Compile Include="Modelos\PuntoVenta\TiposGravan.cs" />
+    <Compile Include="Modelos\PVenta\FormaCobroCaja.cs" />
     <Compile Include="Modelos\PVenta\FormadeCobro.cs" />
     <Compile Include="Modelos\PVenta\Movtos_Cajas.cs" />
     <Compile Include="Modelos\PVenta\PoliticadeComisiones.cs" />

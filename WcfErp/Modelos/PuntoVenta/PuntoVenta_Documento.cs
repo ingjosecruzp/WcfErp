@@ -15,7 +15,7 @@ namespace WcfErp.Modelos.PuntoVenta
         public string TipoDocto { get; set; }
         public string Folio { get; set; }
         public DateTime Fecha { get; set; }
-       // public int Ano { get; set; }
+        // public int Ano { get; set; }
         //public int Mes { get; set; }
         //public int Dia { get; set; }
         //public DateTime Hora { get; set; }
@@ -68,7 +68,9 @@ namespace WcfErp.Modelos.PuntoVenta
 
         public List<PuntoVtaDet> PuntoVtaDet { get; set; }
         public List<PuntoVtaCobros> PuntoVtaCobros { get; set; }
-        public List<PuntoVtaImpuestos> PuntoVtaImpuestos { get; set; }        
+        public List<PuntoVtaImpuestos> PuntoVtaImpuestos { get; set; }
+        public Movtos_Cajas Apertura { get; set; }
+        
 
         protected override PuntoVenta_Documento addValues(PuntoVenta_Documento item, EmpresaContext db)
         {
@@ -78,6 +80,7 @@ namespace WcfErp.Modelos.PuntoVenta
                 item.Caja = db.Cajas.get(item.Caja._id, "_id,Nombre", db);
                 item.Cajero = db.Cajeros.get(item.Cajero._id, "_id,Nombre", db);
                 item.Vendedor = db.Vendedor.get(item.Vendedor._id, "_id,Nombre", db);
+                item.Apertura = db.Movtos_Cajas.get(item.Apertura._id, "_id,Cajas,Cajeros", db);
                 //item.Cliente = db.Clientes.get(item.Cliente._id,db); //db.Clientes.get(item.Cliente._id, "_id,Nombre", db);
                 foreach (PuntoVtaDet det in item.PuntoVtaDet)
                 {
