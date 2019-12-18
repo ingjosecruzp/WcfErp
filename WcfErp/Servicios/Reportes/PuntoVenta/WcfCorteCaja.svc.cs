@@ -1,6 +1,8 @@
-﻿using MongoDB.Driver;
+﻿using MongoDB.Bson;
+using MongoDB.Driver;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using WcfErp.Modelos;
 using WcfErp.Modelos.Generales;
 using WcfErp.Modelos.Inventarios;
@@ -36,16 +38,15 @@ namespace WcfErp.Servicios.Reportes.PuntoVenta
                 decimal TotalTarjetasUSD = 0;
 
                 List<PVentas> LstPVentas = new List<PVentas>();
-
+                
                 foreach (PuntoVenta_Documento Venta in LstVentas)
                 {
                     PVentas LVenta = new PVentas();
                     LVenta.VtaDetalle = new List<PuntoVtaDet>();
+                    
                     LVenta.Folio = Venta.Folio;
                     LVenta.Fecha = Venta.Fecha;
-                    LVenta.TipoCambio = 0;
-                    LVenta.Fondo = 0;
-
+                    //VENTAS DETALLE                  
                     foreach (PuntoVtaDet VentaDet in Venta.PuntoVtaDet)
                     {
                         PuntoVtaDet PvDet = new PuntoVtaDet();
@@ -61,9 +62,11 @@ namespace WcfErp.Servicios.Reportes.PuntoVenta
                         PvDet.PrecioTotalNeto = VentaDet.PrecioTotalNeto;
                         PvDet.DescuentoArt = VentaDet.DescuentoArt;
                         PvDet.DescuentoExtra = VentaDet.DescuentoExtra;
-
+                        
                         LVenta.VtaDetalle.Add(PvDet);
                     }
+                    
+                    //VENTAS COBROS
                     LVenta.VtaCobros = new List<PuntoVtaCobros>();
                     decimal tarjetasusd = 0;
                     decimal tarjetasmxn = 0;
@@ -82,8 +85,10 @@ namespace WcfErp.Servicios.Reportes.PuntoVenta
                             if (VentaCobro.Tipo == "TARJETA") { tarjetasusd = tarjetasusd + VentaCobro.Importe; }
                             if (VentaCobro.Tipo == "EFECTIVO") { efectivousd = efectivousd + VentaCobro.Importe; }
                         }
+                        
                         PvCobro.TipodeCambio = new TipodeCambio();
                         PvCobro.TipodeCambio.Moneda = new Moneda();
+                        PvCobro.Tipo = VentaCobro.Tipo;
                         PvCobro.TipodeCambio.Moneda.Simbolo = VentaCobro.TipodeCambio.Moneda.Simbolo;
                         PvCobro.TipodeCambio.TipoCambio = VentaCobro.TipodeCambio.TipoCambio;
                         
@@ -110,6 +115,34 @@ namespace WcfErp.Servicios.Reportes.PuntoVenta
                     PvCorteCaja.LstVentas.Add(LVenta);
                 }
 
+                //VENTAS POR VENDEDOR
+                VtasVendedor PV_VtasVendedor = new VtasVendedor();
+
+                //var filter2 = Builders<PuntoVenta_Documento>.Filter.Eq("Vendedor.Nombre", "Gerardo Martinez");
+                //LstVentas = db.PuntoVenta_Documento.Filters(filter2, "");
+
+                //IMongoCollection<PuntoVenta_Documento> CollectionVenta = db.PuntoVenta_Documento.dbMongo.GetCollection<PuntoVenta_Documento>("PuntoVenta_Documento");
+
+                //var x =
+                //    CollectionVenta.Aggregate().Group(
+                //            doc => doc.,
+                //            group => new
+                //            {
+                //                clientId = group.Key,
+                //                Total = group.Sum(y => y.TotalVenta)
+                //            }
+                //    ).ToList().FirstOrDefault(c => c.clientId == 2).Total;
+                //var x = CollectionVenta.Aggregate().Group()
+
+
+                var summaryApproach1 = LstVentas.GroupBy(t => t.Vendedor._id)
+                           .Select(t => new
+                           {
+                               Id = t.Key,
+                               Total = t.Sum(ta => ta.TotalVenta),
+                           }).ToList();
+
+
                 PvCorteCaja.TotalMXN = TotalMXN;
                 PvCorteCaja.TotalUSD = TotalUSD;
                 PvCorteCaja.EfectivoMXN = TotalEfectivoMXN;
@@ -120,7 +153,7 @@ namespace WcfErp.Servicios.Reportes.PuntoVenta
                 
                 return PvCorteCaja;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
                 throw;
             }

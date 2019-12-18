@@ -14,6 +14,8 @@ namespace WcfErp.Modelos.Reportes.PuntoVenta
         public decimal TotalUSD { get; set; }
         public decimal EfectivoMXN { get; set; }
         public decimal EfectivoUSD { get; set; }
+        public List<VtasVendedor> LstVtasVendedor { get; set; }
         public List<PVentas> LstVentas { get; set; }
+
     }
 }

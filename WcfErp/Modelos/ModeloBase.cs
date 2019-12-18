@@ -322,7 +322,7 @@ namespace WcfErp.Modelos
             try
             {
                 IMongoCollection<Modelo> Collection = dbMongo.GetCollection<Modelo>(typeof(Modelo).Name);
-
+               
                 List<Modelo> LstItems;
 
                 if(cadena == "")
