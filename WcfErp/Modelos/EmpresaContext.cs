@@ -104,6 +104,7 @@ namespace WcfErp.Modelos
         //Punto de Compras
         public virtual TipoProveedor TipoProveedor { get; set; }
         public virtual Proveedor Proveedor { get; set; }
+        public virtual DoctoCompras DoctoCompras { get; set; }
         //Fin Punto de Compras
 
     }
