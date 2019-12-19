@@ -44,11 +44,9 @@
   <ItemGroup>
     <Reference Include="DnsClient, Version=1.0.7.0, Culture=neutral, PublicKeyToken=4574bb5573c51424, processorArchitecture=MSIL">
       <HintPath>..\packages\DnsClient.1.0.7\lib\net45\DnsClient.dll</HintPath>
-      <Private>True</Private>
     </Reference>
     <Reference Include="JWT, Version=1.3.3.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\JWT.1.3.4\lib\3.5\JWT.dll</HintPath>
-      <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="MongoDB.Bson, Version=2.7.0.0, Culture=neutral, processorArchitecture=MSIL">
@@ -65,11 +63,9 @@
     </Reference>
     <Reference Include="System.Buffers, Version=4.0.1.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Buffers.4.3.0\lib\netstandard1.1\System.Buffers.dll</HintPath>
-      <Private>True</Private>
     </Reference>
     <Reference Include="System.Runtime.InteropServices.RuntimeInformation, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Runtime.InteropServices.RuntimeInformation.4.0.0\lib\net45\System.Runtime.InteropServices.RuntimeInformation.dll</HintPath>
-      <Private>True</Private>
     </Reference>
     <Reference Include="System.Web.DynamicData" />
     <Reference Include="System.Web.Entity" />
@@ -140,6 +136,7 @@
     <Content Include="Servicios\Reportes\Inventarios\WcfExistenciaValorInventario.svc" />
     <Content Include="Servicios\Reportes\Inventarios\WcfKardexArticulos.svc" />
     <Content Include="Servicios\Reportes\PuntoVenta\WcfCodigoBarras.svc" />
+    <Content Include="Servicios\Reportes\PuntoVenta\WcfCorteCaja.svc" />
     <Content Include="Servicios\Ventas\WcfClientes.svc" />
     <Content Include="Servicios\WSLogin.svc" />
     <Content Include="Web.config">
@@ -216,6 +213,7 @@
     <Compile Include="Modelos\PuntoVenta\PuntoVtaImpuestosDet.cs" />
     <Compile Include="Modelos\PuntoVenta\TipoImpuesto.cs" />
     <Compile Include="Modelos\PuntoVenta\TiposGravan.cs" />
+    <Compile Include="Modelos\PVenta\FormaCobroCaja.cs" />
     <Compile Include="Modelos\PVenta\FormadeCobro.cs" />
     <Compile Include="Modelos\PVenta\Movtos_Cajas.cs" />
     <Compile Include="Modelos\PVenta\PoliticadeComisiones.cs" />
@@ -223,7 +221,10 @@
     <Compile Include="Modelos\Reportes\Inventarios\DetallesKardexArticulos.cs" />
     <Compile Include="Modelos\Reportes\Inventarios\ExistenciaValorInventario.cs" />
     <Compile Include="Modelos\Reportes\Inventarios\KardexArticulos.cs" />
+    <Compile Include="Modelos\Reportes\PuntoVenta\CorteCaja.cs" />
+    <Compile Include="Modelos\Reportes\PuntoVenta\PVentas.cs" />
     <Compile Include="Modelos\Reportes\PuntoVenta\CodigoBarra.cs" />
+    <Compile Include="Modelos\Reportes\PuntoVenta\VtasVendedor.cs" />
     <Compile Include="Modelos\tokens.cs" />
     <Compile Include="Modelos\UsuarioContext.cs" />
     <Compile Include="Modelos\Ventas\Clientes.cs" />
@@ -434,8 +435,12 @@
       <DependentUpon>WcfKardexArticulos.svc</DependentUpon>
     </Compile>
     <Compile Include="Servicios\Reportes\PuntoVenta\IWcfCodigoBarras.cs" />
+    <Compile Include="Servicios\Reportes\PuntoVenta\IWcfCorteCaja.cs" />
     <Compile Include="Servicios\Reportes\PuntoVenta\WcfCodigoBarras.svc.cs">
       <DependentUpon>WcfCodigoBarras.svc</DependentUpon>
+    </Compile>
+    <Compile Include="Servicios\Reportes\PuntoVenta\WcfCorteCaja.svc.cs">
+      <DependentUpon>WcfCorteCaja.svc</DependentUpon>
     </Compile>
     <Compile Include="Servicios\ServiceBase.cs" />
     <Compile Include="Servicios\ServiciosBase.cs" />
@@ -451,9 +456,7 @@
     <Folder Include="App_Data\" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="packages.config">
-      <SubType>Designer</SubType>
-    </Content>
+    <None Include="packages.config" />
     <None Include="Properties\PublishProfiles\Publicar.pubxml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>

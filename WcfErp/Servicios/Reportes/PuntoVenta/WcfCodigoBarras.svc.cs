@@ -62,7 +62,7 @@ namespace WcfErp.Servicios.Reportes.PuntoVenta
 
                 return LstCodigos;
             }
-            catch (Exception ex)
+            catch (Exception)
             {
 
                 return null;

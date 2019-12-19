@@ -22,7 +22,7 @@ namespace WcfErp.Modelos.PuntoVenta
             {
                 UsuarioContext db2 = new UsuarioContext();
 
-                item.Usuarios = db2.Usuarios.get(item.Usuarios._id,"_Id,NombreCompleto", db2);
+                item.Usuarios = db2.Usuarios.get(item.Usuarios._id,"_Id,Nombre,NombreCompleto", db2);
                 foreach (CajerosCajas cajasopera in item.CajerosCajas)
                 {
                     cajasopera.CajasOp = db.Cajas.get(cajasopera.CajasOp._id, "_id,Nombre", db);

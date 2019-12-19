@@ -140,6 +140,23 @@ namespace WcfErp.Modelos
                 throw;
             }
         }
+        public virtual List<Modelo> find(FilterDefinition<Modelo> filter, int limit, TContext db)
+        {
+            try
+            {
+
+                IMongoCollection<Modelo> Collection = dbMongo.GetCollection<Modelo>(typeof(Modelo).Name);
+
+                List<Modelo> item = Collection.Find<Modelo>(filter).Limit(limit).ToList();
+
+                return item;
+
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+        }
         public virtual Modelo get(string id,string campos, TContext db)
         {
             try
@@ -285,12 +302,44 @@ namespace WcfErp.Modelos
                 throw;
             }
         }
-        public virtual List<Modelo> Filters(FilterDefinition<Modelo> filter,string cadena="",string skip=null)
+        public virtual List<Modelo> Filters(SortDefinition<Modelo> filter, string cadena = "", string skip = null)
         {
             try
             {
                 IMongoCollection<Modelo> Collection = dbMongo.GetCollection<Modelo>(typeof(Modelo).Name);
 
+                List<Modelo> LstItems;
+
+                if (cadena == "")
+                {
+                    LstItems = Collection.Find(_ => true).Sort(filter).ToList();
+                }
+                else
+                {
+                    JObject rss = cadenaTojObject(cadena);
+                    if (skip == null)
+                        LstItems = Collection.Find(_ => true).Project<Modelo>(rss.ToString()).Sort(filter).ToList();
+                    else
+                    {
+                        int skipInt = Int32.Parse(skip);
+                        LstItems = Collection.Find(_ => true).Project<Modelo>(rss.ToString()).Limit(50).Skip(skipInt).Sort(filter).ToList();
+                    }
+                }
+
+                return LstItems;
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+        public virtual List<Modelo> Filters(FilterDefinition<Modelo> filter,string cadena="",string skip=null)
+        {
+            try
+            {
+                IMongoCollection<Modelo> Collection = dbMongo.GetCollection<Modelo>(typeof(Modelo).Name);
+               
                 List<Modelo> LstItems;
 
                 if(cadena == "")
@@ -317,7 +366,7 @@ namespace WcfErp.Modelos
                 throw;
             }
         }
-        private JObject cadenaTojObject(string cadena)
+        public JObject cadenaTojObject(string cadena)
         {
             try
             {
