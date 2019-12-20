@@ -15,8 +15,8 @@ namespace WcfErp.Modelos
 
         [BsonId]
         [BsonRepresentation(BsonType.ObjectId)]
-        public string _id { get; set; }
-        public string Nombre { get; set; }
+        public virtual string _id { get; set; }
+        public virtual string Nombre { get; set; }
         //public string UsuarioCreo { get; set; }
 
         [BsonIgnore]

@@ -6,6 +6,7 @@ using System.Configuration;
 using System.Linq;
 using System.Reflection;
 using System.Web;
+using WcfErp.Modelos.Administracion;
 using WcfErp.Modelos.Generales;
 
 namespace WcfErp.Modelos
@@ -49,6 +50,9 @@ namespace WcfErp.Modelos
         public virtual BDEmpresas BDEmpresas { get; set; }
         public virtual Roles Roles { get; set; }
         public virtual Usuarios Usuarios { get; set; }
+        public virtual Menu Menu { get; set; }
+        public virtual Modulo Modulo { get; set; }
+        public virtual Vista Vista { get; set; }
 
     }
 }
