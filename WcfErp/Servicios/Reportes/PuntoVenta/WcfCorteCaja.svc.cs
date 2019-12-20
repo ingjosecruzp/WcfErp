@@ -16,15 +16,15 @@ namespace WcfErp.Servicios.Reportes.PuntoVenta
     // NOTA: para iniciar el Cliente de prueba WCF para probar este servicio, seleccione WcfCorteCaja.svc o WcfCorteCaja.svc.cs en el Explorador de soluciones e inicie la depuración.
     public class WcfCorteCaja : IWcfCorteCaja
     {
-        public CorteCaja VerReporte(string FechaInicio,string FechaFinal)
+        public CorteCaja VerReporte(string IdApertura)
         {
             try
             {
                 EmpresaContext db = new EmpresaContext();
                 List<PuntoVenta_Documento> LstVentas = new List<PuntoVenta_Documento>(); 
-               if(FechaInicio!="" && FechaFinal != null)
+               if(IdApertura!="" && IdApertura != null)
                 {
-                    var filter = Builders<PuntoVenta_Documento>.Filter.Gt("Fecha", FechaInicio) & Builders<PuntoVenta_Documento>.Filter.Lt("Fecha", FechaFinal);
+                    var filter = Builders<PuntoVenta_Documento>.Filter.Eq("Apertura._id", IdApertura)  & (Builders<PuntoVenta_Documento>.Filter.Eq("Estatus", "N"));
                     LstVentas = db.PuntoVenta_Documento.Filters(filter,"");
                 }
 

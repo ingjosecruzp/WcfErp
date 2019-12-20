@@ -48,8 +48,6 @@ namespace WcfErp.Servicios.PVenta
                 var builder_Mtocajas = Builders<Movtos_Cajas>.Filter;
                 var filter_Mtocajas = builder_Mtocajas.Eq("TipoMovto", "CIERRE");
 
-
-                //List<Movtos_Cajas> Lista = db.Set<Movtos_Cajas, EmpresaContext>().all(cadena, db, skip);
                 List<Movtos_Cajas> Lista = db.Movtos_Cajas.Filters(filter_Mtocajas, cadena, skip);
 
                 return Lista;

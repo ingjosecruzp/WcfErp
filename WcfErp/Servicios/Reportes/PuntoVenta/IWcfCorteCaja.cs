@@ -14,11 +14,11 @@ namespace WcfErp.Servicios.Reportes.PuntoVenta
     public interface IWcfCorteCaja
     {
         [OperationContract]
-        [WebInvoke(UriTemplate = "?searchBy=RptCorteCaja&FechaInicio={FechaInicio}&FechaFinal={FechaFinal}",
+        [WebInvoke(UriTemplate = "?searchBy=RptCorteCaja&IdApertura={IdApertura}",
                BodyStyle = WebMessageBodyStyle.Bare,
                ResponseFormat = WebMessageFormat.Json,
                RequestFormat = WebMessageFormat.Json,
                Method = "GET")]
-        CorteCaja VerReporte(string FechaInicio, string FechaFinal);
+        CorteCaja VerReporte(string IdApertura);
     }
 }
