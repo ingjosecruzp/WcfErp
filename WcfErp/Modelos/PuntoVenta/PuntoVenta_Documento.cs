@@ -80,11 +80,11 @@ namespace WcfErp.Modelos.PuntoVenta
                 item.Caja = db.Cajas.get(item.Caja._id, "_id,Nombre", db);
                 item.Cajero = db.Cajeros.get(item.Cajero._id, "_id,Nombre", db);
                 item.Vendedor = db.Vendedor.get(item.Vendedor._id, "_id,Nombre", db);
-                item.Apertura = db.Movtos_Cajas.get(item.Apertura._id, "_id,Cajas,Cajeros", db);
+                item.Apertura = db.Movtos_Cajas.get(item.Apertura._id, "_id,Cajas,Cajeros,Importe", db);
                 //item.Cliente = db.Clientes.get(item.Cliente._id,db); //db.Clientes.get(item.Cliente._id, "_id,Nombre", db);
                 foreach (PuntoVtaDet det in item.PuntoVtaDet)
                 {
-                    det.Articulo = db.Articulo.get(det.Articulo._id, "_id,Clave,Nombre", db);
+                    det.Articulo = db.Articulo.get(det.Articulo._id, "_id,Clave,Nombre,SubGrupoComponente,GrupoComponente", db);
                 }
 
                 return item;

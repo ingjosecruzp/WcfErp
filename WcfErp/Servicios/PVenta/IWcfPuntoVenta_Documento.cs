@@ -30,6 +30,13 @@ namespace WcfErp.Servicios.PVenta
          Method = "POST")]
         PuntoVenta_Documento CrearDevolucion(PuntoVenta_Documento item);
 
+        [OperationContract]
+        [WebInvoke(UriTemplate = "?searchBy=cancelacionCompra",
+         BodyStyle = WebMessageBodyStyle.Bare,
+         ResponseFormat = WebMessageFormat.Json,
+         RequestFormat = WebMessageFormat.Json,
+         Method = "POST")]
+        List<PuntoVenta_Documento> CrearCancelacion(List<PuntoVenta_Documento> items);
 
         [OperationContract]
         [WebInvoke(UriTemplate = "?searchBy=comprasACancelar&cadena={cadena}&skip={skip}",
