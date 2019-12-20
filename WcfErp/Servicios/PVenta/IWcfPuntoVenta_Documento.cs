@@ -20,6 +20,23 @@ namespace WcfErp.Servicios.PVenta
          ResponseFormat = WebMessageFormat.Json,
          RequestFormat = WebMessageFormat.Json,
          Method = "GET")]
-         Movtos_Cajas validarApertura();
+         Movtos_Cajas ValidarApertura();
+
+        [OperationContract]
+        [WebInvoke(UriTemplate = "?searchBy=devolucionCompra",
+         BodyStyle = WebMessageBodyStyle.Bare,
+         ResponseFormat = WebMessageFormat.Json,
+         RequestFormat = WebMessageFormat.Json,
+         Method = "POST")]
+        PuntoVenta_Documento CrearDevolucion(PuntoVenta_Documento item);
+
+
+        [OperationContract]
+        [WebInvoke(UriTemplate = "?searchBy=comprasACancelar&cadena={cadena}&skip={skip}",
+         BodyStyle = WebMessageBodyStyle.Bare,
+         ResponseFormat = WebMessageFormat.Json,
+         RequestFormat = WebMessageFormat.Json,
+         Method = "GET")]
+        List<PuntoVenta_Documento> ComprasACancelar(string cadena, string skip);
     }
 }
