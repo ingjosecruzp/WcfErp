@@ -274,6 +274,48 @@ namespace WcfErp.Servicios.PVenta
             }
         }
 
-        
+        public List<PuntoVenta_Documento> CrearCancelacion(List<PuntoVenta_Documento> items)
+        {
+            try
+            {
+                EmpresaContext db = new EmpresaContext();
+
+                string vtaCan = "";
+                using (var session = db.client.StartSession())
+                {
+                    session.StartTransaction();
+                    foreach(PuntoVenta_Documento item in items)
+                    {
+                        PuntoVenta_Documento venta = db.PuntoVenta_Documento.get(item._id, db);
+
+                        if (venta.Estatus != "CANCELADOXT" && venta.Estatus != "CANCELADO")
+                        {
+                            /*Entrada de inventario*/
+                            MovimientosES documentoentrada = EntradaInventario(item, db);
+                            WcfErp.Servicios.Inventarios.Inventarios inv = new WcfErp.Servicios.Inventarios.Inventarios();
+
+                            item.Estatus = "CANCELADOXT";
+                            inv.add(documentoentrada, db, session);
+                            db.PuntoVenta_Documento.update(item, item._id, db, session);
+                        }
+                        else
+                        {
+                            vtaCan += venta.Folio + ",";
+                        }
+                    }
+                    session.CommitTransaction();
+                }
+                if(vtaCan != "")
+                {
+                    throw new Exception("Las siguientes ventas ya se encuentran canceladas: " + vtaCan);
+                }
+                return items;
+            }
+            catch (Exception ex)
+            {
+                Error(ex, "");
+                return null;
+            }
+        }
     }
 }

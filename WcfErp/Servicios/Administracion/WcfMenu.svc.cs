@@ -6,6 +6,7 @@ using System.ServiceModel;
 using System.Text;
 using WcfErp.Modelos;
 using WcfErp.Modelos.Administracion;
+using WcfErp.Modelos.Generales;
 
 namespace WcfErp.Servicios.Administracion
 {
@@ -79,6 +80,9 @@ namespace WcfErp.Servicios.Administracion
         {
             try
             {
+                /*
+                 * Cargar el menu completo para que se use en la pantalla de roles
+                 */
                 UsuarioContext db = new UsuarioContext();
 
                 List<Modulo> LstModulos = db.Modulo.all("Nombre,idModulo,icon,Vistas", db).OrderBy(o => o.Nombre).ToList();
@@ -121,6 +125,73 @@ namespace WcfErp.Servicios.Administracion
             catch (Exception ex)
             {
 
+                Error(ex, "");
+                return null;
+            }
+        }
+
+        public Menu getMenuUsuario()
+        {
+            try
+            {
+                /*
+                * Cargar el menu en base a los roles que tienen el usuario
+                */
+                UsuarioContext db = new UsuarioContext();
+
+                Menu menu = new Menu();
+
+                string usuarioId = getKeyToken("id", "token");
+
+                Usuarios usuario = db.Usuarios.get(usuarioId, db);
+
+                List<Modulo> LstModulos = db.Modulo.all("Nombre,idModulo,icon,Vistas", db).OrderBy(o => o.Nombre).ToList();
+                List<Vista> LstVistas = db.Vista.all("Nombre,idVista,icon", db).OrderBy(o => o.Nombre).ToList();
+
+                foreach (Roles rol in usuario.Roles)
+                {
+                    Roles Rol = db.Roles.get(rol.id, db);
+
+                    foreach (Modulo modulo in Rol.Modulos)
+                    {
+                        Modulo moduloPadre = LstModulos.Where(o => o._id == modulo._id).SingleOrDefault();
+
+                        data padre = new data();
+                        padre.id = moduloPadre.idModulo;
+                        padre.icon = moduloPadre.icon;
+                        padre.value = moduloPadre.Nombre;
+                        padre.EsPadre = true;
+                        padre._id = moduloPadre._id;
+
+                        padre.data_submenu = new List<data>();
+
+                        foreach (Vista vista in modulo.Vistas)
+                        {
+                            //Vista vistaHijo = db.Vista.get(vista._id, db);
+                            Vista vistaHijo = LstVistas.Where(o => o._id == vista._id).SingleOrDefault();
+
+                            //String timeStamp = GetTimestamp(DateTime.Now);
+
+                            data hijo = new data();
+                            //hijo.id = vistaHijo.idVista + "_" + timeStamp;
+                            hijo.id = vistaHijo.idVista;
+                            hijo.icon = vistaHijo.icon;
+                            hijo.value = vistaHijo.Nombre;
+                            hijo.EsPadre = false;
+                            hijo._id = vista._id;
+
+                            padre.data_submenu.Add(hijo);
+                        }
+
+                        padre.data_submenu = padre.data_submenu.OrderBy(o => o.value).ToList();
+                        menu.data.Add(padre);
+                    }
+                }
+
+                return menu;
+            }
+            catch (Exception ex)
+            {
                 Error(ex, "");
                 return null;
             }
