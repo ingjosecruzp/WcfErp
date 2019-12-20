@@ -10,8 +10,6 @@ namespace WcfErp.Modelos.Reportes.PuntoVenta
     {
         public string Folio { get; set; }
         public DateTime Fecha { get; set; }
-        public decimal TipoCambio { get; set; }
-        public decimal Fondo { get; set; }
         public decimal TajetasUSD { get; set; }
         public decimal TajetasMXN { get; set; }
         public decimal TotalMXN { get; set; }

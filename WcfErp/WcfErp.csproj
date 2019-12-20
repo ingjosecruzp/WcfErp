@@ -90,6 +90,7 @@
     <Content Include="Servicios\Administracion\WcfRoles.svc" />
     <Content Include="Servicios\Administracion\WcfUsuarios.svc" />
     <Content Include="Servicios\Administracion\WcfUsuariosRoles.svc" />
+    <Content Include="Servicios\Compras\WcfCompras.svc" />
     <Content Include="Servicios\Compras\WcfProveedor.svc" />
     <Content Include="Servicios\Compras\WcfTipoProveedor.svc" />
     <Content Include="Servicios\Compras\WcfTipoProveedores.svc" />
@@ -154,6 +155,8 @@
     <Compile Include="Modelos\Administracion\Semaforo.cs" />
     <Compile Include="Modelos\Administracion\UsuarioRol.cs" />
     <Compile Include="Modelos\Administracion\Usuario.cs" />
+    <Compile Include="Modelos\Compras\DoctoCompras.cs" />
+    <Compile Include="Modelos\Compras\DetallesCompras.cs" />
     <Compile Include="Modelos\Compras\Proveedor.cs" />
     <Compile Include="Modelos\Compras\TipoProveedor.cs" />
     <Compile Include="Modelos\Context.cs" />
@@ -221,6 +224,7 @@
     <Compile Include="Modelos\Reportes\PuntoVenta\CorteCaja.cs" />
     <Compile Include="Modelos\Reportes\PuntoVenta\PVentas.cs" />
     <Compile Include="Modelos\Reportes\PuntoVenta\CodigoBarra.cs" />
+    <Compile Include="Modelos\Reportes\PuntoVenta\VtasVendedor.cs" />
     <Compile Include="Modelos\tokens.cs" />
     <Compile Include="Modelos\UsuarioContext.cs" />
     <Compile Include="Modelos\Ventas\Clientes.cs" />
@@ -248,9 +252,13 @@
     <Compile Include="Servicios\Administracion\WcfUsuariosRoles.svc.cs">
       <DependentUpon>WcfUsuariosRoles.svc</DependentUpon>
     </Compile>
+    <Compile Include="Servicios\Compras\IWcfCompras.cs" />
     <Compile Include="Servicios\Compras\IWcfProveedor.cs" />
     <Compile Include="Servicios\Compras\IWcfTipoProveedor.cs" />
     <Compile Include="Servicios\Compras\IWcfTipoProveedores.cs" />
+    <Compile Include="Servicios\Compras\WcfCompras.svc.cs">
+      <DependentUpon>WcfCompras.svc</DependentUpon>
+    </Compile>
     <Compile Include="Servicios\Compras\WcfProveedor.svc.cs">
       <DependentUpon>WcfProveedor.svc</DependentUpon>
     </Compile>
