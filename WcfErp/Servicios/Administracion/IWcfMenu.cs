@@ -20,5 +20,13 @@ namespace WcfErp.Servicios.Administracion
              RequestFormat = WebMessageFormat.Json,
              Method = "GET")]
         Menu getMenu();
+
+        [OperationContract]
+        [WebInvoke(UriTemplate = "?searchBy=getMenuUsuario",
+         BodyStyle = WebMessageBodyStyle.Bare,
+         ResponseFormat = WebMessageFormat.Json,
+         RequestFormat = WebMessageFormat.Json,
+         Method = "GET")]
+        Menu getMenuUsuario();
     }
 }
