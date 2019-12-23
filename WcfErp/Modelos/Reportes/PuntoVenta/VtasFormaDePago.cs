@@ -9,7 +9,7 @@ namespace WcfErp.Modelos.Reportes.PuntoVenta
     public class VtasFormaDePago
     {
         public string Folio { get; set; }
-        public PuntoVtaCobros FormasDePago { get; set; }
+        public List <PuntoVtaCobros> FormasDePago { get; set; }
 
     }
 }

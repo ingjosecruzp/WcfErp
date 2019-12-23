@@ -21,6 +21,8 @@ namespace WcfErp.Servicios.Reportes.PuntoVenta
             try
             {
                 EmpresaContext db = new EmpresaContext();
+
+                //VENTAS POR ID APERTURA Y ESTATUS
                 List<PuntoVenta_Documento> LstVentas = new List<PuntoVenta_Documento>();
                 if (IdApertura != "" && IdApertura != null)
                 {
@@ -29,7 +31,6 @@ namespace WcfErp.Servicios.Reportes.PuntoVenta
 
                     if (LstVentas.Count > 0)
                     {
-
                         CorteCaja PvCorteCaja = new CorteCaja();
                         PvCorteCaja.LstVentas = new List<PVentas>();
                         decimal TotalMXN = 0;
@@ -41,13 +42,15 @@ namespace WcfErp.Servicios.Reportes.PuntoVenta
 
                         List<PVentas> LstPVentas = new List<PVentas>();
                         PvCorteCaja.LstFormasDePagos = new List<VtasFormaDePago>();
+                        PvCorteCaja.LstVtasProductosVendidos = new List<VtasProductosVendidos>();
+
+                        //VENTAS
                         foreach (PuntoVenta_Documento Venta in LstVentas)
                         {
-                            PvCorteCaja.LstVtasProductosVendidos = new List<VtasProductosVendidos>();
                             PVentas LVenta = new PVentas();
                             LVenta.VtaDetalle = new List<PuntoVtaDet>();
                             
-                            PvCorteCaja.Fondo = LVenta.Fondo;
+                            PvCorteCaja.Fondo = Convert.ToDecimal(Venta.Apertura.Importe);
                             LVenta.Folio = Venta.Folio;
                             LVenta.Fecha = Venta.Fecha;
                             //VENTAS DETALLE                  
@@ -70,6 +73,9 @@ namespace WcfErp.Servicios.Reportes.PuntoVenta
                                 //VENTAS PRODUCTOS VENDIDOS
                                 VtasProductosVendidos PvProductosVendidos = new VtasProductosVendidos();
                                 PvProductosVendidos.Clave = VentaDet.Articulo.Clave;
+                                GrupoComponente GpoComponente = new GrupoComponente();
+                                GpoComponente = VentaDet.Articulo.GrupoComponente;
+                                PvProductosVendidos.Grupo = GpoComponente.Nombre;
                                 PvProductosVendidos.Cantidad = VentaDet.Cantidad;
                                 PvProductosVendidos.PrecioUnitario = VentaDet.PrecioUnitario;
                                 PvProductosVendidos.Descuento = VentaDet.PorcentajeDescto;
@@ -82,7 +88,8 @@ namespace WcfErp.Servicios.Reportes.PuntoVenta
 
                             //VENTAS COBROS
                             LVenta.VtaCobros = new List<PuntoVtaCobros>();
-                            
+                            VtasFormaDePago PvFormaDePagos = new VtasFormaDePago();
+                            PvFormaDePagos.FormasDePago = new List<PuntoVtaCobros>();
                             decimal tarjetasusd = 0;
                             decimal tarjetasmxn = 0;
                             decimal efectivousd = 0;
@@ -113,13 +120,14 @@ namespace WcfErp.Servicios.Reportes.PuntoVenta
                                 PvCobro.ImporteMonedaDoc = VentaCobro.ImporteMonedaDoc;
 
                                 //VENTAS FORMA DE PAGO
-                                VtasFormaDePago PvFormaDePagos = new VtasFormaDePago();
+                                                                
                                 PvFormaDePagos.Folio = LVenta.Folio;
-                                PvFormaDePagos.FormasDePago = PvCobro;
-                                PvCorteCaja.LstFormasDePagos.Add(PvFormaDePagos);
+                                PvFormaDePagos.FormasDePago.Add(PvCobro);
+                                
                                 LVenta.VtaCobros.Add(PvCobro);
 
                             }
+                            PvCorteCaja.LstFormasDePagos.Add(PvFormaDePagos);
 
                             LVenta.EfectivoMXN = efectivomxn;
                             LVenta.TajetasMXN = tarjetasmxn;
@@ -132,10 +140,8 @@ namespace WcfErp.Servicios.Reportes.PuntoVenta
                             TotalTarjetasMXN = TotalTarjetasMXN + tarjetasmxn;
                             TotalTarjetasUSD = TotalTarjetasUSD + tarjetasusd;
                             TotalMXN = TotalMXN + LVenta.TotalMXN;
-                            TotalUSD = TotalUSD + LVenta.TotalUSD;
-                                                        
-                            //VENTAS PRODUCTOS
-                            PvCorteCaja.LstVtasProductosVendidos = new List<VtasProductosVendidos>();
+                            TotalUSD = TotalUSD + LVenta.TotalUSD;                                                        
+                                                      
                             LstPVentas.Add(LVenta);
                             PvCorteCaja.LstVentas.Add(LVenta);
                         }
@@ -152,6 +158,7 @@ namespace WcfErp.Servicios.Reportes.PuntoVenta
                                    //TotalUSD = t.Sum(ta => ta.PuntoVtaCobros.ToList().Where(a => a.TipodeCambio.Moneda.Simbolo == "USD").Sum(a => a.Importe)),
                                    TotalVentas = t.Sum(ta => ta.TotalVenta)
                                    }).ToList();
+
                         PvCorteCaja.LstVtasVendedor = new List<VtasVendedor>();
                         foreach (VtasVendedor PvVentasVendedor in VentasPorVendedor)
                         {
@@ -162,6 +169,24 @@ namespace WcfErp.Servicios.Reportes.PuntoVenta
                             VentasVendedor.TotalVentas = PvVentasVendedor.TotalVentas;
 
                             PvCorteCaja.LstVtasVendedor.Add(VentasVendedor);
+                        }
+
+                        //PIEZAS VENDIDAS (GRUPO)
+                        List<VtaGrupoPiezas> VentasGrupoPiezas = PvCorteCaja.LstVtasProductosVendidos
+                                   .GroupBy(t => t.Grupo)
+                                   .Select(t => new VtaGrupoPiezas
+                                   {
+                                       Nombre = t.FirstOrDefault().Grupo,
+                                       Cantidad = t.Sum(ta => ta.Cantidad)                                       
+                                   }).ToList();
+
+                        PvCorteCaja.LstVtasGrupoPiezas = new List<VtaGrupoPiezas>();
+                        foreach (VtaGrupoPiezas PvVtaGrupoPiezas in VentasGrupoPiezas)
+                        {
+                            VtaGrupoPiezas VentasGrupoPzas = new VtaGrupoPiezas();
+                            VentasGrupoPzas.Nombre = PvVtaGrupoPiezas.Nombre;
+                            VentasGrupoPzas.Cantidad = PvVtaGrupoPiezas.Cantidad;
+                            PvCorteCaja.LstVtasGrupoPiezas.Add(VentasGrupoPzas);
                         }
 
                         PvCorteCaja.TotalMXN = TotalMXN;

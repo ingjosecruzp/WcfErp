@@ -230,6 +230,7 @@
     <Compile Include="Modelos\Reportes\PuntoVenta\CorteCaja.cs" />
     <Compile Include="Modelos\Reportes\PuntoVenta\PVentas.cs" />
     <Compile Include="Modelos\Reportes\PuntoVenta\CodigoBarra.cs" />
+    <Compile Include="Modelos\Reportes\PuntoVenta\VtaGrupoPiezas.cs" />
     <Compile Include="Modelos\Reportes\PuntoVenta\VtasFormaDePago.cs" />
     <Compile Include="Modelos\Reportes\PuntoVenta\VtasProductosVendidos.cs" />
     <Compile Include="Modelos\Reportes\PuntoVenta\VtasVendedor.cs" />

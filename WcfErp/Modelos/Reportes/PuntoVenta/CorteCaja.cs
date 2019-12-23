@@ -17,6 +17,7 @@ namespace WcfErp.Modelos.Reportes.PuntoVenta
         public List<VtasVendedor> LstVtasVendedor { get; set; }
         public List<VtasProductosVendidos> LstVtasProductosVendidos { get; set; }
         public List<VtasFormaDePago> LstFormasDePagos { get; set; }
+        public List<VtaGrupoPiezas> LstVtasGrupoPiezas { get; set; }
         public List<PVentas> LstVentas { get; set; }
 
     }
