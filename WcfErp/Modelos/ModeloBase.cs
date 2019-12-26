@@ -366,6 +366,40 @@ namespace WcfErp.Modelos
                 throw;
             }
         }
+
+        public List<Modelo> Filters(FilterDefinition<Modelo> filter, SortDefinition<Modelo> sort, String cadena, string skip = null)
+        {
+            try
+            {
+
+                IMongoCollection<Modelo> Collection = dbMongo.GetCollection<Modelo>(typeof(Modelo).Name);
+
+                List<Modelo> item;
+
+                if (cadena == "")
+                {
+                    item = Collection.Find<Modelo>(filter).Sort(sort).ToList();
+                }
+                else
+                {
+                    JObject rss = cadenaTojObject(cadena);
+                    if (skip == null)
+                        item = Collection.Find(filter).Project<Modelo>(rss.ToString()).Sort(sort).ToList();
+                    else
+                    {
+                        int skipInt = Int32.Parse(skip);
+                        item = Collection.Find(filter).Project<Modelo>(rss.ToString()).Sort(sort).ToList();
+                    }
+                }
+
+                return item;
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+        }
+
         public JObject cadenaTojObject(string cadena)
         {
             try

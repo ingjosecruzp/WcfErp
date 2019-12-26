@@ -12,13 +12,15 @@ using WcfErp.Modelos.PuntoVenta;
 using WcfErp.Modelos.PVenta;
 using WcfErp.Modelos.Inventarios;
 using WcfErp.Modelos.Reportes.Inventarios;
+using WcfErp.Modelos.Generales;
 
 namespace WcfErp.Servicios.PVenta
 {
     // NOTA: puede usar el comando "Rename" del menú "Refactorizar" para cambiar el nombre de clase "WcfPuntoVenta_Documento" en el código, en svc y en el archivo de configuración a la vez.
     // NOTA: para iniciar el Cliente de prueba WCF para probar este servicio, seleccione WcfPuntoVenta_Documento.svc o WcfPuntoVenta_Documento.svc.cs en el Explorador de soluciones e inicie la depuración.
-    public class WcfPuntoVenta_Documento : ServiceBase<PuntoVenta_Documento, EmpresaContext>,  IWcfPuntoVenta_Documento
+    public class WcfPuntoVenta_Documento : ServiceBase<PuntoVenta_Documento, EmpresaContext>, IWcfPuntoVenta_Documento
     {
+        //agrega una compra
         public override PuntoVenta_Documento add(PuntoVenta_Documento item)
         {
             try
@@ -59,7 +61,16 @@ namespace WcfErp.Servicios.PVenta
                     }
 
                     /*Salida de inventario*/
-                    MovimientosES documentosalida = SalidaInventario(item, db);
+                    MovimientosES documentosalida = new MovimientosES();
+                    documentosalida.Concepto = db.Concepto.get("5d4cbb5d92a3d9c568660d2a", db); ////Concepto de salida por venta de mostrador
+                    documentosalida.Descripcion = "Salida de inventario de venta de mostrador con el Folio " + item.Folio;
+                    documentosalida.Sistema_Origen = "PV";
+                    documentosalida.Cancelado = "NO";
+                    documentosalida.Almacen = item.Almacen;
+                    documentosalida.Fecha = item.Fecha;
+
+                    documentosalida = SalidaInventario(documentosalida, item, db);
+
                     WcfErp.Servicios.Inventarios.Inventarios inv = new WcfErp.Servicios.Inventarios.Inventarios();
 
                     inv.add(documentosalida, db, session);
@@ -77,6 +88,7 @@ namespace WcfErp.Servicios.PVenta
             }
         }
 
+        //crea una devolución
         public PuntoVenta_Documento CrearDevolucion(PuntoVenta_Documento item)
         {
             try
@@ -86,19 +98,11 @@ namespace WcfErp.Servicios.PVenta
                 using (var session = db.client.StartSession())
                 {
                     session.StartTransaction();
+                    item = CrearInventarioEntrada("Entrada de inventario por devolución de mercancía por venta de mostrador con el Folio ", 
+                        "5dfba6592938b55b30c3c257", "DEVOLUCION", item, db, session);
+                    if (item == null)
+                        throw new Exception("La venta ya se encuentra devuelta o cancelada, no es posible continuar");
 
-                    PuntoVenta_Documento venta = db.PuntoVenta_Documento.get(item._id, db);
-
-                    if (venta.Estatus == "CANCELADO")
-                        throw new Exception("Esta venta ya se encuentra devuelta, no es posible continuar");
-
-
-                    /*Entrada de inventario*/
-                    MovimientosES documentoentrada = EntradaInventario(item, db);
-                    WcfErp.Servicios.Inventarios.Inventarios inv = new WcfErp.Servicios.Inventarios.Inventarios();
-
-                    item.Estatus = "CANCELADO";
-                    inv.add(documentoentrada, db, session);
                     db.PuntoVenta_Documento.update(item, item._id, db, session);
 
                     session.CommitTransaction();
@@ -112,7 +116,35 @@ namespace WcfErp.Servicios.PVenta
                 return null;
             }
         }
-       
+
+        public PuntoVenta_Documento CrearCancelacion(PuntoVenta_Documento item)
+        {
+            try
+            {
+                EmpresaContext db = new EmpresaContext();
+
+                using (var session = db.client.StartSession())
+                {
+                    session.StartTransaction();
+                    item = CrearInventarioEntrada("Entrada de inventario por cancelación de mercancía por venta de mostrador con el Folio ", "5e04f1182938b551cc196b80", "CANCELADO", item, db, session);
+                    if (item == null)
+                        throw new Exception("La venta ya se encuentra devuelta o cancelada, no es posible continuar");
+
+                    db.PuntoVenta_Documento.update(item, item._id, db, session);
+
+                    session.CommitTransaction();
+                }
+
+                return item;
+            }
+            catch (Exception ex)
+            {
+                Error(ex, "");
+                return null;
+            }
+        }
+
+        //Valida la apertura de caja
         public Movtos_Cajas ValidarApertura()
         {
             try
@@ -164,17 +196,20 @@ namespace WcfErp.Servicios.PVenta
             }
         }
 
-        public List<PuntoVenta_Documento> ComprasACancelar(string cadena, string skip = null)
+        //Trae compras que se pueden cancelar por merma: pago en efectivo y no canceladas/devueltas
+        public List<PuntoVenta_Documento> ComprasACancelar(string cadena, RangoFecha fechas)
         {
             try
             {
                 EmpresaContext db = new EmpresaContext();
                 var builder = Builders<PuntoVenta_Documento>.Filter;
-                var filter = builder.Ne("Estatus","CANCELADO");
+                var filter = builder.Ne("Estatus", "CANCELADO") & builder.Ne("Estatus", "CANCELADOE") & builder.Ne("Estatus", "DEVOLUCION")
+                    & builder.Gte(x => x.Fecha, fechas.Inicio) & builder.Lt(x => x.Fecha, fechas.Fin);
 
                 List<PuntoVenta_Documento> enviar = new List<PuntoVenta_Documento> { };
-                List<PuntoVenta_Documento> Lista = db.PuntoVenta_Documento.Filters(filter, cadena, skip);
-                foreach(PuntoVenta_Documento venta in Lista)
+                List<PuntoVenta_Documento> Lista = db.PuntoVenta_Documento.Filters(filter, cadena, "0");
+
+                foreach (PuntoVenta_Documento venta in Lista)
                 {
 
                     PuntoVenta_Documento vta = db.PuntoVenta_Documento.get(venta._id, "PuntoVtaCobros", db);
@@ -202,51 +237,113 @@ namespace WcfErp.Servicios.PVenta
             }
         }
 
-        public MovimientosES SalidaInventario(PuntoVenta_Documento item, EmpresaContext db)
+        //creación de la cancelación
+        public List<PuntoVenta_Documento> CrearCancelacionMerma(ListaPuntoVenta_Documento lista)
         {
             try
             {
-                MovimientosES documentosalida = new MovimientosES();
-                documentosalida.Concepto = db.Concepto.get("5d4cbb5d92a3d9c568660d2a", db); ////Concepto de salida por venta de mostrador
-                documentosalida.Almacen = item.Almacen;
-                documentosalida.Fecha = item.Fecha;
-                documentosalida.Descripcion = "Salida de inventario de venta de mostrador con el Folio " + item.Folio;
-                documentosalida.Sistema_Origen = "PV";
-                documentosalida.Cancelado = "NO";
-
-
-                //Separo la fecha del doumento en dia mes y año
-                documentosalida.Dia = item.Fecha.Day;
-                documentosalida.Mes = item.Fecha.Month;
-                documentosalida.Ano = item.Fecha.Year;
-
-                foreach (PuntoVtaDet detalle in item.PuntoVtaDet)
+                List < PuntoVenta_Documento> items = lista.PuntoVenta_Documentos;
+                if(items.Count == 0)
+                    throw new Exception("Se debe de seleccionar al menos una venta.");
+                string vtaCan = "";
+                EmpresaContext db = new EmpresaContext();
+                using (var session = db.client.StartSession())
                 {
-                    //Se crea el articulo dentro del documento de salida
-                    documentosalida.Detalles_ES.Add(new Detalles_ES
+                    session.StartTransaction();
+                    //CREACIÓN DEL DOCUMENTO DE SALIDA
+
+                    //crear inventario de salida
+                    MovimientosES documentosalida = new MovimientosES();
+                    documentosalida.Concepto = db.Concepto.get(ConceptoRandom(), db); ////Concepto de salida por venta de mostrador
+                    documentosalida.Descripcion = "Salida de inventario por " + documentosalida.Concepto.Nombre;
+                    documentosalida.Sistema_Origen = "CAN";
+                    documentosalida.Cancelado = "NO";
+                    documentosalida.Almacen = db.Almacen.get("5c93c7917d7b3011b8ea951e", db); //PREGUNTAR POR ALMACEN
+                    documentosalida.Fecha = DateTime.Now;
+
+                    foreach (PuntoVenta_Documento item in items)
                     {
-                        Articulo = detalle.Articulo,
-                        Cantidad = Math.Abs((double)detalle.Cantidad),
-                        Clave = detalle.Articulo.Clave,
-                    });
+                        //ENTRADA DE LOS ARTICULOS DE LOS TICKETS CANCELADOS
+                        PuntoVenta_Documento venta = db.PuntoVenta_Documento.get(item._id, db);
+                        venta = CrearInventarioEntrada("Entrada de inventario por cancelación de venta de mostrador con el Folio ", "5dfd238d2938b553f0198f2d", "CANCELADOE", venta, db, session);
+                        if (venta == null)
+                            vtaCan = item.Folio + ",";
+                        else
+                        {
+                            //documentosalida = SalidaInventario(documentosalida, venta, db);
+                            foreach (PuntoVtaDet detalle in venta.PuntoVtaDet)
+                            {
+                                //Se crea el articulo dentro del documento de salida
+                                documentosalida.Detalles_ES.Add(new Detalles_ES
+                                {
+                                    Articulo = detalle.Articulo,
+                                    Cantidad = Math.Abs((double)detalle.Cantidad),
+                                    Clave = detalle.Articulo.Clave,
+                                });
+                            }
+                        }
+                    }
+
+                    documentosalida.Cancelado = "NO";
+
+                    //Separo la fecha del doumento en dia mes y año
+                    DateTime fecha = DateTime.Now;
+                    documentosalida.Dia = documentosalida.Fecha.Day;
+                    documentosalida.Mes = documentosalida.Fecha.Month;
+                    documentosalida.Ano = documentosalida.Fecha.Year;
+
+                    //documentos de salida e inventario de salida - guardado
+                    WcfErp.Servicios.Inventarios.Inventarios inv = new WcfErp.Servicios.Inventarios.Inventarios();
+                    inv.add(documentosalida, db, session);
+                    session.CommitTransaction();
                 }
-                return documentosalida;
+                
+                if(vtaCan != "")
+                    throw new Exception("Las ventas con los siguientes folios no se pudieron cancelar ya que ya se encuntran canceladas: " + vtaCan.Remove(vtaCan.Length - 1));
+                return items;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                throw;
+                Error(ex, "");
+                return null;
+            }
+        }
+        
+        //Funciones de ayuda
+        public PuntoVenta_Documento CrearInventarioEntrada(string desc, string concepto, string estado, PuntoVenta_Documento item, EmpresaContext db, IClientSessionHandle session = null)
+        {
+            try
+            {
+                PuntoVenta_Documento venta = db.PuntoVenta_Documento.get(item._id, db);
+
+                if (venta.Estatus == "CANCELADOE" || venta.Estatus == "CANCELADO" || venta.Estatus == "DEVOLUCION")
+                    return null;
+
+                /*Entrada de inventario*/
+                MovimientosES documentoentrada = EntradaInventario(desc, concepto, venta, db);
+                WcfErp.Servicios.Inventarios.Inventarios inv = new WcfErp.Servicios.Inventarios.Inventarios();
+
+                venta.Estatus = estado;
+                inv.add(documentoentrada, db, session);
+                db.PuntoVenta_Documento.update(venta, venta._id, db, session);
+                return venta;
+            }
+            catch (Exception ex)
+            {
+                Error(ex, "");
+                return null;
             }
         }
 
-        public MovimientosES EntradaInventario(PuntoVenta_Documento item, EmpresaContext db)
+        public MovimientosES EntradaInventario(string desc, string concepto, PuntoVenta_Documento item, EmpresaContext db)
         {
             try
             {
                 MovimientosES documentoentrada = new MovimientosES();
-                documentoentrada.Concepto = db.Concepto.get("5dfba6592938b55b30c3c257", db); ////Concepto de entrada por devolución
+                documentoentrada.Concepto = db.Concepto.get(concepto, db); ////Concepto de entrada por devolución
                 documentoentrada.Almacen = item.Almacen;
                 documentoentrada.Fecha = DateTime.Now;
-                documentoentrada.Descripcion = "Entrada de inventario por devolución de mercancía por venta de mostrador con el Folio " + item.Folio;
+                documentoentrada.Descripcion = desc + item.Folio;
                 documentoentrada.Sistema_Origen = "DEV";
                 documentoentrada.Cancelado = "NO";
 
@@ -274,48 +371,56 @@ namespace WcfErp.Servicios.PVenta
             }
         }
 
-        public List<PuntoVenta_Documento> CrearCancelacion(List<PuntoVenta_Documento> items)
+        public MovimientosES SalidaInventario(MovimientosES documentosalida, PuntoVenta_Documento item, EmpresaContext db)
         {
             try
             {
-                EmpresaContext db = new EmpresaContext();
+                documentosalida.Cancelado = "NO";
 
-                string vtaCan = "";
-                using (var session = db.client.StartSession())
+                //Separo la fecha del doumento en dia mes y año
+                documentosalida.Dia = item.Fecha.Day;
+                documentosalida.Mes = item.Fecha.Month;
+                documentosalida.Ano = item.Fecha.Year;
+
+                foreach (PuntoVtaDet detalle in item.PuntoVtaDet)
                 {
-                    session.StartTransaction();
-                    foreach(PuntoVenta_Documento item in items)
+                    //Se crea el articulo dentro del documento de salida
+                    documentosalida.Detalles_ES.Add(new Detalles_ES
                     {
-                        PuntoVenta_Documento venta = db.PuntoVenta_Documento.get(item._id, db);
-
-                        if (venta.Estatus != "CANCELADOXT" && venta.Estatus != "CANCELADO")
-                        {
-                            /*Entrada de inventario*/
-                            MovimientosES documentoentrada = EntradaInventario(item, db);
-                            WcfErp.Servicios.Inventarios.Inventarios inv = new WcfErp.Servicios.Inventarios.Inventarios();
-
-                            item.Estatus = "CANCELADOXT";
-                            inv.add(documentoentrada, db, session);
-                            db.PuntoVenta_Documento.update(item, item._id, db, session);
-                        }
-                        else
-                        {
-                            vtaCan += venta.Folio + ",";
-                        }
-                    }
-                    session.CommitTransaction();
+                        Articulo = detalle.Articulo,
+                        Cantidad = Math.Abs((double)detalle.Cantidad),
+                        Clave = detalle.Articulo.Clave,
+                    });
                 }
-                if(vtaCan != "")
-                {
-                    throw new Exception("Las siguientes ventas ya se encuentran canceladas: " + vtaCan);
-                }
-                return items;
+                return documentosalida;
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                Error(ex, "");
-                return null;
+                throw;
             }
+        }
+
+        public string ConceptoRandom()
+        {
+            string concepto = "";
+            Random random = new Random();
+            int n = random.Next(1, 4);
+            switch (n)
+            {
+                case 1:
+                    concepto = "5dfd32012938b551184e5d75";
+                    break;
+                case 2:
+                    concepto = "5dfd32222938b551184e5d76";
+                    break;
+                case 3:
+                    concepto = "5dfd32422938b551184e5d77";
+                    break;
+                default:
+                    concepto = "5dfd32422938b551184e5d77";
+                    break;
+            }
+            return concepto;
         }
     }
 }

@@ -179,6 +179,7 @@
     <Compile Include="Modelos\Generales\Municipio.cs" />
     <Compile Include="Modelos\Generales\Puesto.cs" />
     <Compile Include="Modelos\Generales\Pureza.cs" />
+    <Compile Include="Modelos\Generales\RangoFecha.cs" />
     <Compile Include="Modelos\Generales\Roles.cs" />
     <Compile Include="Modelos\Generales\SubgrupoComponente.cs" />
     <Compile Include="Modelos\Generales\TipoComponente.cs" />
@@ -212,6 +213,7 @@
     <Compile Include="Modelos\PuntoVenta\CajerosCajas.cs" />
     <Compile Include="Modelos\PuntoVenta\CajerosCajasAbrir.cs" />
     <Compile Include="Modelos\PuntoVenta\Impuestos.cs" />
+    <Compile Include="Modelos\PuntoVenta\ListaPuntoVenta_Documento.cs" />
     <Compile Include="Modelos\PuntoVenta\PuntoVenta_Documento.cs" />
     <Compile Include="Modelos\PuntoVenta\PuntoVtaCobros.cs" />
     <Compile Include="Modelos\PuntoVenta\PuntoVtaDet.cs" />

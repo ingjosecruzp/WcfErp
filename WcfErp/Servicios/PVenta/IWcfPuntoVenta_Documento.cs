@@ -5,6 +5,7 @@ using System.Runtime.Serialization;
 using System.ServiceModel;
 using System.ServiceModel.Web;
 using System.Text;
+using WcfErp.Modelos.Generales;
 using WcfErp.Modelos.PuntoVenta;
 using WcfErp.Modelos.PVenta;
 
@@ -23,7 +24,7 @@ namespace WcfErp.Servicios.PVenta
          Movtos_Cajas ValidarApertura();
 
         [OperationContract]
-        [WebInvoke(UriTemplate = "?searchBy=devolucionCompra",
+        [WebInvoke(UriTemplate = "?searchBy=crearDevolucion",
          BodyStyle = WebMessageBodyStyle.Bare,
          ResponseFormat = WebMessageFormat.Json,
          RequestFormat = WebMessageFormat.Json,
@@ -31,19 +32,27 @@ namespace WcfErp.Servicios.PVenta
         PuntoVenta_Documento CrearDevolucion(PuntoVenta_Documento item);
 
         [OperationContract]
+        [WebInvoke(UriTemplate = "?searchBy=crearCancelacion",
+        BodyStyle = WebMessageBodyStyle.Bare,
+        ResponseFormat = WebMessageFormat.Json,
+        RequestFormat = WebMessageFormat.Json,
+        Method = "POST")]
+        PuntoVenta_Documento CrearCancelacion(PuntoVenta_Documento item);
+
+        [OperationContract]
         [WebInvoke(UriTemplate = "?searchBy=cancelacionCompra",
          BodyStyle = WebMessageBodyStyle.Bare,
          ResponseFormat = WebMessageFormat.Json,
          RequestFormat = WebMessageFormat.Json,
          Method = "POST")]
-        List<PuntoVenta_Documento> CrearCancelacion(List<PuntoVenta_Documento> items);
+        List<PuntoVenta_Documento> CrearCancelacionMerma(ListaPuntoVenta_Documento lista);
 
         [OperationContract]
-        [WebInvoke(UriTemplate = "?searchBy=comprasACancelar&cadena={cadena}&skip={skip}",
+        [WebInvoke(UriTemplate = "?searchBy=comprasACancelar&cadena={cadena}",
          BodyStyle = WebMessageBodyStyle.Bare,
          ResponseFormat = WebMessageFormat.Json,
          RequestFormat = WebMessageFormat.Json,
-         Method = "GET")]
-        List<PuntoVenta_Documento> ComprasACancelar(string cadena, string skip);
+         Method = "POST")]
+        List<PuntoVenta_Documento> ComprasACancelar(string cadena, RangoFecha fechas);
     }
 }
