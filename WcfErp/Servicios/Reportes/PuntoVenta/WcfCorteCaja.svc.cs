@@ -75,6 +75,7 @@ namespace WcfErp.Servicios.Reportes.PuntoVenta
                                 PvProductosVendidos.Clave = VentaDet.Articulo.Clave;
                                 GrupoComponente GpoComponente = new GrupoComponente();
                                 GpoComponente = VentaDet.Articulo.GrupoComponente;
+                                PvProductosVendidos.Descripcion = VentaDet.Articulo.Nombre;
                                 PvProductosVendidos.Grupo = GpoComponente.Nombre;
                                 PvProductosVendidos.Cantidad = VentaDet.Cantidad;
                                 PvProductosVendidos.PrecioUnitario = VentaDet.PrecioUnitario;
@@ -196,7 +197,6 @@ namespace WcfErp.Servicios.Reportes.PuntoVenta
                         PvCorteCaja.TajetasUSD = TotalTarjetasUSD;
                         PvCorteCaja.TajetasMXN = TotalTarjetasMXN;
                         
-
                         return PvCorteCaja;
                     }
                     else
