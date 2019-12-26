@@ -131,6 +131,7 @@
     <Content Include="Servicios\PVenta\WcfCierreCaja.svc" />
     <Content Include="Servicios\PVenta\WcfFormadeCobro.svc" />
     <Content Include="Servicios\PVenta\WcfImpuestos.svc" />
+    <Content Include="Servicios\PVenta\WcfOperador.svc" />
     <Content Include="Servicios\PVenta\WcfPoliticadeComisiones.svc" />
     <Content Include="Servicios\PVenta\WcfPuntoVenta_Documento.svc" />
     <Content Include="Servicios\PVenta\WcfTipodeCambio.svc" />
@@ -214,6 +215,7 @@
     <Compile Include="Modelos\PuntoVenta\CajerosCajasAbrir.cs" />
     <Compile Include="Modelos\PuntoVenta\Impuestos.cs" />
     <Compile Include="Modelos\PuntoVenta\ListaPuntoVenta_Documento.cs" />
+    <Compile Include="Modelos\PuntoVenta\Operador.cs" />
     <Compile Include="Modelos\PuntoVenta\PuntoVenta_Documento.cs" />
     <Compile Include="Modelos\PuntoVenta\PuntoVtaCobros.cs" />
     <Compile Include="Modelos\PuntoVenta\PuntoVtaDet.cs" />
@@ -412,6 +414,7 @@
     <Compile Include="Servicios\PVenta\IWcfCierreCaja.cs" />
     <Compile Include="Servicios\PVenta\IWcfFormadeCobro.cs" />
     <Compile Include="Servicios\PVenta\IWcfImpuestos.cs" />
+    <Compile Include="Servicios\PVenta\IWcfOperador.cs" />
     <Compile Include="Servicios\PVenta\IWcfPoliticadeComisiones.cs" />
     <Compile Include="Servicios\PVenta\IWcfPuntoVenta_Documento.cs" />
     <Compile Include="Servicios\PVenta\IWcfTipodeCambio.cs" />
@@ -434,6 +437,9 @@
     </Compile>
     <Compile Include="Servicios\PVenta\WcfImpuestos.svc.cs">
       <DependentUpon>WcfImpuestos.svc</DependentUpon>
+    </Compile>
+    <Compile Include="Servicios\PVenta\WcfOperador.svc.cs">
+      <DependentUpon>WcfOperador.svc</DependentUpon>
     </Compile>
     <Compile Include="Servicios\PVenta\WcfPoliticadeComisiones.svc.cs">
       <DependentUpon>WcfPoliticadeComisiones.svc</DependentUpon>
