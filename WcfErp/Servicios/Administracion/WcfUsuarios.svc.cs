@@ -31,6 +31,7 @@ namespace WcfErp.Servicios.Administracion
                 return null;
             }
         }
+
         public override Usuarios get(string id)
         {
             try
@@ -40,6 +41,7 @@ namespace WcfErp.Servicios.Administracion
 
                 //El campo contraseña se limpia para que no pueda ser visualizado
                 usr.Contrasena="";
+                usr.Clave="";
 
                 return usr;
             }
@@ -49,7 +51,6 @@ namespace WcfErp.Servicios.Administracion
                 return null;
             }
         }
-
 
         public override Usuarios update(Usuarios item, string id)
         {
@@ -63,7 +64,13 @@ namespace WcfErp.Servicios.Administracion
                     //item.Contrasena = Collection_Usuarios.Find<Usuarios>(d => d._id == id).FirstOrDefault().Contrasena;
                     item.Contrasena = db.Usuarios.get(id, db).Contrasena;
                 }
-                    
+
+                if (item.Clave == "")
+                {
+                    //Si no se cambio la contraseña de usuario agrega la actual
+                    //item.Contrasena = Collection_Usuarios.Find<Usuarios>(d => d._id == id).FirstOrDefault().Contrasena;
+                    item.Clave = db.Usuarios.get(id, db).Clave;
+                }
 
                 return db.Usuarios.update(item,id,db);
             }
@@ -74,5 +81,28 @@ namespace WcfErp.Servicios.Administracion
             }
         }
 
-	}
+        public String CrearCancelacion(Usuarios item)
+        {
+            try
+            {
+                UsuarioContext db = new UsuarioContext();
+
+                var builder = Builders<Usuarios>.Filter;
+                var filter = builder.Eq("Clave", item.Clave);
+
+                List<Usuarios> LstUsuarios = db.Usuarios.find(filter, db).ToList();
+
+                if (LstUsuarios.Count == 0)
+                    throw new Exception("La clave es inválida");
+
+                return "ok";
+            }
+            catch (Exception ex)
+            {
+                Error(ex, "");
+                return null;
+            }
+        }
+
+    }
 }

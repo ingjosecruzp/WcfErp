@@ -22,6 +22,7 @@ namespace WcfErp.Modelos.PuntoVenta
         public Cajeros Cajero { get; set; }
         public Clientes Cliente { get; set; }
         public Almacen Almacen { get; set; }
+        public Operador Operador { get; set; }
         //public int LugarExpedicion { get; set; } //esta nulo
         //public int Moneda { get; set; }
         public string ImpuestoIncluido { get; set; }
@@ -82,6 +83,11 @@ namespace WcfErp.Modelos.PuntoVenta
                 item.Vendedor = db.Vendedor.get(item.Vendedor._id, "_id,Nombre", db);
                 item.Apertura = db.Movtos_Cajas.get(item.Apertura._id, "_id,Cajas,Cajeros,Importe", db);
                 //item.Cliente = db.Clientes.get(item.Cliente._id,db); //db.Clientes.get(item.Cliente._id, "_id,Nombre", db);
+                if (item.Operador != null)
+                {
+                    item.Operador = db.Operador.get(item.Operador._id, "_id,Nombre", db);
+                }
+
                 foreach (PuntoVtaDet det in item.PuntoVtaDet)
                 {
                     det.Articulo = db.Articulo.get(det.Articulo._id, "_id,Clave,Nombre,SubGrupoComponente,GrupoComponente", db);

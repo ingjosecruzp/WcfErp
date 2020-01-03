@@ -9,6 +9,7 @@ namespace WcfErp.Modelos.Generales
     {
         public string NombreCompleto { get; set; }
         public string Contrasena { get; set; }
+        public string Clave { get; set; }
         public string Status { get; set; }
         public List<Roles> Roles { get; set; }
 
@@ -35,5 +36,7 @@ namespace WcfErp.Modelos.Generales
                 throw;
             }
         }
+
+
     }
 }
